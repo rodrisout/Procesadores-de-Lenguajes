@@ -1,0 +1,54 @@
+\documentclass[oneside]{AiTeX}
+\usepackage{flafter}
+
+
+\title{Memoria PL}
+\author{Grupo 10}
+\date{\today}
+\begin{document}
+%\datos{facultad}{universidad}{grado}{asignatura}{subtitulo}{autor}{curso}
+\datos{Informática}{Universidad Complutense de Madrid}{Ingeniería informática}{Procesadores de Lenguajes}{Memoria de proyecto --- Hito 1:Especificación }{ \underline{\textbf{Grupo 10}} \\
+    Rodrigo Souto Santos\\
+    Leonardo Prado de Souza\\
+    Juan Andrés Hibjan Cardona\\
+    Izan Rodrigo Sanz}{2024--2025}
+\portadaApuntes{}
+%\pagestyle{empty}
+\tableofcontents
+%\pagestyle{empty}
+%\justify
+\pagestyle{fancy}
+
+%\newpage
+
+%\include{glossary}
+
+% \section*{Control de cambios} %
+% \noindent\begin{tabularx}{\textwidth}{ |l|l|p{5cm}|X| }
+%     \hline
+%     \textbf{Versión} & \textbf{Fecha} & \textbf{Autores}     & \textbf{Descripción}                                                 \\
+%     \hline
+%     1.0              & 27/09/2023     & Alejandro Barrachina & Comienzo de la memoria\\
+%     \hline
+% \end{tabularx}
+
+% \newpage
+
+\include{Secciones/1Lexico.tex}
+\include{Secciones/2Sintaxis}
+%\include{Secciones/3AST}
+%\include{Secciones/4Compilador}
+
+
+%\printglossary[title={Glosario}]
+
+% DESCOMENTAR SI SE USAN IMÁGENES
+\let\cleardoublepage\clearpage
+\listoffigures
+\addcontentsline{toc}{chapter}{Índice de figuras}
+\let\cleardoublepage\clearpage
+
+% DESCOMENTAR SI SE USAN TABLAS
+%\listoftables
+%\addcontentsline{toc}{chapter}{Índice de cuadros}
+\end{document}

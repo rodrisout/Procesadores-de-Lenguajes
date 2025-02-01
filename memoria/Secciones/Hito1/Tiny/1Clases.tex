@@ -1,0 +1,83 @@
+\section{Clases léxicas}
+
+\subsection{Palabras reservadas}
+
+Para poder analizar de manera correcta, será necesario establecer una clase léxica por cada palabra reservada. En el lenguaje de
+esta práctica, \textit{Tiny(0)}, contamos con 3 palabras reservadas, utilizadas para definir el tipo de las variables. Tendremos pues,
+una palabra para las variables de tipo booleano, otra para las de tipo entero y una última para las reales.También contamos con
+3 palabras reservadas para los operadores lógicos and, or y not, 1 palabra reservada para hacer referencia a la nada, 1 palabra reservada
+para referenciar una función, 3 palabras reservadas para control de flujo, 1 palabra reservada para la creación de un estructura, 1 palabra reservada para reserva de memoria,
+1 palabra reservada para liberar la memoria, 1 palabra reservada para lectura, 1 palabra reservada para escritura, 1 palabra reservada para nueva linea, 
+1 palabra reservada para vínculos de los nombres de tipo y 1 palabra reservada para invocación a procedimiento. 
+Las palabras son las definidas a continuación, contando cada con una clase léxica.
+
+\begin{itemize}
+    \item \textit{bool} $\rightarrow$ Variables booleanas.
+    \item \textit{int} $\rightarrow$ Variables enteras.
+    \item \textit{real} $\rightarrow$ Variables reales.
+    \item \textit{string} $\rightarrow$ Variables de cadena.
+    \item \textit{and} $\rightarrow$ Conjunción lógica.
+    \item \textit{or} $\rightarrow$ Disyunción lógica.
+    \item \textit{not} $\rightarrow$ Negación lógica.
+    \item \textit{true} $\rightarrow$ Valor booleano cierto.
+    \item \textit{false} $\rightarrow$ Valor booleano falso.
+    \item \textit{null} $\rightarrow$ Referencia a la nada.
+    \item \textit{proc} $\rightarrow$ Función.
+    \item \textit{if} $\rightarrow$ Condición.
+    \item \textit{else} $\rightarrow$ Condición alternativa.
+    \item \textit{while} $\rightarrow$ Bucle con condición.
+    \item \textit{struct} $\rightarrow$ Estructura.
+    \item \textit{new} $\rightarrow$ Reserva de memoria.
+    \item \textit{delete} $\rightarrow$ Liberación de memoria.
+    \item \textit{read} $\rightarrow$ Lectura.
+    \item \textit{write} $\rightarrow$ Escritura.
+    \item \textit{nl} $\rightarrow$ Nueva línea.
+    \item \textit{type} $\rightarrow$ Vinculo de tipo.
+    \item \textit{call} $\rightarrow$ Invocación procedimiento.
+\end{itemize}
+
+\subsection{Literales}
+
+\begin{itemize}
+    \item \textbf{Literales enteros.} Opcionalmente empiezan con un signo más (+) o menos (-), y después debe aparecer una
+        secuencia (que empieza por un número distinto de 0) de 1 o más dígitos. Su clase léxica será \textit{literalEntero}.
+    \item \textbf{Literales reales.} Empieza con una parte entera seguida de una parte decimal, exponecial o parte decimal seguida de exponecial. La parte decimal comienza con el signo punto (.) seguido de una secuencia (que puede ser sólo un 0 o números que no acaben en 0) de 1 o más dígitos. Por último, y también opcionalmente, puede aparecer una parte exponencial que se indica con (e) o (E), seguida de una parte entera con o sin parte decimal. Su clase léxica será \textit{literalReal}.
+    \item \textbf{Literales de cadena.} Secuencia de 0 o más caracteres distintos que estan entre comillas dobles(`` ''). Los caracteres pueden incluir las siguientes secuencias de
+    escape: retroceso ($\backslash{b}$), retorno de carro ($\backslash{r}$), tabulador ($\backslash{t}$) y salto de línea ($\backslash{n}$). Su clase léxica será \textit{literalCadena}.
+\end{itemize}
+
+\subsection{Identificadores}
+
+Los identificadores nos sirven para poder ponerle un nombre a las variables. Éstos deben comenzar por un subrayado (\_) o una letra, seguida de una secuencia de 0 o más
+subrayados, dígitos o letras. Su clase léxica será \textit{identificador}.
+
+\subsection{Símbolos de operación y puntuación}
+
+Cada uno de ellos tendrá su propia clase léxica y son las siguientes clases:
+
+\begin{itemize}
+    \item \textbf{Suma.} Se representa con el símbolo más (+). Su clase léxica será \textit{operadorSuma}.
+    \item \textbf{Resta.} Se representa con el símbolo símbolo menos (-). Su clase léxica será \textit{operadorResta}.
+    \item \textbf{Multiplicación.} Se representa con el símbolo asterisco (*). Su clase léxica será \textit{operadorMul}.
+    \item \textbf{División.} Se representa con el símbolo barra (/). Su clase léxica será \textit{operadorDiv}.
+    \item \textbf{Módulo.} Se representa con el símbolo barra (\%). Su clase léxica será \textit{operadorMod}.
+    \item \textbf{Menor.} Se representa con el símbolo menor qué (<). Su clase léxica será \textit{operadorMenor}.
+    \item \textbf{Mayor.} Se representa con el símbolo mayor qué (>). Su clase léxica será \textit{operadorMayor}.
+    \item \textbf{Igual.} Se representa con el dos símbolos de igualdad seguidos (==). Su clase léxica será \textit{operadorIgual}.
+    \item \textbf{Menor o igual.} Se representa con el símbolo menor qué seguido del símbolo de igualdad (<=). Su clase léxica será \textit{operadorMenIgual}.
+    \item \textbf{Mayor o igual.} Se representa con el símbolo mayor qué seguido del símbolo de igualdad (>=). Su clase léxica será \textit{operadorMayIgual}.
+    \item \textbf{Asignación.} Se representa con el símbolo un símbolo de igualdad (=). Su clase léxica será \textit{operadorAsig}.
+    \item \textbf{Paréntesis de apertura.} Se representa con el símbolo del paréntesis de apertura (``('', sin comillas). Su clase léxica será \textit{parentesisAp}.
+    \item \textbf{Paréntesis de cierre.} Se representa con el símbolo del paréntesis de cierre (``)'', sin comillas). Su clase léxica será \textit{parentesisCi}.
+    \item \textbf{Punto y coma.} Se representa con el símbolo punto y coma (;). Su clase léxica será \textit{puntoYComa}.
+    \item \textbf{Coma.} Se representa con el símbolo coma (,). Su clase léxica será \textit{coma}.
+    \item \textbf{Indirección.} Se representa con el símbolo del acento circumflejo (\^{}). Su clase léxica será \textit{indireccion}.
+    \item \textbf{Final.} Se representa con el símbolo ampersand 2 veces consecutivas (\&\&). Su clase léxica será \textit{final}.
+    \item \textbf{Por Referencia.} Se representa con el símbolo ampersand una única vez (\&). Su clase léxica será \textit{porReferencia}.
+    \item \textbf{Llave de apertura.} Se representa con el símbolo de la llave de apertura (\{). Su clase léxica será \textit{llaveAp}.
+    \item \textbf{Llave de cierre.} Se representa con el símbolo de la llave de cierre (\}). Su clase léxica será \textit{llaveCi}.
+    \item \textbf{Corchete de apertura.} Se representa con el símbolo del corchete de apertura ([). Su clase léxica será \textit{corcheteAp}.
+    \item \textbf{Corchete de cierre.} Se representa con el símbolo del corchete de cierre (]). Su clase léxica será \textit{corcheteCi}.
+    \item \textbf{Arroba.} Se representa con el símbolo arroba (@). Su clase léxica será \textit{arroba}.
+    \item \textbf{Punto.} Se representa con el símbolo punto (.). Su clase léxica será \textit{punto}.
+\end{itemize}

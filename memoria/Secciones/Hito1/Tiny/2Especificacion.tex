@@ -1,0 +1,75 @@
+\section{Especificación formal del léxico}
+
+
+\subsection{Definiciones auxiliares.}
+    
+\begin{math}
+    letra \longrightarrow \textbf A|\textbf B|...|\textbf Z|\textbf a|\textbf b|...|\textbf z\\
+    digitoPositivo \longrightarrow \textbf 1|...|\textbf 9\\
+    digito \longrightarrow digitoPositivo|0\\
+    parteEntera \longrightarrow (digitoPositivo \; digito*)|0\\
+    parteDecimal \longrightarrow (digito* \; digitoPositivo)|0\\
+    parteExponencial \longrightarrow (e|E)[\backslash{+}|-]?parteEntera\\
+\end{math}
+
+\subsection{Definiciones de cadenas ignorables.}
+
+\begin{math}
+    separador \longrightarrow [\;\backslash{t}\backslash{r}\backslash{b}\backslash{n}]\\
+    comentario \longrightarrow \#\#[\;\hat{}\;(\backslash{n}|\textbf{EOF})]*\\
+\end{math}
+
+\subsection{Definiciones léxicas.}
+
+\begin{math}
+    bool \longrightarrow (b|B)(o|O)(o|O)(l|L)\\
+    int \longrightarrow (i|I)(n|N)(t|T)\\
+    real \longrightarrow (r|R)(e|E)(a|A)(l|L)\\
+    string \longrightarrow (s|S)(t|T)(r|R)(i|I)(n|N)(g|G)\\
+    and \longrightarrow (a|A)(n|N)(d|D)\\
+    or \longrightarrow (o|O)(r|R)\\
+    not \longrightarrow (n|N)(o|O)(t|T)\\
+    true \longrightarrow (t|T)(r|R)(u|U)(e|E)\\
+    false \longrightarrow (f|F)(a|A)(l|L)(s|S)(e|E)\\
+    null \longrightarrow (n|N)(u|U)(l|L)(l|L)\\
+    proc \longrightarrow (p|P)(r|R)(o|O)(c|C)\\
+    if \longrightarrow (i|I)(f|F)\\
+    else \longrightarrow (e|E)(l|L)(s|S)(e|E)\\
+    while \longrightarrow (w|W)(h|H)(i|I)(l|L)(e|E)\\
+    struct \longrightarrow (s|S)(t|T)(r|R)(u|U)(c|C)(t|T)\\
+    new \longrightarrow (n|N)(e|E)(w|W)\\
+    delete \longrightarrow (d|D)(e|E)(l|L)(e|E)(t|T)(e|E)\\
+    read \longrightarrow (r|R)(e|E)(a|A)(d|D)\\
+    write \longrightarrow (w|W)(r|R)(i|I)(t|T)(e|E)\\
+    nl \longrightarrow (n|N)(l|L)\\
+    type \longrightarrow (t|T)(y|Y)(p|P)(e|E)\\
+    call \longrightarrow (c|C)(a|A)(l|L)(l|L)\\
+    literalEntero \longrightarrow [\backslash{+}|-]?parteEntera\\
+    literalReal \longrightarrow [\backslash{+}|-]?parteEntera(.parteDecimal|parteExponencial|.parteDecimal\;parteExponencial)\\
+    literalCadena\longrightarrow ``[\;\hat{}\;``]*"\\
+    identificador \longrightarrow (\_|letra)(letra|digito|\_)*\\
+    operadorSuma \longrightarrow \backslash{+}\\
+    operadorResta \longrightarrow \; -\\
+    operadorMul \longrightarrow \; \backslash{*}\\
+    operadorDiv \longrightarrow \; /\\
+    operadorMod \longrightarrow \%\\
+    operadorMenor \longrightarrow \; <\\
+    operadorMayor \longrightarrow \; >\\
+    operadorIgual \longrightarrow \; ==\\
+    operadorMenIgual \longrightarrow \; <=\\
+    operadorMayIgual \longrightarrow \; >=\\
+    operadorAsig \longrightarrow \; =\\
+    parentesisAp \longrightarrow \; \backslash{(}\\
+    parentesisCi \longrightarrow \; \backslash{)}\\
+    puntoYComa \longrightarrow \; ;\\
+    arroba \longrightarrow \; @\\
+    coma \longrightarrow \; ,\\
+    indireccion \longrightarrow \; \backslash{\hat{}}\\
+    final \longrightarrow \&\&\\
+    porReferencia \longrightarrow \&\\
+    llaveAp \longrightarrow \; \{\\
+    llaveCi \longrightarrow \; \}\\
+    corcheteAp \longrightarrow \; [\\
+    corcheteCi \longrightarrow \; ]\\
+    punto \longrightarrow \; .\\
+\end{math}
