@@ -4,8 +4,8 @@
 \subsection{Definiciones auxiliares.}
     
 \begin{math}
-    letra \longrightarrow \textbf A|\textbf B|...|\textbf Z|\textbf a|\textbf b|...|\textbf z\\
-    digitoPositivo \longrightarrow \textbf 1|...|\textbf 9\\
+    letra \longrightarrow \textbf A|\textbf B|\cdots|\textbf Z|\textbf a|\textbf b|\cdots|\textbf z\\
+    digitoPositivo \longrightarrow \textbf 1|\cdots|\textbf 9\\
     digito \longrightarrow digitoPositivo|0\\
     parteEntera \longrightarrow (digitoPositivo \; digito*)|0\\
     parteDecimal \longrightarrow (digito* \; digitoPositivo)|0\\
@@ -46,7 +46,7 @@
     call \longrightarrow (c|C)(a|A)(l|L)(l|L)\\
     literalEntero \longrightarrow [\backslash{+}|-]?parteEntera\\
     literalReal \longrightarrow [\backslash{+}|-]?parteEntera(.parteDecimal|parteExponencial|.parteDecimal\;parteExponencial)\\
-    literalCadena\longrightarrow ``[\;\hat{}\;``]*"\\
+    literalCadena\longrightarrow ``[\;\hat{}\;]*''\\
     identificador \longrightarrow (\_|letra)(letra|digito|\_)*\\
     operadorSuma \longrightarrow \backslash{+}\\
     operadorResta \longrightarrow \; -\\
@@ -59,8 +59,8 @@
     operadorMenIgual \longrightarrow \; <=\\
     operadorMayIgual \longrightarrow \; >=\\
     operadorAsig \longrightarrow \; =\\
-    parentesisAp \longrightarrow \; \backslash{(}\\
-    parentesisCi \longrightarrow \; \backslash{)}\\
+    parentesisAp \longrightarrow \; (\\
+    parentesisCi \longrightarrow \; )\\
     puntoYComa \longrightarrow \; ;\\
     arroba \longrightarrow \; @\\
     coma \longrightarrow \; ,\\
