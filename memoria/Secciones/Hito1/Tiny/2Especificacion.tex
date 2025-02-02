@@ -4,12 +4,12 @@
 \subsection{Definiciones auxiliares.}
     
 \begin{math}
-    letra \longrightarrow \textbf A|\textbf B|\cdots|\textbf Z|\textbf a|\textbf b|\cdots|\textbf z\\
-    digitoPositivo \longrightarrow \textbf 1|\cdots|\textbf 9\\
-    digito \longrightarrow digitoPositivo|0\\
-    parteEntera \longrightarrow (digitoPositivo \; digito*)|0\\
-    parteDecimal \longrightarrow (digito* \; digitoPositivo)|0\\
-    parteExponencial \longrightarrow (e|E)[\backslash{+}|-]?parteEntera\\
+    letra \longrightarrow [\textbf a -\textbf z,\textbf A - \textbf Z]\\
+    digitoPositivo \longrightarrow [\textbf 1 - \textbf 9]\\
+    digito \longrightarrow {digitoPositivo}|0\\
+    parteEntera \longrightarrow [\backslash{+},\backslash{-}]?(\{digitoPositivo\} \; \{digito\}*|0)\\
+    parteDecimal \longrightarrow (\{digito\}* \; \{digitoPositivo\}|0)\\
+    parteExponencial \longrightarrow (e|E) parteEntera\\
 \end{math}
 
 \subsection{Definiciones de cadenas ignorables.}
@@ -44,32 +44,35 @@
     nl \longrightarrow (n|N)(l|L)\\
     type \longrightarrow (t|T)(y|Y)(p|P)(e|E)\\
     call \longrightarrow (c|C)(a|A)(l|L)(l|L)\\
-    literalEntero \longrightarrow [\backslash{+}|-]?parteEntera\\
-    literalReal \longrightarrow [\backslash{+}|-]?parteEntera(.parteDecimal|parteExponencial|.parteDecimal\;parteExponencial)\\
-    literalCadena\longrightarrow ``[\;\hat{}\;]*''\\
+    literalEntero \longrightarrow \{parteEntera\}\\
+    literalReal \longrightarrow \{parteEntera\}(.\{parteDecimal\}|\{parteExponencial\}|.\{parteDecimal\}\;\{parteExponencial\})\\
     identificador \longrightarrow (\_|letra)(letra|digito|\_)*\\
-    operadorSuma \longrightarrow \backslash{+}\\
-    operadorResta \longrightarrow \; -\\
-    operadorMul \longrightarrow \; \backslash{*}\\
-    operadorDiv \longrightarrow \; /\\
-    operadorMod \longrightarrow \%\\
-    operadorMenor \longrightarrow \; <\\
-    operadorMayor \longrightarrow \; >\\
-    operadorIgual \longrightarrow \; ==\\
-    operadorMenIgual \longrightarrow \; <=\\
-    operadorMayIgual \longrightarrow \; >=\\
-    operadorAsig \longrightarrow \; =\\
-    parentesisAp \longrightarrow \; (\\
-    parentesisCi \longrightarrow \; )\\
-    puntoYComa \longrightarrow \; ;\\
-    arroba \longrightarrow \; @\\
+    literalCadena\longrightarrow ``[\;\hat{}\;''\;]*''\\
+    suma \longrightarrow \backslash{+}\\
+    resta \longrightarrow \; -\\
+    mul \longrightarrow \; \backslash{*}\\
+    div \longrightarrow \; /\\
+    modulo \longrightarrow \%\\
+    menor \longrightarrow \; <\\
+    mayor \longrightarrow \; >\\
+    igual \longrightarrow \; ==\\
+    menorIgual \longrightarrow \; <=\\
+    mayorIgual \longrightarrow \; >=\\
+    asig \longrightarrow \; =\\
+    finalAsig \longrightarrow \&\&\\
+    parenApert \longrightarrow \; (\\
+    parenCierre \longrightarrow \; )\\
+    llaveApert \longrightarrow \; \backslash{\{}\\
+    llaveCierre \longrightarrow \; \backslash{\}}\\
+    puntoComa \longrightarrow \; ;\\
     coma \longrightarrow \; ,\\
+    punto \longrightarrow \; .\\
+    arroba \longrightarrow \; @\\
     indireccion \longrightarrow \; \backslash{\hat{}}\\
     final \longrightarrow \&\&\\
-    porReferencia \longrightarrow \&\\
-    llaveAp \longrightarrow \; \{\\
-    llaveCi \longrightarrow \; \}\\
-    corcheteAp \longrightarrow \; [\\
-    corcheteCi \longrightarrow \; ]\\
-    punto \longrightarrow \; .\\
+    paramRef \longrightarrow \&\\
+    llaveApert \longrightarrow \; \{\\
+    llaveCierre \longrightarrow \; \}\\
+    corcheteApert \longrightarrow \; [\\
+    corcheteCierre \longrightarrow \; ]\\
 \end{math}

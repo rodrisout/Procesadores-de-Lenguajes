@@ -56,28 +56,28 @@ subrayados, dígitos o letras. Su clase léxica será \textit{identificador}.
 Cada uno de ellos tendrá su propia clase léxica y son las siguientes clases:
 
 \begin{itemize}
-    \item \textbf{Suma.} Se representa con el símbolo más (+). Su clase léxica será \textit{operadorSuma}.
-    \item \textbf{Resta.} Se representa con el símbolo símbolo menos (-). Su clase léxica será \textit{operadorResta}.
-    \item \textbf{Multiplicación.} Se representa con el símbolo asterisco (*). Su clase léxica será \textit{operadorMul}.
-    \item \textbf{División.} Se representa con el símbolo barra (/). Su clase léxica será \textit{operadorDiv}.
+    \item \textbf{Suma.} Se representa con el símbolo más (+). Su clase léxica será \textit{suma}.
+    \item \textbf{Resta.} Se representa con el símbolo símbolo menos (-). Su clase léxica será \textit{resta}.
+    \item \textbf{Multiplicación.} Se representa con el símbolo asterisco (*). Su clase léxica será \textit{mul}.
+    \item \textbf{División.} Se representa con el símbolo barra (/). Su clase léxica será \textit{div}.
+    \item \textbf{Menor.} Se representa con el símbolo menor que (<). Su clase léxica será \textit{menor}.
+    \item \textbf{Mayor.} Se representa con el símbolo mayor que (>). Su clase léxica será \textit{mayor}.
+    \item \textbf{Igual.} Se representa con dos símbolos de igualdad seguidos (==). Su clase léxica será \textit{igual}.
+    \item \textbf{Menor o igual.} Se representa con el símbolo menor que seguido del símbolo de igualdad (<=). Su clase léxica será \textit{menorIgual}.
+    \item \textbf{Mayor o igual.} Se representa con el símbolo mayor que seguido del símbolo de igualdad (>=). Su clase léxica será \textit{mayorIgual}.
+    \item \textbf{Asignación.} Se representa con un símbolo de igualdad (=). Su clase léxica será \textit{asig}.
+    \item \textbf{Final.} Se representa con el símbolo ampersand dos veces consecutivas (\&\&). Su clase léxica será \textit{finalAsig}.
+    \item \textbf{Paréntesis de apertura.} Se representa con el símbolo del paréntesis de apertura (``('', sin comillas). Su clase léxica será \textit{parenApert}.
+    \item \textbf{Paréntesis de cierre.} Se representa con el símbolo del paréntesis de cierre (``)'', sin comillas). Su clase léxica será \textit{parenCierre}.
+    \item \textbf{Llave de apertura.} Se representa con el símbolo de la llave de apertura (``\{'', sin comillas). Su clase léxica será \textit{LlaveApert}.
+    \item \textbf{Llave de cierre.} Se representa con el símbolo de la llave de cierre (``\}'', sin comillas). Su clase léxica será \textit{LlaveCierre}.
+    \item \textbf{Punto y coma.} Se representa con el símbolo punto y coma (;). Su clase léxica será \textit{puntoComa}.
+    \item \textbf{Arroba.} Se representa con el símbolo arroba (@). Su clase léxica será \textit{arroba}.
     \item \textbf{Módulo.} Se representa con el símbolo barra (\%). Su clase léxica será \textit{operadorMod}.
-    \item \textbf{Menor.} Se representa con el símbolo menor qué (<). Su clase léxica será \textit{operadorMenor}.
-    \item \textbf{Mayor.} Se representa con el símbolo mayor qué (>). Su clase léxica será \textit{operadorMayor}.
-    \item \textbf{Igual.} Se representa con el dos símbolos de igualdad seguidos (==). Su clase léxica será \textit{operadorIgual}.
-    \item \textbf{Menor o igual.} Se representa con el símbolo menor qué seguido del símbolo de igualdad (<=). Su clase léxica será \textit{operadorMenIgual}.
-    \item \textbf{Mayor o igual.} Se representa con el símbolo mayor qué seguido del símbolo de igualdad (>=). Su clase léxica será \textit{operadorMayIgual}.
-    \item \textbf{Asignación.} Se representa con el símbolo un símbolo de igualdad (=). Su clase léxica será \textit{operadorAsig}.
-    \item \textbf{Paréntesis de apertura.} Se representa con el símbolo del paréntesis de apertura (``('', sin comillas). Su clase léxica será \textit{parentesisAp}.
-    \item \textbf{Paréntesis de cierre.} Se representa con el símbolo del paréntesis de cierre (``)'', sin comillas). Su clase léxica será \textit{parentesisCi}.
-    \item \textbf{Punto y coma.} Se representa con el símbolo punto y coma (;). Su clase léxica será \textit{puntoYComa}.
     \item \textbf{Coma.} Se representa con el símbolo coma (,). Su clase léxica será \textit{coma}.
     \item \textbf{Indirección.} Se representa con el símbolo del acento circumflejo (\^{}). Su clase léxica será \textit{indireccion}.
-    \item \textbf{Final.} Se representa con el símbolo ampersand 2 veces consecutivas (\&\&). Su clase léxica será \textit{final}.
-    \item \textbf{Por Referencia.} Se representa con el símbolo ampersand una única vez (\&). Su clase léxica será \textit{porReferencia}.
-    \item \textbf{Llave de apertura.} Se representa con el símbolo de la llave de apertura (\{). Su clase léxica será \textit{llaveAp}.
-    \item \textbf{Llave de cierre.} Se representa con el símbolo de la llave de cierre (\}). Su clase léxica será \textit{llaveCi}.
-    \item \textbf{Corchete de apertura.} Se representa con el símbolo del corchete de apertura ``[''. Su clase léxica será \textit{corcheteAp}.
-    \item \textbf{Corchete de cierre.} Se representa con el símbolo del corchete de cierre ``]''. Su clase léxica será \textit{corcheteCi}.
-    \item \textbf{Arroba.} Se representa con el símbolo arroba (@). Su clase léxica será \textit{arroba}.
+    \item \textbf{Por Referencia.} Se representa con el símbolo ampersand una única vez (\&). Su clase léxica será \textit{paramRef}.
+    \item \textbf{Corchete de apertura.} Se representa con el símbolo del corchete de apertura ``[''. Su clase léxica será \textit{corcheteApert}.
+    \item \textbf{Corchete de cierre.} Se representa con el símbolo del corchete de cierre ``]''. Su clase léxica será \textit{corcheteCierre}.
     \item \textbf{Punto.} Se representa con el símbolo punto (.). Su clase léxica será \textit{punto}.
 \end{itemize}
