@@ -12,13 +12,6 @@
     parteExponencial \longrightarrow (e|E) parteEntera\\
 \end{math}
 
-\subsection{Definiciones de cadenas ignorables.}
-
-\begin{math}
-    separador \longrightarrow [\;\backslash{t}\backslash{r}\backslash{b}\backslash{n}]\\
-    comentario \longrightarrow \#\#[\;\hat{}\;(\backslash{n}|\textbf{EOF})]*\\
-\end{math}
-
 \subsection{Definiciones léxicas.}
 
 \begin{math}
@@ -31,7 +24,7 @@
     true \longrightarrow (t|T)(r|R)(u|U)(e|E)\\
     false \longrightarrow (f|F)(a|A)(l|L)(s|S)(e|E)\\
     literalEntero \longrightarrow \{parteEntera\}\\
-    literalReal \longrightarrow \{parteEntera\}(\backslash{.}\{parteDecimal\}|\{parteExponencial\}|\backslash{.}\{parteDecimal\}\;\{parteExponencial\})\\
+    literalReal \longrightarrow \{parteEntera\}(\backslash{.}\{parteDecimal\})|\{parteExponencial\}|(\backslash{.}\{parteDecimal\}\;\{parteExponencial\})\\
     identificador \longrightarrow (\_|letra)(letra|digito|\_)*\\
     suma \longrightarrow \backslash{+}\\
     resta \longrightarrow \; -\\
@@ -50,4 +43,11 @@
     llaveCierre \longrightarrow \; \backslash{\}}\\
     puntoComa \longrightarrow \; ;\\
     arroba \longrightarrow \; @\\
+\end{math}
+
+\subsection{Definiciones de cadenas ignorables.}
+
+\begin{math}
+    separador \longrightarrow [\;,\backslash{t},\backslash{r},\backslash{b},\backslash{n}]\\
+    comentario \longrightarrow \#\#[\;\hat{}\;(\backslash{n}|\textbf{EOF})]*\\
 \end{math}
