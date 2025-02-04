@@ -12,13 +12,6 @@
     parteExponencial \longrightarrow (e|E) parteEntera\\
 \end{math}
 
-\subsection{Definiciones de cadenas ignorables.}
-
-\begin{math}
-    separador \longrightarrow [\;\backslash{t}\backslash{r}\backslash{b}\backslash{n}]\\
-    comentario \longrightarrow \#\#[\;\hat{}\;(\backslash{n}|\textbf{EOF})]*\\
-\end{math}
-
 \subsection{Definiciones léxicas.}
 
 \begin{math}
@@ -75,4 +68,11 @@
     llaveCierre \longrightarrow \; \}\\
     corcheteApert \longrightarrow \; [\\
     corcheteCierre \longrightarrow \; ]\\
+\end{math}
+
+\subsection{Definiciones de cadenas ignorables.}
+
+\begin{math}
+    separador \longrightarrow [ \;,\backslash{t},\backslash{r},\backslash{b},\backslash{n}]\\
+    comentario \longrightarrow \#\#[\;\hat{}\;(\backslash{n}|\textbf{EOF})]*\\
 \end{math}
