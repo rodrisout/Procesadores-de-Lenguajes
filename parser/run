@@ -1,0 +1,28 @@
+#!/bin/ksh
+
+javabin=/usr/local/jdk-21/bin/
+
+cd $(dirname $0) && while [[ $# -ge 1 ]]
+do
+	case $1 in
+	clear)
+		echo "[= clear =]"
+		rm $(find . -name "*.class")
+		;;
+	build)
+		echo "[= build =]"
+		$javabin/javac \
+			$(find . -name "*.java") \
+			2>&1 || exit
+		;;
+	run)
+		echo "[= running =]"
+		$javabin/java Main
+		;;
+	?)
+		echo "expected on of [clear, build, run], got '$1'"
+		;;
+	esac
+
+	shift
+done
