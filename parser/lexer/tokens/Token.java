@@ -11,6 +11,6 @@ public abstract class Token {
 	}
 
 	public String toString() {
-		return this.content;
+		return "<" + this.type.toString() + "> " + this.content;
 	}
 }
