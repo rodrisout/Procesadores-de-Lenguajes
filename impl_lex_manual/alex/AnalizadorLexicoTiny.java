@@ -120,27 +120,33 @@ public class AnalizadorLexicoTiny {
            case REC_PCOMA: return unidadPComa();
            case REC_ARROBA: return unidadArroba();
            case REC_ALMOHADILLA: 
-        	   if (hayAlmohadilla()) transita(Estado.REC_COMMENT);
+        	   if (hayAlmohadilla()) transitaIgnorando(Estado.REC_COMMENT);
         	   else error();
+        	   break;
            case REC_IGUAL: 
         	   if(hayIgual()) transita(Estado.REC_IGUAL_IGUAL);
         	   else return unidadAsig();
+        	   break;
            case REC_IGUAL_IGUAL: return unidadIgual();
            case REC_MAYOR:
         	   if(hayIgual()) transita(Estado.REC_MAYOR_IGUAL);
         	   else return unidadMayor();
+        	   break;
            case REC_MAYOR_IGUAL: return unidadMayorIgual();
            case REC_MENOR: 
         	   if (hayIgual()) transita(Estado.REC_MENOR_IGUAL);
         	   else return unidadMenor();
+        	   break;
            case REC_MENOR_IGUAL: return unidadMenorIgual();
            case REC_EXCLAMACION: 
         	   if(hayIgual()) transita(Estado.REC_DISTINTO);
         	   else error();
+        	   break;
            case REC_DISTINTO: return unidadDistinto();
            case REC_ET: 
         	   if(hayEt()) transita(Estado.REC_ET_ET);
         	   else error();
+        	   break;
            case REC_ET_ET: return unidadEtEt();
            case REC_COMMENT: 
                if (hayNL()) transitaIgnorando(Estado.INICIO);
