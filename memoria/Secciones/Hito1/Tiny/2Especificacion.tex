@@ -9,7 +9,7 @@
     digito \longrightarrow {digitoPositivo}|0\\
     parteEntera \longrightarrow [\backslash{+},\backslash{-}]?(\{digitoPositivo\} \; \{digito\}*|0)\\
     parteDecimal \longrightarrow (\{digito\}* \; \{digitoPositivo\}|0)\\
-    parteExponencial \longrightarrow (e|E) parteEntera\\
+    parteExponencial \longrightarrow (e|E) {parteEntera}\\
 \end{math}
 
 \subsection{Definiciones léxicas.}
@@ -38,14 +38,14 @@
     type \longrightarrow (t|T)(y|Y)(p|P)(e|E)\\
     call \longrightarrow (c|C)(a|A)(l|L)(l|L)\\
     literalEntero \longrightarrow \{parteEntera\}\\
-    literalReal \longrightarrow \{parteEntera\}(\backslash{.}\{parteDecimal\})|\{parteExponencial\}|(\backslash{.}\{parteDecimal\}\;\{parteExponencial\})\\
+    literalReal \longrightarrow \{parteEntera\}(\backslash{.}\{parteDecimal\}|\{parteExponencial\}|\backslash{.}\{parteDecimal\}\;\{parteExponencial\})\\
     identificador \longrightarrow (\_|letra)(letra|digito|\_)*\\
-    literalCadena\longrightarrow ``[\;\hat{}\;''\;]*''\\
+    literalCadena\longrightarrow ''[\;\hat{}\;''\;]*''\\
     suma \longrightarrow \backslash{+}\\
     resta \longrightarrow \; -\\
     mul \longrightarrow \; \backslash{*}\\
     div \longrightarrow \; /\\
-    modulo \longrightarrow \%\\
+    mod \longrightarrow \%\\
     menor \longrightarrow \; <\\
     mayor \longrightarrow \; >\\
     igual \longrightarrow \; ==\\
