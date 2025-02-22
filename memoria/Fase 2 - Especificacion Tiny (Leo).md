@@ -120,8 +120,8 @@ bloque -> { seccion_declaraciones_opt seccion_intrucciones }
 seccion_declaraciones_opt -> seccion_declaraciones &&  
 seccion_declaraciones_opt -> ε  
 <span style="color:crimson"> 
-seccion_declaraciones -> seccion_declaraciones ; declaracion  
-seccion_declaraciones -> declaracion  
+~~seccion_declaraciones -> seccion_declaraciones ; declaracion~~  
+~~seccion_declaraciones -> declaracion~~  
 </span> 
 <span style="color:royalblue"> 
 seccion_declaraciones -> declaracion resto_sd  
@@ -135,8 +135,8 @@ parametros_formales -> ( lista_parametros_opt )
 lista_parametros_opt - > lista_parametros  
 lista_parametros_opt - > ε  
 <span style="color:crimson"> 
-lista_parametros -> lista_parametros , parametro  
-lista_parametros -> parametro  
+~~lista_parametros -> lista_parametros , parametro~~  
+~~lista_parametros -> parametro~~  
 </span>
 <span style="color:royalblue"> 
 lista_parametros -> parametro resto_lp  
@@ -164,8 +164,8 @@ tamano_opt -> tamano
 tamano_opt -> ε  
 tamano -> [ **literalEntero** ]  
 <span style="color:crimson"> 
-lista_campos -> lista_campos , campo  
-lista_campos -> campo  
+~~lista_campos -> lista_campos , campo~~  
+~~lista_campos -> campo~~  
 </span>
 <span style="color:royalblue">
 lista_campos -> campo resto_lc  
@@ -177,8 +177,8 @@ campo -> tipo_nombre
 ### Seccion Instrucciones  
 seccion_intrucciones -> lista_instrucciones  
 <span style="color:crimson"> 
-lista_instrucciones -> lista_instrucciones ; instruccion  
-lista_instrucciones -> instruccion  
+~~lista_instrucciones -> lista_instrucciones ; instruccion~~  
+~~lista_instrucciones -> instruccion~~  
 </span>
 <span style="color:royalblue"> 
 lista_instrucciones -> instruccion resto_li  
@@ -187,8 +187,8 @@ resto_li -> ε
 </span>
 instruccion -> @ expresion  
 <span style="color:gold">
-instruccion -> if_ins  
-instruccion -> if_ins else_ins  
+~~instruccion -> if_ins~~  
+~~instruccion -> if_ins else_ins~~  
 </span>
 <span style="color:royalblue">
 instruccion -> if_ins resto_ii  
@@ -210,8 +210,8 @@ parametros_reales -> ( lista_expresiones_opt )
 lista_expresiones_opt -> lista_expresiones  
 lista_expresiones_opt -> ε  
 <span style="color:crimson"> 
-lista_expresiones -> lista_expresiones , expresion  
-lista_expresiones -> expresion  
+~~lista_expresiones -> lista_expresiones , expresion~~  
+~~lista_expresiones -> expresion~~  
 </span>
 <span style="color:royalblue"> 
 lista_expresiones -> expresion resto_le  
@@ -221,8 +221,8 @@ resto_le -> ε
 ### Seccion Expresiones
 expresion -> E0  
 <span style="color:gold">
-E0 -> E1 = E0  
-E0 -> E1  
+~~E0 -> E1 = E0~~  
+~~E0 -> E1~~  
 </span>
 <span style="color:royalblue">
 E0 -> E1 resto_E0  
@@ -230,8 +230,8 @@ resto_E0 -> = E0
 resto_E0 -> ε  
 </span>
 <span style="color:crimson">
-E1 -> E1 op_relacional E2  
-E1 -> E2  
+~~E1 -> E1 op_relacional E2~~  
+~~E1 -> E2~~  
 </span>
 <span style="color:royalblue">
 E1 -> E2 resto_E1  
@@ -239,15 +239,15 @@ resto_E1 -> op_relacional E2 resto_E1
 resto_E1 -> ε  
 </span>
 <span style="color:deeppink">
-E2 -> E2 + E3  
-E2 -> E3 - E3  
-E2 -> E3  
+~~E2 -> E2 + E3~~  
+~~E2 -> E3 - E3~~  
+~~E2 -> E3~~  
 </span>
 <span style="color:crimson">
-E2 -> E2 + E3  
-E2 -> E3 resto_E2_F  
-resto_E2_F -> - E3  
-resto_E2_F -> ε  
+~~E2 -> E2 + E3~~  
+~~E2 -> E3 resto_E2_F~~  
+~~resto_E2_F -> - E3~~  
+~~resto_E2_F -> ε~~  
 </span>
 <span style="color:royalblue">
 E2 -> E3 resto_E2_F resto_E2_R  
@@ -257,9 +257,9 @@ resto_E2_F -> - E3
 resto_E2_F -> ε  
 </span>
 <span style="color:gold">
-E3 -> E4 and E3  
-E3 -> E4 or E4  
-E3 -> E4  
+~~E3 -> E4 and E3~~  
+~~E3 -> E4 or E4~~  
+~~E3 -> E4~~  
 </span>
 <span style="color:royalblue">
 E3 -> E4 resto_E3  
@@ -268,8 +268,8 @@ resto_E3 -> or E4
 resto_E3 -> ε  
 </span>
 <span style="color:crimson">
-E4 -> E4 op_mult E5  
-E4 -> E5  
+~~E4 -> E4 op_mult E5~~  
+~~E4 -> E5~~  
 </span>
 <span style="color:royalblue">
 E4 -> E5 resto_E4  
@@ -280,8 +280,8 @@ E5 -> - E5
 E5 -> not E5  
 E5 -> E6  
 <span style="color:crimson">
-E6 -> E6 op_dirs  
-E6 -> E7  
+~~E6 -> E6 op_dirs~~  
+~~E6 -> E7~~  
 </span>
 <span style="color:royalblue"> 
 E6 -> E7 resto_E6  
