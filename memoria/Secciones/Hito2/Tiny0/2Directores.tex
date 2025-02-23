@@ -1,0 +1,87 @@
+\section{Directores}
+
+Directores de cada regla de la gramática acondicionada
+
+\subsection{Tabla de Reglas}
+
+\begin{longtblr}[
+    caption = {Directores de las reglas de la gramática}
+]{
+    colspec = {|l|X|X|},
+    rowhead = 1,
+    row{even} = {gray9},
+    row{1} = {olive9},
+}
+    \hline
+    \textbf{Regla} & \textbf{Directores} & \textbf{Anulable} \\
+    \hline\hline
+    $programa \longrightarrow bloque$ & \{ & No\\ \hline
+    $bloque \longrightarrow \{\;declaraciones\;instrucciones\;\}$ & \{ & No\\ \hline
+    $declaraciones \longrightarrow lista$-$declaraciones\;\&\&$ & \textbf{int}
+    \textbf{real} \textbf{bool} & No\\ \hline
+    $declaraciones \longrightarrow \epsilon$ &  & Sí\\ \hline
+    $lista$-$declaraciones \longrightarrow declaracion\;\; r$-$lista$-$declaraciones$
+        & \textbf{int} \textbf{real} \textbf{bool} & No\\ \hline
+    $r$-$lista$-$declaraciones \longrightarrow\;;\;declaracion\;\; r$-$lista$-$declaraciones$ & ; & No\\ 
+        \hline
+    $r$-$lista$-$declaraciones \longrightarrow \epsilon$ & & Sí \\ \hline
+    $declaracion \longrightarrow tipo\;\textbf{identificador}$ & \textbf{bool} \textbf{int}
+        \textbf{real} & No \\ \hline
+    $tipo \longrightarrow \textbf{bool}$ & \textbf{bool} & No \\ \hline
+    $tipo \longrightarrow \textbf{int}$ & \textbf{int} & No \\ \hline
+    $tipo \longrightarrow \textbf{real}$ & \textbf{real} & No \\ \hline
+    $instrucciones \longrightarrow lista$-$instrucciones$ & @ & No \\ \hline
+    $instrucciones \longrightarrow \epsilon$ &  & Sí \\ \hline
+    $lista$-$instrucciones \longrightarrow instruccion\;\; r$-$lista$-$instrucciones$
+        & @ & No\\ \hline
+    $r$-$lista$-$instrucciones \longrightarrow\;;\;instruccion\;\; r$-$lista$-$instrucciones$ & ; & No\\ 
+        \hline
+    $r$-$lista$-$instrucciones \longrightarrow \epsilon$ & & Sí \\ \hline
+    $instruccion \longrightarrow eval$ & @ & No \\ \hline
+    $eval \longrightarrow @\;E0$ & @ & No \\ \hline
+    $E0 \longrightarrow E1\;RE0$ & $+\;-$ \textbf{true} \textbf{false}
+        \textbf{literalEntero} \textbf{literalReal} \textbf{identificador} ( & No \\ \hline
+    $RE0 \longrightarrow =\;E0$ & $=$ & No \\ \hline
+    $RE0 \longrightarrow \epsilon$ & & Sí \\ \hline
+    $E1 \longrightarrow E2\;\;RE1$ & $+\;-$ \textbf{true} \textbf{false}
+        \textbf{literalEntero} \textbf{literalReal} \textbf{identificador} ( & No  \\ \hline
+    $RE1 \longrightarrow OP1\;E2\;\;RE1$ & $<\;<=\;>\;>=\;==\;!=$ & No \\
+    \hline
+    $RE1 \longrightarrow \epsilon$ & & Sí \\ \hline
+    $E2 \longrightarrow E3\;\;RE2\;\;RE2'$ &  $+\;-$ \textbf{true} \textbf{false}
+        \textbf{literalEntero} \textbf{literalReal} \textbf{identificador} ( & No  \\ \hline
+    $RE2 \longrightarrow -\;E3$ & $-$ & No \\ \hline
+    $RE2 \longrightarrow \epsilon$ & & Sí \\ \hline
+    $RE2' \longrightarrow +\;E3\;\;RE2'$ & $+$ & No \\ \hline
+    $RE2' \longrightarrow \epsilon$ & & Sí \\ \hline
+    $E3 \longrightarrow E4\;RE3$ &  $+\;-$ \textbf{true} \textbf{false}
+        \textbf{literalEntero} \textbf{literalReal} \textbf{identificador} ( & No  \\ \hline
+    $RE3 \longrightarrow \textbf{and}\;E3$ & \textbf{and} & No \\ \hline
+    $RE3 \longrightarrow \textbf{or}\;E4$ & \textbf{or} & No \\ \hline
+    $RE3 \longrightarrow \epsilon$ & & Sí \\ \hline
+    $E4 \longrightarrow E5\;RE4$ &  $+\;-$ \textbf{true} \textbf{false}
+        \textbf{literalEntero} \textbf{literalReal} \textbf{identificador} ( & No  \\ \hline
+    $RE4 \longrightarrow OP4\;E5\;\;RE4$ & $*\;/$ & No \\
+    \hline
+    $RE4 \longrightarrow \epsilon$ & & Sí \\ \hline
+    $E5 \longrightarrow OP5\;E5$ & $+\;-$ & No \\
+    \hline
+    $E5 \longrightarrow E6$ & \textbf{true} \textbf{false}
+    \textbf{literalEntero} \textbf{literalReal} \textbf{identificador} ( & No \\ \hline
+    $E6 \longrightarrow \textbf{true}$ &  \textbf{true} & No  \\ \hline
+    $E6 \longrightarrow \textbf{false}$ &  \textbf{false} & No  \\ \hline
+    $E6 \longrightarrow \textbf{literalEntero}$ &  \textbf{literalEntero} & No  \\ \hline
+    $E6 \longrightarrow \textbf{literalReal}$ &  \textbf{literalReal} & No \\ \hline
+    $E6 \longrightarrow \textbf{identificador}$ &  \textbf{identificador} & No \\ \hline
+    $E6 \longrightarrow (E0)$ & ( & No \\ \hline
+    $OP1 \longrightarrow \;<$ & $<$ & No \\ \hline
+    $OP1 \longrightarrow \;<=$ & $<=$ & No \\ \hline
+    $OP1 \longrightarrow \;>$ & $>$ & No \\ \hline
+    $OP1 \longrightarrow \;>=$ & $>=$ & No \\ \hline
+    $OP1 \longrightarrow \;==$ & $==$ & No \\ \hline
+    $OP1 \longrightarrow \;!=$ & $!=$ & No \\ \hline
+    $OP4 \longrightarrow \;*$ & $*$ & No \\ \hline
+    $OP4 \longrightarrow \;/$ & $/$ & No \\ \hline
+    $OP5 \longrightarrow \;+$ & $+$ & No \\ \hline
+    $OP5 \longrightarrow \;-$ & $-$ & No \\ \hline
+\end{longtblr}

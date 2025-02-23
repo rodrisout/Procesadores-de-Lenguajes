@@ -1,0 +1,130 @@
+\section{Especificación Sintáctica (Gramática)}
+
+Implementamos la gramática que define la especificación sintáctica del lenguaje Tiny empleando los patrones explicados en clase 
+(Diseño descendente, Reutilización, Nivel de Abstracción Equilibrado, Opcionalidad, Variantes, Listas y Expresiones). 
+
+Para ello definimos primero la estructura básica de todo programa:
+
+\begin{math}
+    programa \longrightarrow \; bloque \\
+    bloque \longrightarrow \; \{ seccion\_declaraciones\_opt \;\; seccion\_intrucciones\_opt \}
+\end{math}
+
+\subsection{Declaraciones}
+
+\begin{math}
+    seccion\_declaraciones\_opt \longrightarrow \; seccion\_declaraciones \; \&\& \\
+    seccion\_declaraciones\_opt \longrightarrow \; \epsilon \\
+    seccion\_declaraciones \longrightarrow \; seccion\_declaraciones \; ; \; declaracion \\
+    seccion\_declaraciones \longrightarrow \; declaracion \\
+    declaracion \longrightarrow \; tipo\_nombre \\
+    declaracion \longrightarrow \; \textbf{type} \; tipo\_nombre \\
+    declaracion \longrightarrow \; \textbf{proc} \; \textbf{identificador} \; parametros\_formales \; bloque\\
+    parametros\_formales \longrightarrow \; ( lista\_parametros\_opt ) \\
+    lista\_parametros\_opt \longrightarrow \; lista\_parametros \\
+    lista\_parametros\_opt \longrightarrow \; \epsilon \\
+    lista\_parametros \longrightarrow \; lista\_parametros \; , \; parametro \\
+    lista\_parametros \longrightarrow \; parametro \\
+    parametro \longrightarrow \; tipo \; ref\_opt \; \textbf{identificador} \\
+    ref\_opt \longrightarrow \; \& \\
+    ref\_opt \longrightarrow \; \epsilon
+\end{math}
+
+\subsection{Tipos}
+
+\begin{math}
+    tipo\_nombre \longrightarrow \; tipo \; \textbf{identificador} \\
+    tipo \longrightarrow \; tipo0 \\
+    tipo0 \longrightarrow \; tipo0 \; tamano\_opt \\
+    tipo0 \longrightarrow \; tipo1 \\
+    tipo1 \longrightarrow \; \hat{} \; tipo1 \\
+    tipo1 \longrightarrow \; tipo\_base \\
+    tipo\_base \longrightarrow \; \textbf{struct} \; { lista\_campos } \\
+    tipo\_base \longrightarrow \; \textbf{int} \\
+    tipo\_base \longrightarrow \; \textbf{real} \\
+    tipo\_base \longrightarrow \; \textbf{bool} \\
+    tipo\_base \longrightarrow \; \textbf{string} \\
+    tipo\_base \longrightarrow \; \textbf{identificador} \\
+    tamano\_opt \longrightarrow \; [\textbf{literalEntero}] \\
+    tamano\_opt \longrightarrow \; \epsilon \\
+    lista\_campos \longrightarrow \; lista\_campos \; , \; tipo\_nombre \\
+    lista\_campos \longrightarrow \; tipo\_nombre
+\end{math}
+
+\subsection{Instrucciones}
+
+\begin{math}
+    seccion\_intrucciones\_opt \longrightarrow \; seccion\_intrucciones \\
+    seccion\_intrucciones\_opt \longrightarrow \; \epsilon \\
+    seccion\_intrucciones \longrightarrow \; lista\_instrucciones \\
+    lista\_instrucciones \longrightarrow \; lista\_instrucciones \; ; \; instruccion \\
+    lista\_instrucciones \longrightarrow \; instruccion \\
+    instruccion \longrightarrow \; @ \; expresion \\
+    instruccion \longrightarrow \; if\_ins \\
+    instruccion \longrightarrow \; if\_ins \; else\_ins \\
+    instruccion \longrightarrow \; \textbf{while} \; exp\_bloque \\
+    instruccion \longrightarrow \; \textbf{read} \; expresion \\
+    instruccion \longrightarrow \; \textbf{write} \; expresion \\
+    instruccion \longrightarrow \; \textbf{nl} \\
+    instruccion \longrightarrow \; \textbf{new} \; expresion \\
+    instruccion  \longrightarrow \; \textbf{delete} \; expresion \\
+    instruccion \longrightarrow \; \textbf{call} \; \textbf{identificador} \; parametros_reales \\
+    instruccion \longrightarrow \; bloque \\
+    if\_ins \longrightarrow \; \textbf{if} \; exp\_bloq \\
+    else\_ins \longrightarrow \; \textbf{else} \; bloque \\
+    exp\_bloq \longrightarrow \; expresion \; bloque \\
+    parametros\_reales \longrightarrow \; ( lista\_expresiones\_opt ) \\
+    lista\_expresiones\_opt \longrightarrow \; lista\_expresiones \\
+    lista\_expresiones\_opt \longrightarrow \; \epsilon \\
+    lista\_expresiones \longrightarrow \; lista\_expresiones \; , \; expresion \\
+    lista\_expresiones \longrightarrow \; expresion
+\end{math}
+
+\subsection{Expresiones}
+
+\begin{math}
+    expresion \longrightarrow \; E0 \\
+    E0 \longrightarrow \; E1 \; = \; E0 \\
+    E0 \longrightarrow \; E1 \\
+    E1 \longrightarrow \; E1 \; op\_relacional \; E2 \\
+    E1 \longrightarrow \; E2 \\
+    E2 \longrightarrow \; E2 \; + \; E3 \\
+    E2 \longrightarrow \; E3 \; - \; E3 \\
+    E2 \longrightarrow \; E3 \\
+    E3 \longrightarrow \; E4 \; \textbf{and} \; E3 \\
+    E3 \longrightarrow \; E4 \; \textbf{or} \; E4 \\
+    E3 \longrightarrow \; E4 \\
+    E4 \longrightarrow \; E4 \; op\_mult \; E5 \\
+    E4 \longrightarrow \; E5 \\
+    E5  \longrightarrow \; - \; E5 \\
+    E5 \longrightarrow \; \textbf{not} \; E5 \\
+    E5 \longrightarrow \; E6 \\
+    E6 \longrightarrow \; E6 \; op\_dirs \\
+    E6 \longrightarrow \; E7 \\
+    E7 \longrightarrow \; expresion\_basica \\
+    E7 \longrightarrow \; (E0) \\
+    expresion\_basica \longrightarrow \; \textbf{literalEntero} \\
+    expresion\_basica \longrightarrow \; \textbf{literalReal} \\
+    expresion\_basica \longrightarrow \; \textbf{true} \\
+    expresion\_basica \longrightarrow \; \textbf{false} \\
+    expresion\_basica \longrightarrow \; \textbf{literalCadena} \\
+    expresion\_basica \longrightarrow \; \textbf{identificador} \\
+    expresion\_basica \longrightarrow \; \textbf{null}
+\end{math}
+
+\subsection{Operadores}
+
+\begin{math}
+    op\_relacional \longrightarrow \; < \\
+    op\_relacional \longrightarrow \; <= \\
+    op\_relacional \longrightarrow \; > \\
+    op\_relacional \longrightarrow \; >= \\
+    op\_relacional \longrightarrow \; == \\
+    op\_relacional \longrightarrow \; != \\
+    op\_mult \longrightarrow \; * \\
+    op\_mult \longrightarrow \; / \\
+    op\_mult \longrightarrow \% \\
+    op\_dirs \longrightarrow \; [ expresion ] \\
+    op\_dirs \longrightarrow \; . \; \textbf{identificador} \\
+    op\_dirs \longrightarrow \; \hat{}
+\end{math}

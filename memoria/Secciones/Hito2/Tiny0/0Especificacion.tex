@@ -1,0 +1,83 @@
+\section{Especificación Sintáctica (Gramática)}
+
+Implementamos la gramática que define la especificación sintáctica del lenguaje Tiny0 empleando los patrones explicados en clase 
+(Diseño descendente, Reutilización, Nivel de Abstracción Equilibrado, Opcionalidad, Variantes, Listas y Expresiones). 
+
+Para ello definimos primero la estructura básica de todo programa:
+
+\begin{math}
+    programa \longrightarrow \; bloque \\
+    bloque \longrightarrow \; \{ seccion\_declaraciones\_opt \;\; seccion\_intrucciones\_opt \}
+\end{math}
+
+\subsection{Declaraciones}
+
+\begin{math}
+    seccion\_declaraciones\_opt \longrightarrow \; seccion\_declaraciones \; \&\& \\
+    seccion\_declaraciones\_opt \longrightarrow \; \epsilon \\
+    seccion\_declaraciones \longrightarrow \; seccion\_declaraciones \; ; \; declaracion \\
+    seccion\_declaraciones \longrightarrow \; declaracion \\
+    declaracion \longrightarrow \; tipo\_nombre
+\end{math}
+
+\subsection{Tipos}
+
+\begin{math}
+    tipo\_nombre \longrightarrow \; tipo_base \; \textbf{identificador} \\
+    tipo\_base \longrightarrow \; \textbf{int} \\
+    tipo\_base \longrightarrow \; \textbf{real} \\
+    tipo\_base \longrightarrow \; \textbf{bool}
+\end{math}
+
+\subsection{Instrucciones}
+
+\begin{math}
+    seccion\_intrucciones\_opt \longrightarrow \; seccion\_intrucciones \\
+    seccion\_intrucciones\_opt \longrightarrow \; \epsilon \\
+    seccion\_intrucciones \longrightarrow \; lista\_instrucciones \\
+    lista\_instrucciones \longrightarrow \; lista\_instrucciones \; ; \; instruccion \\
+    lista\_instrucciones \longrightarrow \; instruccion \\
+    instruccion \longrightarrow \; @ \; expresion
+\end{math}
+
+\subsection{Expresiones}
+
+\begin{math}
+    expresion \longrightarrow \; E0 \\
+    E0 \longrightarrow \; E1 \; = \; E0 \\
+    E0 \longrightarrow \; E1 \\
+    E1 \longrightarrow \; E1 \; op\_relacional \; E2 \\
+    E1 \longrightarrow \; E2 \\
+    E2 \longrightarrow \; E2 \; + \; E3 \\
+    E2 \longrightarrow \; E3 \; - \; E3 \\
+    E2 \longrightarrow \; E3 \\
+    E3 \longrightarrow \; E4 \; \textbf{and} \; E3 \\
+    E3 \longrightarrow \; E4 \; \textbf{or} \; E4 \\
+    E3 \longrightarrow \; E4 \\
+    E4 \longrightarrow \; E4 \; op\_mult \; E5 \\
+    E4 \longrightarrow \; E5 \\
+    E5  \longrightarrow \; - \; E5 \\
+    E5 \longrightarrow \; \textbf{not} \; E5 \\
+    E5 \longrightarrow \; E6 \\
+    E6 \longrightarrow \; expresion\_basica \\
+    E6 \longrightarrow \; (E0) \\
+    expresion\_basica \longrightarrow \; \textbf{literalEntero} \\
+    expresion\_basica \longrightarrow \; \textbf{literalReal} \\
+    expresion\_basica \longrightarrow \; \textbf{true} \\
+    expresion\_basica \longrightarrow \; \textbf{false} \\
+    expresion\_basica \longrightarrow \; \textbf{identificador}
+\end{math}
+
+\subsection{Operadores}
+
+\begin{math}
+    op\_relacional \longrightarrow \; < \\
+    op\_relacional \longrightarrow \; <= \\
+    op\_relacional \longrightarrow \; > \\
+    op\_relacional \longrightarrow \; >= \\
+    op\_relacional \longrightarrow \; == \\
+    op\_relacional \longrightarrow \; != \\
+    op\_mult \longrightarrow \; * \\
+    op\_mult \longrightarrow \; / \\
+    op\_mult \longrightarrow \%
+\end{math}
