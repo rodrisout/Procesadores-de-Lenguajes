@@ -1,10 +1,12 @@
 # Especificacion Tiny
 
 programa -> bloque  
-bloque -> { seccion_declaraciones_opt seccion_intrucciones }  
+bloque -> { seccion_declaraciones_opt seccion_intrucciones_opt }  
 ### Seccion Declaraciones
 seccion_declaraciones_opt -> seccion_declaraciones &&  
 seccion_declaraciones_opt -> ε  
+seccion_intrucciones_opt -> seccion_intrucciones  
+seccion_intrucciones_opt -> ε  
 seccion_declaraciones -> seccion_declaraciones ; declaracion  
 seccion_declaraciones -> declaracion  
 declaracion -> tipo_nombre  
@@ -21,17 +23,17 @@ ref_opt -> ε
 ### Seccion Tipos  
 tipo_nombre -> tipo **identificador**  
 tipo ->  tipo0  
-tipo0 -> ^ tipo0  
+tipo0 -> array tipo0  
 tipo0 -> tipo1  
-tipo1 -> array tipo1  
-array -> tipo_base tamano_opt  
+tipo1 -> ^ tipo1  
 tipo1 -> tipo_base  
-tipo_base -> struct { lista_campos }  
-tipo_base -> int  
-tipo_base -> real  
-tipo_base -> bool  
-tipo_base -> string  
+tipo_base -> **struct** { lista_campos }  
+tipo_base -> **int**  
+tipo_base -> **real**  
+tipo_base -> **bool**  
+tipo_base -> **string**  
 tipo_base -> **identificador**  
+array -> tipo_base tamano_opt  
 tamano_opt -> tamano  
 tamano_opt -> ε  
 tamano -> [ **literalEntero** ]  
@@ -43,7 +45,7 @@ seccion_intrucciones -> lista_instrucciones
 lista_instrucciones -> lista_instrucciones ; instruccion  
 lista_instrucciones -> instruccion  
 instruccion -> @ expresion  
-instruccion -> if_ins
+instruccion -> if_ins  
 instruccion -> if_ins else_ins  
 instruccion -> while exp_bloque  
 instruccion -> read expresion  
@@ -80,12 +82,13 @@ E5 -> not E5
 E5 -> E6  
 E6 -> E6 op_dirs  
 E6 -> E7  
-E7 -> expresion_basica
+E7 -> expresion_basica  
 E7 -> (E0)  
 expresion_basica -> **literalEntero**  
 expresion_basica -> **literalReal**  
-expresion_basica -> **bool**  
-expresion_basica -> **string**  
+expresion_basica -> **true**  
+expresion_basica -> **false**  
+expresion_basica -> **literalCadena**  
 expresion_basica -> **identificador**  
 expresion_basica -> **null**  
 ### Seccion Operandos  
@@ -119,6 +122,8 @@ bloque -> { seccion_declaraciones_opt seccion_intrucciones }
 ### Seccion Declaraciones
 seccion_declaraciones_opt -> seccion_declaraciones &&  
 seccion_declaraciones_opt -> ε  
+seccion_intrucciones_opt -> seccion_intrucciones  
+seccion_intrucciones_opt -> ε  
 <span style="color:crimson"> 
 ~~seccion_declaraciones -> seccion_declaraciones ; declaracion~~  
 ~~seccion_declaraciones -> declaracion~~  
@@ -147,17 +152,18 @@ parametro -> tipo ref_opt **identificador**
 ref_opt -> &  
 ref_opt -> ε  
 ### Seccion Tipos  
+
 tipo_nombre -> tipo **identificador**  
 tipo ->  tipo0  
-tipo0 -> ^ tipo0  
+tipo0 -> array tipo0  
 tipo0 -> tipo1  
-tipo1 -> array tipo1  
+tipo1 -> ^ tipo1  
 tipo1 -> tipo_base  
-tipo_base -> struct { lista_campos }  
-tipo_base -> int  
-tipo_base -> real  
-tipo_base -> bool  
-tipo_base -> string  
+tipo_base -> **struct** { lista_campos }  
+tipo_base -> **int**  
+tipo_base -> **real**  
+tipo_base -> **bool**  
+tipo_base -> **string**  
 tipo_base -> **identificador**  
 array -> tipo_base tamano_opt  
 tamano_opt -> tamano  
@@ -218,7 +224,8 @@ lista_expresiones -> expresion resto_le
 resto_le -> , expresion resto_le  
 resto_le -> ε  
 </span>
-### Seccion Expresiones
+### Seccion Expresiones  
+
 expresion -> E0  
 <span style="color:gold">
 ~~E0 -> E1 = E0~~  
@@ -290,12 +297,15 @@ resto_E6 -> ε
 </span>
 E7 -> expresion_basica
 E7 -> (E0)  
+
 expresion_basica -> **literalEntero**  
 expresion_basica -> **literalReal**  
-expresion_basica -> **bool**  
-expresion_basica -> **string**  
+expresion_basica -> **true**  
+expresion_basica -> **false**  
+expresion_basica -> **literalCadena**  
 expresion_basica -> **identificador**  
 expresion_basica -> **null**  
+
 ### Seccion Operandos  
 op_relacional -> <  
 op_relacional -> <=  
