@@ -44,7 +44,7 @@ lista_parametros -> lista_parametros , parametro
 lista_parametros -> parametro  
 
 parametro -> tipo parametro_ref_opt **identificador**  
-parametro_ref_opt -> &
+parametro_ref_opt -> &  
 parametro_ref_opt -> ε  
 
 
