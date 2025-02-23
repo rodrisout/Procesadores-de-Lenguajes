@@ -26,6 +26,7 @@ lista_campos -> tipo_nombre
 
 
 ### Seccion Declaraciones  
+
 seccion_declaraciones_opt -> seccion_declaraciones &&  
 seccion_declaraciones_opt -> ε  
 
@@ -42,8 +43,9 @@ lista_parametros_opt -> ε
 lista_parametros -> lista_parametros , parametro  
 lista_parametros -> parametro  
 
-parametro -> tipo & **identificador**  
-parametro -> tipo **identificador**  
+parametro -> tipo parametro_ref_opt **identificador**  
+parametro_ref_opt -> &
+parametro_ref_opt -> ε  
 
 
 ### Seccion Instrucciones  
