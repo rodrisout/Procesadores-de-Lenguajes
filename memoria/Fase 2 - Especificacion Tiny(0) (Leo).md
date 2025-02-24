@@ -179,11 +179,13 @@ expresion_basica -> **true**
 expresion_basica -> **false**  
 expresion_basica -> **identificador**  
 
-### Seccion Operandos  
-op_relacional -> <  
-op_relacional -> <=  
-op_relacional -> >  
-op_relacional -> >=  
+### Seccion Operandos 
+op_relacional -> < resto_menor 
+resto_menor -> =  
+resto_menor -> ε  
+op_relacional -> > resto_mayor  
+resto_mayor -> =  
+resto_mayor -> ε    
 op_relacional -> ==  
 op_relacional -> !=  
 op_mult -> *  

@@ -307,10 +307,12 @@ expresion_basica -> **identificador**
 expresion_basica -> **null**  
 
 ### Seccion Operandos  
-op_relacional -> <  
-op_relacional -> <=  
-op_relacional -> >  
-op_relacional -> >=  
+op_relacional -> < resto_menor  
+resto_menor -> =  
+resto_menor -> ε  
+op_relacional -> > resto_mayor  
+resto_mayor -> =   
+resto_mayor -> ε   
 op_relacional -> ==  
 op_relacional -> !=  
 op_mult -> *  

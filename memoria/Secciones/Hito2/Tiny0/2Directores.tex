@@ -15,73 +15,180 @@ Directores de cada regla de la gramática acondicionada
     \hline
     \textbf{Regla} & \textbf{Directores} & \textbf{Anulable} \\
     \hline\hline
-    $programa \longrightarrow bloque$ & \{ & No\\ \hline
-    $bloque \longrightarrow \{\;declaraciones\;instrucciones\;\}$ & \{ & No\\ \hline
-    $declaraciones \longrightarrow lista$-$declaraciones\;\&\&$ & \textbf{int}
-    \textbf{real} \textbf{bool} & No\\ \hline
-    $declaraciones \longrightarrow \epsilon$ &  & Sí\\ \hline
-    $lista$-$declaraciones \longrightarrow declaracion\;\; r$-$lista$-$declaraciones$
-        & \textbf{int} \textbf{real} \textbf{bool} & No\\ \hline
-    $r$-$lista$-$declaraciones \longrightarrow\;;\;declaracion\;\; r$-$lista$-$declaraciones$ & ; & No\\ 
-        \hline
-    $r$-$lista$-$declaraciones \longrightarrow \epsilon$ & & Sí \\ \hline
-    $declaracion \longrightarrow tipo\;\textbf{identificador}$ & \textbf{bool} \textbf{int}
-        \textbf{real} & No \\ \hline
-    $tipo \longrightarrow \textbf{bool}$ & \textbf{bool} & No \\ \hline
-    $tipo \longrightarrow \textbf{int}$ & \textbf{int} & No \\ \hline
-    $tipo \longrightarrow \textbf{real}$ & \textbf{real} & No \\ \hline
-    $instrucciones \longrightarrow lista$-$instrucciones$ & @ & No \\ \hline
-    $instrucciones \longrightarrow \epsilon$ &  & Sí \\ \hline
-    $lista$-$instrucciones \longrightarrow instruccion\;\; r$-$lista$-$instrucciones$
-        & @ & No\\ \hline
-    $r$-$lista$-$instrucciones \longrightarrow\;;\;instruccion\;\; r$-$lista$-$instrucciones$ & ; & No\\ 
-        \hline
-    $r$-$lista$-$instrucciones \longrightarrow \epsilon$ & & Sí \\ \hline
-    $instruccion \longrightarrow eval$ & @ & No \\ \hline
-    $eval \longrightarrow @\;E0$ & @ & No \\ \hline
-    $E0 \longrightarrow E1\;RE0$ & $+\;-$ \textbf{true} \textbf{false}
-        \textbf{literalEntero} \textbf{literalReal} \textbf{identificador} ( & No \\ \hline
-    $RE0 \longrightarrow =\;E0$ & $=$ & No \\ \hline
-    $RE0 \longrightarrow \epsilon$ & & Sí \\ \hline
-    $E1 \longrightarrow E2\;\;RE1$ & $+\;-$ \textbf{true} \textbf{false}
-        \textbf{literalEntero} \textbf{literalReal} \textbf{identificador} ( & No  \\ \hline
-    $RE1 \longrightarrow OP1\;E2\;\;RE1$ & $<\;<=\;>\;>=\;==\;!=$ & No \\
-    \hline
-    $RE1 \longrightarrow \epsilon$ & & Sí \\ \hline
-    $E2 \longrightarrow E3\;\;RE2\;\;RE2'$ &  $+\;-$ \textbf{true} \textbf{false}
-        \textbf{literalEntero} \textbf{literalReal} \textbf{identificador} ( & No  \\ \hline
-    $RE2 \longrightarrow -\;E3$ & $-$ & No \\ \hline
-    $RE2 \longrightarrow \epsilon$ & & Sí \\ \hline
-    $RE2' \longrightarrow +\;E3\;\;RE2'$ & $+$ & No \\ \hline
-    $RE2' \longrightarrow \epsilon$ & & Sí \\ \hline
-    $E3 \longrightarrow E4\;RE3$ &  $+\;-$ \textbf{true} \textbf{false}
-        \textbf{literalEntero} \textbf{literalReal} \textbf{identificador} ( & No  \\ \hline
-    $RE3 \longrightarrow \textbf{and}\;E3$ & \textbf{and} & No \\ \hline
-    $RE3 \longrightarrow \textbf{or}\;E4$ & \textbf{or} & No \\ \hline
-    $RE3 \longrightarrow \epsilon$ & & Sí \\ \hline
-    $E4 \longrightarrow E5\;RE4$ &  $+\;-$ \textbf{true} \textbf{false}
-        \textbf{literalEntero} \textbf{literalReal} \textbf{identificador} ( & No  \\ \hline
-    $RE4 \longrightarrow OP4\;E5\;\;RE4$ & $*\;/$ & No \\
-    \hline
-    $RE4 \longrightarrow \epsilon$ & & Sí \\ \hline
-    $E5 \longrightarrow OP5\;E5$ & $+\;-$ & No \\
-    \hline
-    $E5 \longrightarrow E6$ & \textbf{true} \textbf{false}
-    \textbf{literalEntero} \textbf{literalReal} \textbf{identificador} ( & No \\ \hline
-    $E6 \longrightarrow \textbf{true}$ &  \textbf{true} & No  \\ \hline
-    $E6 \longrightarrow \textbf{false}$ &  \textbf{false} & No  \\ \hline
-    $E6 \longrightarrow \textbf{literalEntero}$ &  \textbf{literalEntero} & No  \\ \hline
-    $E6 \longrightarrow \textbf{literalReal}$ &  \textbf{literalReal} & No \\ \hline
-    $E6 \longrightarrow \textbf{identificador}$ &  \textbf{identificador} & No \\ \hline
-    $E6 \longrightarrow (E0)$ & ( & No \\ \hline
-    $OP1 \longrightarrow \;<$ & $<$ & No \\ \hline
-    $OP1 \longrightarrow \;<=$ & $<=$ & No \\ \hline
-    $OP1 \longrightarrow \;>$ & $>$ & No \\ \hline
-    $OP1 \longrightarrow \;>=$ & $>=$ & No \\ \hline
-    $OP1 \longrightarrow \;==$ & $==$ & No \\ \hline
-    $OP1 \longrightarrow \;!=$ & $!=$ & No \\ \hline
-    $OP4 \longrightarrow \;*$ & $*$ & No \\ \hline
-    $OP4 \longrightarrow \;/$ & $/$ & No \\ \hline
-    $OP5 \longrightarrow \;+$ & $+$ & No \\ \hline
-    $OP5 \longrightarrow \;-$ & $-$ & No \\ \hline
+    $ programa \longrightarrow bloque $ 
+        & \{ 
+        & No\\ \hline
+    $ bloque \longrightarrow \{\; seccion\_declaraciones\_opt \; seccion\_declaraciones\_opt \; \} $ 
+        & \{ 
+        & No\\ \hline
+    % DECLARACIONES
+    $ seccion\_declaraciones\_opt \longrightarrow \; seccion\_declaraciones $
+        & \textbf{int} \textbf{real} \textbf{bool} 
+        & No\\ \hline
+    $ seccion\_declaraciones\_opt \longrightarrow \epsilon $ 
+        &  
+        & Sí\\ \hline
+    $ seccion\_declaraciones \longrightarrow \; declaracion \; resto\_sd $ 
+        & \textbf{int} \textbf{real} \textbf{bool} 
+        & No\\ \hline
+    $ resto\_sd \longrightarrow \; ; \; declaracion \; resto\_sd $ 
+        & ; 
+        & No\\ \hline
+    $ resto\_sd \longrightarrow \; \epsilon $ 
+        & 
+        & Sí\\ \hline
+    $ declaracion \longrightarrow \; tipo\_nombre $ 
+        & \textbf{int} \textbf{real} \textbf{bool}
+        & No\\ \hline
+    % TIPOS
+    $ tipo\_nombre \longrightarrow \; tipo_base \; \textbf{identificador} $
+        & \textbf{int} \textbf{real} \textbf{bool} 
+        & No\\ \hline
+    $ tipo\_base \longrightarrow \; \textbf{int} $
+        & \textbf{int}
+        & No\\ \hline
+    $ tipo\_base \longrightarrow \; \textbf{real} $
+        & \textbf{real}
+        & No\\ \hline
+    $ tipo\_base \longrightarrow \; \textbf{bool} $
+        & \textbf{bool} 
+        & No\\ \hline
+    % INSTRUCCIONES
+    $ seccion\_intrucciones\_opt \longrightarrow \; seccion\_intrucciones $
+        & @
+        & No\\ \hline
+    $ seccion\_intrucciones\_opt \longrightarrow \; \epsilon $
+        &
+        & Sí\\ \hline
+    $ seccion\_intrucciones \longrightarrow \; lista\_instrucciones $
+        & @
+        & No\\ \hline
+    $ lista\_instrucciones \longrightarrow \; instruccion \; resto\_li $
+        & @
+        & No\\ \hline
+    $ resto\_li \longrightarrow \; ; \; instruccion \; resto\_li $
+        & ; 
+        & No\\ \hline
+    $ resto\_li \longrightarrow \; \epsilon $
+        &
+        & Sí\\ \hline
+    $ instruccion \longrightarrow \; @ \; expresion $
+        & @
+        & No\\ \hline
+    % EXPRESIONES
+    $ expresion \longrightarrow \; E0 $
+        & - \textbf{not} \textbf{literalReal} \textbf{literalEntero} \textbf{true} \textbf{false} \textbf{identificador} \textbf{(} 
+        & No\\ \hline
+    $ E0 \longrightarrow \; E1 \; resto\_E0 $
+        & - \textbf{not} \textbf{literalReal} \textbf{literalEntero} \textbf{true} \textbf{false} \textbf{identificador} \textbf{(} 
+        & No\\ \hline
+    $ resto\_E0 \longrightarrow \; = \; E0 $
+        & =
+        & No\\ \hline
+    $ resto\_E0 \longrightarrow \; \epsilon $
+        & 
+        & Sí\\ \hline
+    $ E1 \longrightarrow \; E2 \; resto\_E1 $
+        & - \textbf{not} \textbf{literalReal} \textbf{literalEntero} \textbf{true} \textbf{false} \textbf{identificador} \textbf{(} 
+        & No\\ \hline
+    $ resto\_E1 \longrightarrow \; op\_relacional \; E2 \; resto\_E1 $
+        & < \; <= \; > \; >= \; == \; != 
+        & No\\ \hline
+    $ resto\_E1 \longrightarrow \; \epsilon $
+        &
+        & Sí\\ \hline
+    $ E2 \longrightarrow \; E3 \; resto\_E2\_F resto\_E2\_R $
+        & - \textbf{not} \textbf{literalReal} \textbf{literalEntero} \textbf{true} \textbf{false} \textbf{identificador} \textbf{(} 
+        & No\\ \hline
+    $ resto\_E2\_R \longrightarrow \; + \; E3 \; resto\_E2\_R $
+        & + 
+        & No\\ \hline
+    $ resto\_E2\_R \longrightarrow \; \epsilon $
+        &
+        & Sí\\ \hline
+    $ resto\_E2\_F \longrightarrow \; - \; E3 $
+        & -
+        & No\\ \hline
+    $ resto\_E2\_F \longrightarrow \; \epsilon $
+        &
+        & Sí\\ \hline
+    $ E3 \longrightarrow \; E4 \; resto\_E3 $
+        & - \textbf{not} \textbf{literalReal} \textbf{literalEntero} \textbf{true} \textbf{false} \textbf{identificador} \textbf{(} 
+        & No\\ \hline
+    $ resto\_E3 \longrightarrow \; \textbf{and} \; E3 $
+        & \textbf{and} 
+        & No\\ \hline
+    $ resto\_E3 \longrightarrow \; \textbf{or} \; E4 $
+        & \textbf{or}
+        & No\\ \hline
+    $ resto\_E3 \longrightarrow \; \epsilon $
+        &  
+        & Sí\\ \hline
+    $ E4 \longrightarrow \; E5 \; resto\_E4 $
+        & - \textbf{not} \textbf{literalReal} \textbf{literalEntero} \textbf{true} \textbf{false} \textbf{identificador} \textbf{(} 
+        & No\\ \hline
+    $ resto\_E4 \longrightarrow \; op\_mult \; E5 \; resto\_E4 $
+        & * \; / 
+        & No\\ \hline
+    $ resto\_E4 \longrightarrow \epsilon $
+        & 
+        & Sí\\ \hline
+    $ E5  \longrightarrow \; - \; E5 $
+        & -
+        & No\\ \hline
+    $ E5 \longrightarrow \; \textbf{not} \; E5 $
+        & \textbf{not}
+        & No\\ \hline
+    $ E5 \longrightarrow \; E6  $
+        & \textbf{not} \textbf{literalReal} \textbf{literalEntero} \textbf{true} \textbf{false} \textbf{identificador} \textbf{(} 
+        & No\\ \hline
+    $ E6 \longrightarrow \; expresion\_basica $
+        & \textbf{not} \textbf{literalReal} \textbf{literalEntero} \textbf{true} \textbf{false} \textbf{identificador} \textbf{(} 
+        & No\\ \hline
+    $ E6 \longrightarrow \; (E0) $
+        & (
+        & No\\ \hline
+    $ expresion\_basica \longrightarrow \; \textbf{literalEntero} $
+        & \textbf{literalEntero}
+        & No\\ \hline
+    $ expresion\_basica \longrightarrow \; \textbf{literalReal} $
+        & \textbf{literalReal} 
+        & No\\ \hline
+    $ expresion\_basica \longrightarrow \; \textbf{true} $
+        & \textbf{true} 
+        & No\\ \hline
+    $ expresion\_basica \longrightarrow \; \textbf{false} $
+        & \textbf{false}
+        & No\\ \hline
+    $ expresion\_basica \longrightarrow \; \textbf{identificador} $
+        & \textbf{identificador}
+        & No\\ \hline
+    % OPERADORES
+    $ op\_relacional \longrightarrow \; < $
+        & <
+        & No\\ \hline
+    $ op\_relacional \longrightarrow \; <= $
+        & <=
+        & No\\ \hline
+    $ op\_relacional \longrightarrow \; > $
+        & >
+        & No\\ \hline
+    $ op\_relacional \longrightarrow \; >= $
+        & >= 
+        & No\\ \hline
+    $ op\_relacional \longrightarrow \; == $
+        & ==
+        & No\\ \hline
+    $ op\_relacional \longrightarrow \; != $
+        & !=
+        & No\\ \hline
+    $ op\_mult \longrightarrow \; * $
+        & *
+        & No\\ \hline
+    $  op\_mult \longrightarrow \; / $
+        & /
+        & No\\ \hline
+    $ op\_mult \longrightarrow \%  $
+        & \%
+        & No\\ \hline
 \end{longtblr}
