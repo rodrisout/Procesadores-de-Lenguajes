@@ -18,7 +18,7 @@ Directores de cada regla de la gramática acondicionada
     $ programa \longrightarrow bloque $ 
         & \{ 
         & No\\ \hline
-    $ bloque \longrightarrow \{\; seccion\_declaraciones\_opt \; seccion\_declaraciones\_opt \; \} $ 
+    $ bloque \longrightarrow \{\; seccion\_declaraciones\_opt \; seccion\_instrucciones\_opt \; \} $ 
         & \{ 
         & No\\ \hline
     % DECLARACIONES
@@ -54,13 +54,13 @@ Directores de cada regla de la gramática acondicionada
         & \textbf{bool} 
         & No\\ \hline
     % INSTRUCCIONES
-    $ seccion\_intrucciones\_opt \longrightarrow \; seccion\_intrucciones $
+    $ seccion\_instrucciones\_opt \longrightarrow \; seccion\_instrucciones $
         & @
         & No\\ \hline
-    $ seccion\_intrucciones\_opt \longrightarrow \; \epsilon $
+    $ seccion\_instrucciones\_opt \longrightarrow \; \epsilon $
         &
         & Sí\\ \hline
-    $ seccion\_intrucciones \longrightarrow \; lista\_instrucciones $
+    $ seccion\_instrucciones \longrightarrow \; lista\_instrucciones $
         & @
         & No\\ \hline
     $ lista\_instrucciones \longrightarrow \; instruccion \; resto\_li $

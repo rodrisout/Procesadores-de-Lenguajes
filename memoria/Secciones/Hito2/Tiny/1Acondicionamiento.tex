@@ -5,7 +5,7 @@ sintáctico descendente predictivo recursivo.
 
 \begin{math}
     programa \longrightarrow \; bloque \\
-    bloque \longrightarrow \; \{ seccion\_declaraciones\_opt \;\; seccion\_intrucciones\_opt \}
+    bloque \longrightarrow \; \{ seccion\_declaraciones\_opt \;\; seccion\_instrucciones\_opt \}
 \end{math}
 
 \subsection{Declaraciones}
@@ -58,9 +58,9 @@ sintáctico descendente predictivo recursivo.
 \subsection{Instrucciones}
 
 \begin{math}
-    seccion\_intrucciones\_opt \longrightarrow \; seccion\_intrucciones \\
-    seccion\_intrucciones\_opt \longrightarrow \; \epsilon \\
-    seccion\_intrucciones \longrightarrow \; lista\_instrucciones \\
+    seccion\_instrucciones\_opt \longrightarrow \; seccion\_instrucciones \\
+    seccion\_instrucciones\_opt \longrightarrow \; \epsilon \\
+    seccion\_instrucciones \longrightarrow \; lista\_instrucciones \\
     % RECURSION A IZQ
     lista\_instrucciones \longrightarrow \; instruccion \; resto\_li \\
     resto\_li \longrightarrow \; ; \; instruccion \; resto\_li \\

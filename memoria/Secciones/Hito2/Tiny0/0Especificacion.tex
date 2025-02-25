@@ -7,7 +7,7 @@ Para ello definimos primero la estructura básica de todo programa:
 
 \begin{math}
     programa \longrightarrow \; bloque \\
-    bloque \longrightarrow \; \{ seccion\_declaraciones\_opt \;\; seccion\_intrucciones\_opt \}
+    bloque \longrightarrow \; \{ seccion\_declaraciones\_opt \;\; seccion\_instrucciones\_opt \}
 \end{math}
 
 \subsection{Declaraciones}
@@ -32,9 +32,9 @@ Para ello definimos primero la estructura básica de todo programa:
 \subsection{Instrucciones}
 
 \begin{math}
-    seccion\_intrucciones\_opt \longrightarrow \; seccion\_intrucciones \\
-    seccion\_intrucciones\_opt \longrightarrow \; \epsilon \\
-    seccion\_intrucciones \longrightarrow \; lista\_instrucciones \\
+    seccion\_instrucciones\_opt \longrightarrow \; seccion\_instrucciones \\
+    seccion\_instrucciones\_opt \longrightarrow \; \epsilon \\
+    seccion\_instrucciones \longrightarrow \; lista\_instrucciones \\
     lista\_instrucciones \longrightarrow \; lista\_instrucciones \; ; \; instruccion \\
     lista\_instrucciones \longrightarrow \; instruccion \\
     instruccion \longrightarrow \; @ \; expresion
