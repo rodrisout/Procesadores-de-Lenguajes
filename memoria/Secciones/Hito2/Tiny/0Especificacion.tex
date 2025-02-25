@@ -34,11 +34,9 @@ Para ello definimos primero la estructura básica de todo programa:
 
 \begin{math}
     tipo\_nombre \longrightarrow \; tipo \; \textbf{identificador} \\
-    tipo \longrightarrow \; tipo0 \\
-    tipo0 \longrightarrow \; tipo0 \; [\textbf{literalEntero}] \\
-    tipo0 \longrightarrow \; tipo1 \\
-    tipo1 \longrightarrow \; \hat{} \; tipo1 \\
-    tipo1 \longrightarrow \; tipo\_base \\
+    tipo \longrightarrow \; tipo\_base \\
+    tipo \longrightarrow \; tipo \; [\textbf{literalEntero}] \\
+    tipo\_base \longrightarrow \; \hat{} \; tipo\_base \\
     tipo\_base \longrightarrow \; \textbf{struct} \; { lista\_campos } \\
     tipo\_base \longrightarrow \; \textbf{int} \\
     tipo\_base \longrightarrow \; \textbf{real} \\

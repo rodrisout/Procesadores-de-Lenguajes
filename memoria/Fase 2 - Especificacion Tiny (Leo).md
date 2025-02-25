@@ -22,24 +22,17 @@ ref_opt -> &
 ref_opt -> ε  
 ### Seccion Tipos  
 tipo_nombre -> tipo **identificador**  
-tipo ->  tipo0  
-tipo0 -> array tipo0  
-tipo0 -> tipo1  
-tipo1 -> ^ tipo1  
-tipo1 -> tipo_base  
+tipo -> tipo_base  
+tipo -> tipo [literalEntero]   
+tipo_base -> ^ tipo_base  
 tipo_base -> **struct** { lista_campos }  
 tipo_base -> **int**  
 tipo_base -> **real**  
 tipo_base -> **bool**  
 tipo_base -> **string**  
-tipo_base -> **identificador**  
-array -> tipo_base tamano_opt  
-tamano_opt -> tamano  
-tamano_opt -> ε  
-tamano -> [ **literalEntero** ]  
-lista_campos -> lista_campos , campo  
-lista_campos -> campo  
-campo -> tipo_nombre  
+tipo_base -> **identificador**   
+lista_campos -> lista_campos , tipo_nombre  
+lista_campos -> tipo_nombre  
 ### Seccion Instrucciones  
 seccion_intrucciones -> lista_instrucciones  
 lista_instrucciones -> lista_instrucciones ; instruccion  
@@ -154,31 +147,31 @@ ref_opt -> ε
 ### Seccion Tipos  
 
 tipo_nombre -> tipo **identificador**  
-tipo ->  tipo0  
-tipo0 -> array tipo0  
-tipo0 -> tipo1  
-tipo1 -> ^ tipo1  
-tipo1 -> tipo_base  
+<span style="color:crimson">
+~~tipo -> tipo_base~~  
+~~tipo -> tipo [literalEntero]~~ 
+</span>  
+<span style="color:royalblue">
+tipo -> tipo_base resto_tipo  
+resto_tipo -> [literalEntero] resto_tipo  
+resto_tipo -> ε  
+</span>
+tipo_base -> ^ tipo_base  
 tipo_base -> **struct** { lista_campos }  
 tipo_base -> **int**  
 tipo_base -> **real**  
 tipo_base -> **bool**  
 tipo_base -> **string**  
 tipo_base -> **identificador**  
-array -> tipo_base tamano_opt  
-tamano_opt -> tamano  
-tamano_opt -> ε  
-tamano -> [ **literalEntero** ]  
 <span style="color:crimson"> 
-~~lista_campos -> lista_campos , campo~~  
-~~lista_campos -> campo~~  
+~~lista_campos -> lista_campos , tipo_nombre~~  
+~~lista_campos -> tipo_nombre~~  
 </span>
 <span style="color:royalblue">
-lista_campos -> campo resto_lc  
-resto_lc -> , campo resto_lc  
+lista_campos -> tipo_nombre resto_lc  
+resto_lc -> , tipo_nombre resto_lc  
 resto_lc -> ε  
 </span>  
-campo -> tipo_nombre  
 
 ### Seccion Instrucciones  
 seccion_intrucciones -> lista_instrucciones  
@@ -306,13 +299,27 @@ expresion_basica -> **literalCadena**
 expresion_basica -> **identificador**  
 expresion_basica -> **null**  
 
-### Seccion Operandos  
+### Seccion Operandos 
+
+s
+<span style="color:gold"> 
+~~op_relacional -> <~~  
+~~op_relacional -> <=~~
+</span>  
+<span style="color:royalblue">
 op_relacional -> < resto_menor  
 resto_menor -> =  
 resto_menor -> ε  
+</span>
+<span style="color:gold"> 
+~~op_relacional -> >~~
+~~op_relacional -> >=~~
+</span>
+<span style="color:royalblue">
 op_relacional -> > resto_mayor  
 resto_mayor -> =   
 resto_mayor -> ε   
+</span>
 op_relacional -> ==  
 op_relacional -> !=  
 op_mult -> *  

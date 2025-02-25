@@ -38,11 +38,10 @@ sintáctico descendente predictivo recursivo.
 
 \begin{math}
     tipo\_nombre \longrightarrow \; tipo \; \textbf{identificador} \\
-    tipo \longrightarrow \; tipo0 \\
-    tipo0 \longrightarrow \; tipo0 \; [\textbf{literalEntero}] \\
-    tipo0 \longrightarrow \; tipo1 \\
-    tipo1 \longrightarrow \; \hat{} \; tipo1 \\
-    tipo1 \longrightarrow \; tipo\_base \\
+    tipo \longrightarrow \; tipo\_base \; resto\_tipo \\
+    resto\_tipo \longrightarrow \; [\textbf{literalEntero}] \; resto\_tipo \\
+    resto\_tipo \longrightarrow \; \epsilon \\
+    tipo\_base \longrightarrow \; \hat{} \; tipo\_base \\
     tipo\_base \longrightarrow \; \textbf{struct} \; { lista\_campos } \\
     tipo\_base \longrightarrow \; \textbf{int} \\
     tipo\_base \longrightarrow \; \textbf{real} \\
