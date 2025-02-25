@@ -37,7 +37,7 @@ Para ello definimos primero la estructura básica de todo programa:
     tipo \longrightarrow \; tipo\_base \\
     tipo \longrightarrow \; tipo \; [\textbf{literalEntero}] \\
     tipo\_base \longrightarrow \; \hat{} \; tipo\_base \\
-    tipo\_base \longrightarrow \; \textbf{struct} \; { lista\_campos } \\
+    tipo\_base \longrightarrow \; \textbf{struct} \; \{ lista\_campos \} \\
     tipo\_base \longrightarrow \; \textbf{int} \\
     tipo\_base \longrightarrow \; \textbf{real} \\
     tipo\_base \longrightarrow \; \textbf{bool} \\
@@ -64,7 +64,7 @@ Para ello definimos primero la estructura básica de todo programa:
     instruccion \longrightarrow \; \textbf{nl} \\
     instruccion \longrightarrow \; \textbf{new} \; expresion \\
     instruccion  \longrightarrow \; \textbf{delete} \; expresion \\
-    instruccion \longrightarrow \; \textbf{call} \; \textbf{identificador} \; parametros_reales \\
+    instruccion \longrightarrow \; \textbf{call} \; \textbf{identificador} \; parametros\_reales \\
     instruccion \longrightarrow \; bloque \\
     if\_ins \longrightarrow \; \textbf{if} \; exp\_bloq \\
     else\_ins \longrightarrow \; \textbf{else} \; bloque \\

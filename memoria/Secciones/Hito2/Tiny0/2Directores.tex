@@ -41,7 +41,7 @@ Directores de cada regla de la gramática acondicionada
         & \textbf{int} \textbf{real} \textbf{bool}
         & No\\ \hline
     % TIPOS
-    $ tipo\_nombre \longrightarrow \; tipo_base \; \textbf{identificador} $
+    $ tipo\_nombre \longrightarrow \; tipo\_base \; \textbf{identificador} $
         & \textbf{int} \textbf{real} \textbf{bool} 
         & No\\ \hline
     $ tipo\_base \longrightarrow \; \textbf{int} $
@@ -97,7 +97,7 @@ Directores de cada regla de la gramática acondicionada
     $ resto\_E1 \longrightarrow \; \epsilon $
         &
         & Sí\\ \hline
-    $ E2 \longrightarrow \; E3 \; resto\_E2\_F resto\_E2\_R $
+    $ E2 \longrightarrow \; E3 \; resto\_E2\_F \; resto\_E2\_R $
         & - \textbf{not} \textbf{literalReal} \textbf{literalEntero} \textbf{true} \textbf{false} \textbf{identificador} \textbf{(} 
         & No\\ \hline
     $ resto\_E2\_R \longrightarrow \; + \; E3 \; resto\_E2\_R $
