@@ -22,9 +22,11 @@ ref_opt -> &
 ref_opt -> ε  
 ### Seccion Tipos  
 tipo_nombre -> tipo **identificador**  
-tipo -> tipo_base  
-tipo -> tipo [literalEntero]   
-tipo_base -> ^ tipo_base  
+tipo -> tipo0  
+tipo0 -> tipo0 [literalEntero]   
+tipo0 -> tipo1  
+tipo1 -> ^ tipo1  
+tipo1 -> tipo_base  
 tipo_base -> **struct** { lista_campos }  
 tipo_base -> **int**  
 tipo_base -> **real**  
@@ -147,16 +149,18 @@ ref_opt -> ε
 ### Seccion Tipos  
 
 tipo_nombre -> tipo **identificador**  
+tipo -> tipo0  
 <span style="color:crimson">
-~~tipo -> tipo_base~~  
-~~tipo -> tipo [literalEntero]~~ 
-</span>  
-<span style="color:royalblue">
-tipo -> tipo_base resto_tipo  
-resto_tipo -> [literalEntero] resto_tipo  
-resto_tipo -> ε  
+~~tipo0 -> tipo0 [literalEntero]~~  
+~~tipo0 -> tipo1~~  
 </span>
-tipo_base -> ^ tipo_base  
+<span style="color:royalblue">
+tipo0 -> tipo1 resto_tipo0  
+resto_tipo0 -> [literalEntero] resto_tipo0  
+resto_tipo0 -> ε  
+</span>
+tipo1 -> ^ tipo1  
+tipo1 -> tipo_base    
 tipo_base -> **struct** { lista_campos }  
 tipo_base -> **int**  
 tipo_base -> **real**  

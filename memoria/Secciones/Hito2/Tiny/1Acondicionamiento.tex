@@ -38,10 +38,14 @@ sintáctico descendente predictivo recursivo.
 
 \begin{math}
     tipo\_nombre \longrightarrow \; tipo \; \textbf{identificador} \\
-    tipo \longrightarrow \; tipo\_base \; resto\_tipo \\
-    resto\_tipo \longrightarrow \; [\textbf{literalEntero}] \; resto\_tipo \\
-    resto\_tipo \longrightarrow \; \epsilon \\
-    tipo\_base \longrightarrow \; \hat{} \; tipo\_base \\
+    tipo \longrightarrow \; tipo0 \\
+    % RECURSION A IZQ
+    tipo0 \longrightarrow \; tipo1 \; resto\_tipo0 \\
+    resto\_tipo0 \longrightarrow \; [\textbf{literalEntero}] \; resto\_tipo0 \\
+    resto\_tipo0 \longrightarrow \; \epsilon \\
+    %
+    tipo1 \longrightarrow \; \hat{} \; tipo1 \\
+    tipo1 \longrightarrow \; tipo\_base \\
     tipo\_base \longrightarrow \; \textbf{struct} \; \{ lista\_campos \} \\
     tipo\_base \longrightarrow \; \textbf{int} \\
     tipo\_base \longrightarrow \; \textbf{real} \\
@@ -108,7 +112,7 @@ sintáctico descendente predictivo recursivo.
     resto\_E1 \longrightarrow \; \epsilon \\
     %
     % FACTOR COMUN y RECURSION A IZQ
-    E2 \longrightarrow \; E3 \; resto\_E2\_F resto\_E2\_R \\
+    E2 \longrightarrow \; E3 \; resto\_E2\_F \; resto\_E2\_R \\
     resto\_E2\_R \longrightarrow \; + \; E3 \; resto\_E2\_R \\
     resto\_E2\_R \longrightarrow \; \epsilon \\
     resto\_E2\_F \longrightarrow \; - \; E3 \\

@@ -22,7 +22,7 @@ Directores de cada regla de la gramática acondicionada
         & \{ 
         & No\\ \hline
     % DECLARACIONES
-    $ seccion\_declaraciones\_opt \longrightarrow \; seccion\_declaraciones $
+    $ seccion\_declaraciones\_opt \longrightarrow \; seccion\_declaraciones \; \&\& $
         & \textbf{int} \textbf{real} \textbf{bool} 
         & No\\ \hline
     $ seccion\_declaraciones\_opt \longrightarrow \epsilon $ 
@@ -140,10 +140,10 @@ Directores de cada regla de la gramática acondicionada
         & \textbf{not}
         & No\\ \hline
     $ E5 \longrightarrow \; E6  $
-        & \textbf{not} \textbf{literalReal} \textbf{literalEntero} \textbf{true} \textbf{false} \textbf{identificador} \textbf{(} 
+        & \textbf{literalReal} \textbf{literalEntero} \textbf{true} \textbf{false} \textbf{identificador} \textbf{(} 
         & No\\ \hline
     $ E6 \longrightarrow \; expresion\_basica $
-        & \textbf{not} \textbf{literalReal} \textbf{literalEntero} \textbf{true} \textbf{false} \textbf{identificador} \textbf{(} 
+        & \textbf{literalReal} \textbf{literalEntero} \textbf{true} \textbf{false} \textbf{identificador} \textbf{(} 
         & No\\ \hline
     $ E6 \longrightarrow \; (E0) $
         & (
@@ -187,8 +187,5 @@ Directores de cada regla de la gramática acondicionada
         & No\\ \hline
     $  op\_mult \longrightarrow \; / $
         & /
-        & No\\ \hline
-    $ op\_mult \longrightarrow \%  $
-        & \%
         & No\\ \hline
 \end{longtblr}
