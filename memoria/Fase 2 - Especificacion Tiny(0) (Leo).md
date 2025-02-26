@@ -253,4 +253,3 @@ op_mult -> %
 | op_relacional -> != | != | No |
 | op_mult -> * | *  | No |
 | op_mult -> / | / | No |
-| op_mult -> % | % | No |
