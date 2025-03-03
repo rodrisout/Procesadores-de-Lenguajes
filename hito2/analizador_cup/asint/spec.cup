@@ -1,0 +1,134 @@
+package asint;
+
+import java_cup.runtime.*;
+import alex.AnalizadorLexicoTiny;
+import alex.UnidadLexica;
+import errors.GestionErroresTiny;
+
+scan with {: 
+  return getScanner().next_token(); 
+:};
+parser code {: 
+   private GestionErroresTiny errores;
+   public void syntax_error(Symbol unidadLexica) {
+     errores.errorSintactico((UnidadLexica)unidadLexica);
+   }
+:};
+init with {: 
+   errores = new GestionErroresTiny();
+   AnalizadorLexicoTiny alex = (AnalizadorLexicoTiny)getScanner();
+   alex.fijaGestionErrores(errores);
+:};
+
+
+terminal     BOOL,INT,REAL, STRING,AND, OR, NOT,TRUE,FALSE,NULL,PROC,IF,ELSE,
+				WHILE, STRUCT, NEW, DELETE, READ, WRITE, NL, TYPE, CALL, LITENT,
+				LITREAL, LITCADENA, IDEN, SUMA, RESTA, MUL, DIV, MOD, MENOR, MAYOR,
+				IGUAL, DISTINTO, MENORIG, MAYORIG, ASIG, FINASIG, PAPERT, PCIERRE, LLAPERT,
+				LLCIERRE, PCOMA, COMA, PUNTO, ARROBA, INDIR, PARAMREF, CAPERT,
+				CCIERRE;
+
+non terminal  programa, bloque, seccion_declaraciones_opt, seccion_intrucciones_opt, seccion_declaraciones, declaracion, tipo_nombre, parametros_formales,
+				lista_parametros_opt, lista_parametros, parametro, tipo, ref_opt, tipo0, tipo1, tipo_base, lista_campos, seccion_intrucciones, lista_instrucciones, instruccion,
+				expresion, if_ins, else_ins, exp_bloque, parametros_reales, lista_expresiones_opt, lista_expresiones, E0, E1, op_relacional, E2, E3, E4, op_mult, E5, E6, 
+				op_dirs, E7, expresion_basica;
+
+programa				::= bloque ;
+bloque					::= LLAPERT seccion_declaraciones_opt seccion_intrucciones_opt LLCIERRE;
+seccion_declaraciones_opt	::= seccion_declaraciones FINASIG;
+seccion_declaraciones_opt	::= ;
+seccion_declaraciones	::= seccion_declaraciones PCOMA declaracion ;
+seccion_declaraciones	::= declaracion ;
+declaracion				::= tipo_nombre ;
+declaracion				::= TYPE tipo_nombre ;
+declaracion				::= PROC IDEN parametros_formales bloque ;
+parametros_formales		::= PAPERT lista_parametros_opt PCIERRE ;
+lista_parametros_opt	::=lista_parametros ;
+lista_parametros_opt	::= ;
+lista_parametros		::= lista_parametros COMA parametro ;
+lista_parametros		::= parametro ;
+parametro				::= tipo ref_opt IDEN ;
+ref_opt					::= ASIG ;
+ref_opt					::= ;
+
+tipo_nombre				::= tipo IDEN ;
+tipo					::= tipo0 ;
+tipo0					::= tipo0 CAPERT LITENT CCIERRE ;
+tipo0					::= tipo1 ;
+tipo1					::= INDIR tipo1 ;
+tipo1					::= tipo_base ;
+tipo_base				::= STRUCT lista_campos ;
+tipo_base				::= INT ;
+tipo_base				::= REAL ;
+tipo_base				::= BOOL ;
+tipo_base				::= STRING ;
+tipo_base				::= IDEN ;
+lista_campos			::= lista_campos COMA tipo_nombre ;
+lista_campos			::= tipo_nombre ;
+
+seccion_intrucciones_opt	::= seccion_intrucciones ;
+seccion_intrucciones_opt	::= ;
+seccion_intrucciones		::= lista_instrucciones ;
+lista_instrucciones			::= lista_instrucciones PCOMA instruccion ;
+lista_instrucciones			::= instruccion ;
+instruccion				::= ARROBA expresion ;
+instruccion 			::= if_ins ;
+instruccion				::= if_ins else_ins ;
+instruccion				::= WHILE exp_bloque ;
+instruccion				::= READ expresion ;
+instruccion				::= WRITE expresion ;
+instruccion				::= NL;
+instruccion 			::= NEW expresion ;
+instruccion				::= DELETE expresion ;
+instruccion				::= CALL IDEN parametros_reales ;
+instruccion				::= bloque ;
+if_ins					::= IF exp_bloque ;
+else_ins				::= ELSE bloque;
+exp_bloque				::= expresion bloque ;
+parametros_reales		::= PAPERT lista_expresiones_opt PCIERRE ;
+lista_expresiones_opt	::= lista_expresiones ;
+lista_expresiones_opt	::= ;
+lista_expresiones		::= lista_expresiones COMA expresion ;
+lista_expresiones		::= expresion ;
+
+expresion		::= E0 ;
+E0				::= E1 ASIG E0 ;
+E0				::= E1 ;
+E1				::= E1 op_relacional E2 ;
+E1				::= E2 ;
+E2				::=  E2 SUMA E3 ;
+E2				::= E3 RESTA E3 ;
+E2				::= E3 ;
+E3				::= E4 AND E3;
+E3				::= E4 OR E4 ;
+E3				::= E4 ;
+E4				::= E4 op_mult E5;
+E4				::= E5 ;
+E5				::= RESTA E5 ;
+E5				::= NOT E5 ;
+E5				::= E6 ;
+E6				::= E6 op_dirs;
+E6				::= E7;
+E7				::= expresion_basica;
+E7				::= PAPERT E0 PCIERRE;
+expresion_basica	::= LITENT ;
+expresion_basica	::= LITREAL ;
+expresion_basica	::= TRUE ;
+expresion_basica	::= FALSE ;
+expresion_basica	::= LITCADENA ;
+expresion_basica	::= IDEN ;
+expresion_basica	::= NULL ;
+
+op_relacional	::= MENOR ;
+op_relacional	::= MENORIG ;
+op_relacional	::= MAYOR ;
+op_relacional	::= MAYORIG ;
+op_relacional	::= IGUAL ;
+op_relacional	::= DISTINTO;
+
+op_mult			::=MUL ;
+op_mult			::=DIV ;
+op_mult			::= MOD ;
+op_dirs			::= CAPERT expresion CCIERRE ;
+op_dirs			::= PUNTO IDEN ;
+op_dirs			::= INDIR ;
