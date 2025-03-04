@@ -34,7 +34,7 @@ import errors.GestionErroresTiny;
 letra  = ([A-Z]|[a-z])
 digitoPositivo = [1-9]
 digito = ({digitoPositivo}|0)
-parteEntera = [\+]?[\-]?({digitoPositivo}{digito}*|0)
+parteEntera = ([\+]|[\-])?({digitoPositivo}{digito}*|0)
 parteDecimal = ({digito}*{digitoPositivo}|0)
 parteExponencial = (e|E){parteEntera}
 bool = (b|B)(o|O)(o|O)(l|L)
