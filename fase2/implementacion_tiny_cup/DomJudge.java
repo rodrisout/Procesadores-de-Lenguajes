@@ -11,10 +11,8 @@ import java.io.Reader;
 public class DomJudge {
    public static void main(String[] args) throws Exception {
      Reader input = new InputStreamReader(System.in);
-//	 Reader input  = new InputStreamReader(new FileInputStream("./pruebas_tiny/05.in"));
      AnalizadorLexicoTiny alex = new AnalizadorLexicoTiny(input);
      AnalizadorSintacticoTiny asint = new AnalizadorSintacticoTinyDJ(alex);
-//	 asint.setScanner(alex);
      try {    
         asint.debug_parse();
      }

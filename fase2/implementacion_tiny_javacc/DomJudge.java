@@ -10,9 +10,6 @@ import java.io.Reader;
 public class DomJudge{
    public static void main(String[] args) throws Exception {
      try{  
-      
-//      Reader input  = new InputStreamReader(new FileInputStream("./pruebas_tiny/sample3.in"));
-//      AnalizadorSintacticoTiny asint = new AnalizadorSintacticoTinyDJ(input);
       AnalizadorSintacticoTiny asint = new AnalizadorSintacticoTinyDJ(new InputStreamReader(System.in));
       asint.analiza();
      }

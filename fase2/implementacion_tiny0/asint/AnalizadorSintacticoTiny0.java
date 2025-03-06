@@ -141,6 +141,7 @@ public class AnalizadorSintacticoTiny0 {
            break;
        default:        
            esperados(ClaseLexica.ARROBA);
+           error();
            break;
 	   }
    }
@@ -275,7 +276,8 @@ public class AnalizadorSintacticoTiny0 {
   		default: 
   			esperados(ClaseLexica.LIT_ENT,ClaseLexica.LIT_REAL, 
   					  ClaseLexica.TRUE,ClaseLexica.FALSE, 
-  					  ClaseLexica.IDEN);
+  					  ClaseLexica.IDEN, ClaseLexica.MENOS, 
+  					  ClaseLexica.NOT);
 			error();
 			break;
        	} 
