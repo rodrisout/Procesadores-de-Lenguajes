@@ -1,0 +1,181 @@
+\section{Especificación Sintáctica (Gramática)}
+
+Implementamos la gramática que define la especificación sintáctica del lenguaje Tiny empleando los patrones explicados en clase 
+(Diseño descendente, Reutilización, Nivel de Abstracción Equilibrado, Opcionalidad, Variantes, Listas y Expresiones). 
+
+Para ello definimos primero la estructura básica de todo programa:
+
+\begin{math}
+    programa \longrightarrow \; bloque \\
+    bloque \longrightarrow \; \{ seccion\_declaraciones\_opt \;\; seccion\_instrucciones\_opt \}
+\end{math}
+
+\subsection{Declaraciones}
+
+\begin{math}
+    seccion\_declaraciones\_opt \longrightarrow \; seccion\_declaraciones \; \&\& \\
+	seccion\_declaraciones\_opt.a \; = \; decs(seccion_declaraciones.v) \\
+    seccion\_declaraciones\_opt \longrightarrow \; \epsilon \\
+	seccion\_declaraciones\_opt.a \; = \; \epsilon \; \\
+    seccion\_declaraciones \longrightarrow \; seccion\_declaraciones \; ; \; declaracion \\
+	seccion\_declaraciones.a \; = \; mult\_decs(seccion\_declaraciones.a, declaracion.a) \\
+    seccion\_declaraciones \longrightarrow \; declaracion \\
+        seccion\_declaraciones.a \; = \; declaracion.a \\
+    declaracion \longrightarrow \; tipo\_nombre \\
+        declaracion.a \; = \; tipo\_nombre.a \\
+    declaracion \longrightarrow \; \textbf{type} \; tipo\_nombre \\
+	declaracion.a \; = \; type\_decl(tipo\_nombre.a) \\
+    declaracion \longrightarrow \; \textbf{proc} \; \textbf{identificador} \; parametros\_formales \; bloque\\
+	declaracion.a \; = \; process(parametros\_formales.a, bloque.a) \\
+    parametros\_formales \longrightarrow \; ( lista\_parametros\_opt ) \\
+	parametros\_formales.a \; = \; lista\_parametros\_opt.a
+    lista\_parametros\_opt \longrightarrow \; lista\_parametros \\
+        lista\_parametros\_opt.a \; = \; lista\_parametros.a \\
+    lista\_parametros\_opt \longrightarrow \; \epsilon \\
+        lista\_parametros\_opt.a \; = \; \epsilon \\
+    lista\_parametros \longrightarrow \; lista\_parametros \; , \; parametro \\
+	lista\_parametros.a \; = \; lparam(lista\_parametros.a, parametro.a)
+    lista\_parametros \longrightarrow \; parametro \\
+	lista\_parametros.a \; = \; parametro.a \\
+    parametro \longrightarrow \; tipo \; ref\_opt \; \textbf{identificador} \\
+	parametro.a \; = \; sparam(tipo.a, ref\_opt.a, valorDe(\textbf{identificador}))
+    ref\_opt \longrightarrow \; \& \\
+	ref\_opt.a = '&'
+    ref\_opt \longrightarrow \; \epsilon \\
+        ref\_opt.a = ''
+\end{math}
+
+\subsection{Tipos}
+
+\begin{math}
+    tipo\_nombre \longrightarrow \; tipo \; \textbf{identificador} \\
+	tipo\_nombre.a \; = \; tnombre(tipo.a, valorDe(\textbf{identificador})) \\
+    tipo \longrightarrow \; tipo0 \\
+        tipo.a \; = \; tipo0.a \\
+    tipo0 \longrightarrow \; tipo0 \; [\textbf{literalEntero}] \\
+	tipo0.a \; = \; array(tipo0.a, \textbf{literalEntero}) \\
+    tipo0 \longrightarrow \; tipo1 \\
+        tipo0.a \; = \; tipo1.a \\
+    tipo1 \longrightarrow \; \hat{} \; tipo1 \\
+	tipo1.a \; = \; puntero(tipo1.a)
+    tipo1 \longrightarrow \; tipo\_base \\
+        tipo1.a \; = \; tipo\_base.a \\
+    tipo\_base \longrightarrow \; \textbf{struct} \; \{ lista\_campos \} \\
+	tipo\_base.a \; = \; struct(lista\_campos.a) \\
+    tipo\_base \longrightarrow \; \textbf{int} \\
+	tipo\_base.a \; = \; valorDe(\textbf{int}) \\
+    tipo\_base \longrightarrow \; \textbf{real} \\
+	tipo\_base \; = \; valorDe(\textbf{real}) \\
+    tipo\_base \longrightarrow \; \textbf{bool} \\
+	tipo\_base \; = \; valorDe(\textbf{bool}) \\
+    tipo\_base \longrightarrow \; \textbf{string} \\
+	tipo\_base \; = \; valorDe(\textbf{string}) \\
+    tipo\_base \longrightarrow \; \textbf{identificador} \\
+	tipo\_base \; = \; valorDe(\textbf{identificador}) \\
+    lista\_campos \longrightarrow \; lista\_campos \; , \; tipo\_nombre \\
+	lista\_campos.a \; = \; lcampos(lista\_campos, tipo\_nombre.a) \\
+    lista\_campos \longrightarrow \; tipo\_nombre \\
+	tipo\_nombre.a \; = \; tipo\_nombre.a
+\end{math}
+
+\subsection{Instrucciones}
+
+\begin{math}
+    seccion\_instrucciones\_opt \longrightarrow \; seccion\_instrucciones \\
+        seccion\_instrucciones\_opt.a \; = \; seccion\_instrucciones.a \\
+    seccion\_instrucciones\_opt \longrightarrow \; \epsilon \\
+        seccion\_instrucciones\_opt.a \; = \; \epsilon \\
+    seccion\_instrucciones \longrightarrow \; lista\_instrucciones \\
+        seccion\_instrucciones.a \; = \; lista\_instrucciones.a \\
+    lista\_instrucciones \longrightarrow \; lista\_instrucciones \; ; \; instruccion \\
+	lista\_instrucciones.a \; = \; linstr(lista\_instrucciones.a, instruccion.a) \\
+    lista\_instrucciones \longrightarrow \; instruccion \\
+        lista\_instrucciones.a \; = \; instruccion.a \\
+    instruccion \longrightarrow \; @ \; expresion \\
+        instruccion.a \; = \; expresion.a \\
+    instruccion \longrightarrow \; if\_ins \\
+	instruccion.a \; = \; if\_ins.a \\
+    instruccion \longrightarrow \; if\_ins \; else\_ins \\
+	instruccion.a \; = \; ifelse(if\_ins.a, else\_ins.a) \\
+    instruccion \longrightarrow \; \textbf{while} \; exp\_bloque \\
+	instruccion.a \; = \; while(exp\_bloque.a) \\
+    instruccion \longrightarrow \; \textbf{read} \; expresion \\
+	instruccion.a \; = \; read(expresion.a) \\
+    instruccion \longrightarrow \; \textbf{write} \; expresion \\
+	instruccion.a \; = \; write(expresion.a) \\
+    instruccion \longrightarrow \; \textbf{nl} \\
+	instruccion.a \; = \; nl() \\
+    instruccion \longrightarrow \; \textbf{new} \; expresion \\
+	instruccion.a \; = \; new(expresion.a) \\
+    instruccion  \longrightarrow \; \textbf{delete} \; expresion \\
+	instruccion .a \; = \; delete(expresion.a) \\
+    instruccion \longrightarrow \; \textbf{call} \; \textbf{identificador} \; parametros\_reales \\
+	instruccion.a \; = \; call(valorDe(\textbf{identificador}), parametros\_reales.a) \\
+    instruccion \longrightarrow \; bloque \\
+        instruccion.a \; = \; bloque.a \\
+    if\_ins \longrightarrow \; \textbf{if} \; exp\_bloq.a \\
+	if\_ins.a \; = \; if(exp\_bloq.a) \\
+    else\_ins \longrightarrow \; \textbf{else} \; bloque \\
+	else\_ins.a \; = \; bloque.a \\
+    exp\_bloq \longrightarrow \; expresion \; bloque \\
+	exp\_bloq.a \; = \; expbloq(expresion.a, bloque.a) \\
+    parametros\_reales \longrightarrow \; ( lista\_expresiones\_opt ) \\
+        parametros\_reales.a \; = \; lista\_expresiones\_opt.a \\
+    lista\_expresiones\_opt \longrightarrow \; lista\_expresiones \\
+        lista\_expresiones\_opt.a \; = \; lista\_expresiones.a \\
+    lista\_expresiones\_opt \longrightarrow \; \epsilon \\
+        lista\_expresiones\_opt.a \; = \; \epsilon \\
+    lista\_expresiones \longrightarrow \; lista\_expresiones \; , \; expresion \\
+	lista\_expresiones.a \; = \; lexpr(lista\_expresiones.a, expresion.a) \\
+    lista\_expresiones \longrightarrow \; expresion
+        lista\_expresiones.a \; = \; expresion.a
+\end{math}
+
+\subsection{Expresiones}
+
+\begin{math}
+    expresion \longrightarrow \; E0 \\
+    E0 \longrightarrow \; E1 \; = \; E0 \\
+    E0 \longrightarrow \; E1 \\
+    E1 \longrightarrow \; E1 \; op\_relacional \; E2 \\
+    E1 \longrightarrow \; E2 \\
+    E2 \longrightarrow \; E2 \; + \; E3 \\
+    E2 \longrightarrow \; E3 \; - \; E3 \\
+    E2 \longrightarrow \; E3 \\
+    E3 \longrightarrow \; E4 \; \textbf{and} \; E3 \\
+    E3 \longrightarrow \; E4 \; \textbf{or} \; E4 \\
+    E3 \longrightarrow \; E4 \\
+    E4 \longrightarrow \; E4 \; op\_mult \; E5 \\
+    E4 \longrightarrow \; E5 \\
+    E5  \longrightarrow \; - \; E5 \\
+    E5 \longrightarrow \; \textbf{not} \; E5 \\
+    E5 \longrightarrow \; E6 \\
+    E6 \longrightarrow \; E6 \; op\_dirs \\
+    E6 \longrightarrow \; E7 \\
+    E7 \longrightarrow \; expresion\_basica \\
+    E7 \longrightarrow \; (E0) \\
+    expresion\_basica \longrightarrow \; \textbf{literalEntero} \\
+    expresion\_basica \longrightarrow \; \textbf{literalReal} \\
+    expresion\_basica \longrightarrow \; \textbf{true} \\
+    expresion\_basica \longrightarrow \; \textbf{false} \\
+    expresion\_basica \longrightarrow \; \textbf{literalCadena} \\
+    expresion\_basica \longrightarrow \; \textbf{identificador} \\
+    expresion\_basica \longrightarrow \; \textbf{null}
+\end{math}
+
+\subsection{Operadores}
+
+\begin{math}
+    op\_relacional \longrightarrow \; < \\
+    op\_relacional \longrightarrow \; <= \\
+    op\_relacional \longrightarrow \; > \\
+    op\_relacional \longrightarrow \; >= \\
+    op\_relacional \longrightarrow \; == \\
+    op\_relacional \longrightarrow \; != \\
+    op\_mult \longrightarrow \; * \\
+    op\_mult \longrightarrow \; / \\
+    op\_mult \longrightarrow \% \\
+    op\_dirs \longrightarrow \; [ expresion ] \\
+    op\_dirs \longrightarrow \; . \; \textbf{identificador} \\
+    op\_dirs \longrightarrow \; \hat{}
+\end{math}
