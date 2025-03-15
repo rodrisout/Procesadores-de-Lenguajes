@@ -1,0 +1,94 @@
+\section{Funciones constructoras de nodos}
+
+\begin{math}
+    bloque: SecDecs \times SecIs \longrightarrow \; Bloq
+\end{math}
+
+\subsection{Declaraciones}
+
+\begin{math}
+    si\_decs: LDecs \longrightarrow \; SecDecs \\
+    no\_decs: \; \longrightarrow \; SecDecs \\
+    muchas\_decs: LDecs \times Dec \longrightarrow \; LDecs \\
+    una\_dec: Dec \longrightarrow \; LDecs \\
+    dec\_base: TipoNom \longrightarrow \; Dec \\
+    dec\_type: TipoNom \longrightarrow \; Dec \\
+    dec\_proc: \textbf{string} \times ParamFs \times Bloq \longrightarrow \; Dec \\
+    si\_params\_f: LParamFs \longrightarrow \; ParamFs \\
+    no\_params\_f: \; \longrightarrow \; ParamFs \\
+    muchos\_params\_f: LParamFs \times ParamF \longrightarrow \; LParamFs \\
+    un\_param\_f: ParamF \longrightarrow \; LParamFs \\
+    si\_refparam\_f: Tipo \times \textbf{string} \longrightarrow \; ParamF \\
+    no\_refparam\_f: Tipo \times \textbf{string} \longrightarrow \; ParamF
+\end{math}
+
+\subsection{Tipos}
+
+\begin{math}
+    tipo\_nombre: Tipo \times \textbf{string} \longrightarrow \; TipoNom \\
+    tipo\_array: Tipo \times \textbf{string} \longrightarrow \; Tipo \\
+    tipo\_indir: Tipo \longrightarrow \; Tipo \\
+    tipo\_struct: LCampos \longrightarrow \; Tipo \\
+    tipo\_int: \; \longrightarrow \; Tipo \\
+    tipo\_real: \; \longrightarrow \; Tipo \\
+    tipo\_bool: \; \longrightarrow \; Tipo \\
+    tipo\_string: \; \longrightarrow \; Tipo \\
+    tipo\_type: \textbf{string} \longrightarrow \; Tipo \\
+    muchos\_campos: LCampos \times TipoNom \longrightarrow \; LCampos \\
+    un\_campo: TipoNom \longrightarrow \; LCampos
+\end{math}
+
+\subsection{Instrucciones}
+
+\begin{math}
+    si\_ins: LIs \longrightarrow \; SecIs \\
+    no\_ins: \; \longrightarrow \; SecIs \\
+    muchas\_ins: LIs \times I \longrightarrow \; LIs \\
+    una\_ins: I \longrightarrow \; LIs \\
+    ins\_eval: Exp \longrightarrow \; I \\
+    ins\_if: Exp \times Bloq \longrightarrow \; I \\
+    ins\_if\_else: Exp \times Bloq \times Bloq \longrightarrow \; I \\
+    ins\_while: Exp \times Bloq \longrightarrow \; I \\
+    ins\_read: Exp \longrightarrow \; I \\
+    ins\_write: Exp \longrightarrow \; I \\
+    ins\_nl: \; \longrightarrow \; I \\
+    ins\_new: Exp \longrightarrow \; I \\
+    ins\_delete: Exp \longrightarrow \; I \\
+    ins\_call: \textbf{string} \times ParamRs \longrightarrow \; I \\
+    ins\_bloque: Bloq \longrightarrow \; I \\
+    si\_params\_r: LParamRs \longrightarrow \; ParamRs \\
+    no\_params\_r: \; \longrightarrow \; ParamRs \\
+    muchos\_params\_r: LParamRs \times Exp \longrightarrow \; LParamRs \\
+    un\_param\_r: Exp \longrightarrow \; LParamRs
+\end{math}
+
+\subsection{Expresiones}
+
+\begin{math}
+    exp\_asig: Exp \times Exp \longrightarrow \; Exp \\
+    exp\_menor: Exp \times Exp \longrightarrow \; Exp \\
+    exp\_menor\_ig: Exp \times Exp \longrightarrow \; Exp \\
+    exp\_mayor: Exp \times Exp \longrightarrow \; Exp \\
+    exp\_mayor\_ig: Exp \times Exp \longrightarrow \; Exp \\
+    exp\_ig: Exp \times Exp \longrightarrow \; Exp \\
+    exp\_dist: Exp \times Exp \longrightarrow \; Exp \\
+    exp\_suma: Exp \times Exp \longrightarrow \; Exp \\
+    exp\_resta: Exp \times Exp \longrightarrow \; Exp \\
+    exp\_and: Exp \times Exp \longrightarrow \; Exp \\
+    exp\_or: Exp \times Exp \longrightarrow \; Exp \\
+    exp\_mul: Exp \times Exp \longrightarrow \; Exp \\
+    exp\_div: Exp \times Exp \longrightarrow \; Exp \\
+    exp\_mod: Exp \times Exp \longrightarrow \; Exp \\
+    exp\_menos: Exp \longrightarrow \; Exp \\
+    exp\_not: Exp \longrightarrow \; Exp \\
+    exp\_index: Exp \longrightarrow \; Exp \\
+    exp\_reg: Exp \longrightarrow \; Exp \\
+    exp\_indir: Exp \longrightarrow \; Exp \\
+    exp\_entero: \textbf{string} \longrightarrow \; Exp \\
+    exp\_real: \textbf{string} \longrightarrow \; Exp \\
+    exp\_true: \; \longrightarrow \; Exp \\
+    exp\_false: \; \longrightarrow \; Exp \\
+    exp\_cadena: \textbf{string} \longrightarrow \; Exp \\
+    exp\_iden: \; \textbf{string} \; Exp \\
+    exp\_null: \; \longrightarrow \; Exp
+\end{math}

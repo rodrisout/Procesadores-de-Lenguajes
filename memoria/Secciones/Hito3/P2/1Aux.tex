@@ -1,0 +1,32 @@
+\section{Funciones semánticas auxiliares}
+
+\subsection{Expresiones unarias}
+
+\begin{math}
+    \textbf{fun} \; mkopun(op, \; opnd):\\
+        \phantom{---} op \; = \; "-" \longrightarrow \; \textbf{return \; exp\_menos}(opnd)\\
+        \phantom{---} op \; = \; "not" \longrightarrow \; \textbf{return \; exp\_not}(opnd)\\
+        \phantom{---} op \; = \; "index" \longrightarrow \; \textbf{return \; exp\_index}(opnd)\\
+        \phantom{---} op \; = \; "reg" \longrightarrow \; \textbf{return \; exp\_reg}(opnd)\\
+        \phantom{---} op \; = \; "\; \hat{} \;" \longrightarrow \; \textbf{return \; exp\_indir}(opnd)
+\end{math}
+
+\subsection{Expresiones binarias}
+
+\begin{math}
+    \textbf{fun} \; mkopbin(op, \; opnd1, \; opnd2):\\
+        \phantom{---} op \; = \; "=" \longrightarrow \; \textbf{return \; exp\_asig}(opnd1, \; opnd2)\\
+        \phantom{---} op \; = \; "<" \longrightarrow \; \textbf{return \; exp\_menor}(opnd1, \; opnd2)\\
+        \phantom{---} op \; = \; "<=" \longrightarrow \; \textbf{return \; exp\_menor\_ig}(opnd1, \; opnd2)\\
+        \phantom{---} op \; = \; ">" \longrightarrow \; \textbf{return \; exp\_mayor}(opnd1, \; opnd2)\\
+        \phantom{---} op \; = \; ">=" \longrightarrow \; \textbf{return \; exp\_mayor\_ig}(opnd1, \; opnd2)\\
+        \phantom{---} op \; = \; "==" \longrightarrow \; \textbf{return \; exp\_ig}(opnd1, \; opnd2)\\
+        \phantom{---} op \; = \; "!=" \longrightarrow \; \textbf{return \; exp\_dist}(opnd1, \; opnd2)\\
+        \phantom{---} op \; = \; "+" \longrightarrow \; \textbf{return \; exp\_suma}(opnd1, \; opnd2)\\
+        \phantom{---} op \; = \; "-" \longrightarrow \; \textbf{return \; exp\_resta}(opnd1, \; opnd2)\\
+        \phantom{---} op \; = \; "and" \longrightarrow \; \textbf{return \; exp\_and}(opnd1, \; opnd2)\\
+        \phantom{---} op \; = \; "or" \longrightarrow \; \textbf{return \; exp\_or}(opnd1, \; opnd2)\\
+        \phantom{---} op \; = \; "*" \longrightarrow \; \textbf{return \; exp\_mul}(opnd1, \; opnd2)\\
+        \phantom{---} op \; = \; "/" \longrightarrow \; \textbf{return \; exp\_div}(opnd1, \; opnd2)\\
+        \phantom{---} op \; = \; "\%" \longrightarrow \; \textbf{return \; exp\_mod}(opnd1, \; opnd2)
+\end{math}
