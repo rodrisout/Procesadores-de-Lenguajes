@@ -33,7 +33,7 @@
     lista\_parametros \longrightarrow \; lista\_parametros \; , \; parametro \\
         \phantom{---} lista\_parametros_0.\textbf{a} = muchos\_params\_f(lista\_parametros_1.\textbf{a}, \; parametro.\textbf{a}) \\
     lista\_parametros \longrightarrow \; parametro \\
-        \phantom{---} lista\_parametros.\textbf{a} = un\_param\_f(declaracion.\textbf{a}) \\
+        \phantom{---} lista\_parametros.\textbf{a} = un\_param\_f(parametro.\textbf{a}) \\
     parametro \longrightarrow \; tipo \; \& \; \textbf{identificador} \\
         \phantom{---} parametro.\textbf{a} = si\_refparam\_f(tipo.\textbf{a}, \; \textbf{identificador.lex}) \\
     parametro \longrightarrow \; tipo \; \textbf{identificador} \\
@@ -88,10 +88,10 @@
         \phantom{---} lista\_instrucciones.\textbf{a} = una\_ins(instruccion.\textbf{a}) \\
     instruccion \longrightarrow \; @ \; expresion \\
         \phantom{---} instruccion.\textbf{a} = ins\_eval(expresion.\textbf{a}) \\
-    instruccion \longrightarrow \; \textbf{if} \; expresion \; bloque \\
-        \phantom{---} instruccion.\textbf{a} = ins\_if(expresion.\textbf{a}, \; bloque.\textbf{a}) \\
-    instruccion \longrightarrow \; \textbf{if} \; expresion \; bloque \; \textbf{else} \; bloque \\
-        \phantom{---} instruccion.\textbf{a} = ins\_if\_else(expresion.\textbf{a}, \; bloque_0.\textbf{a}, \; bloque_1.\textbf{a}) \\
+    instruccion \longrightarrow \; if\_ins \\
+        \phantom{---} instruccion.\textbf{a} = if\_ins.\textbf{a} \\
+    instruccion \longrightarrow \; if\_ins \; \textbf{else} \; bloque \\
+        \phantom{---} instruccion.\textbf{a} = ins\_if\_else(if\_ins.\textbf{a}, \; bloque_1.\textbf{a}) \\
     instruccion \longrightarrow \; \textbf{while} \;  expresion \; bloque \\
         \phantom{---} instruccion.\textbf{a} = ins\_while(expresion.\textbf{a}, \; bloque.\textbf{a}) \\
     instruccion \longrightarrow \; \textbf{read} \; expresion \\
@@ -108,6 +108,8 @@
         \phantom{---} instruccion.\textbf{a} = ins\_call(\textbf{identificador.lex}, \; parametros\_reales.\textbf{a}) \\
     instruccion \longrightarrow \; bloque \\
         \phantom{---} instruccion.\textbf{a} = ins\_bloque(bloque.\textbf{a}) \\
+    if\_ins \longrightarrow \; \textbf{if} \; expresion \; bloque \\
+        \phantom{---} if\_ins.\textbf{a} = ins\_if(expresion.\textbf{a}, \; bloque.\textbf{a}) \\
     parametros\_reales \longrightarrow \; ( lista\_expresiones\_opt ) \\
         \phantom{---} parametros\_reales.\textbf{a} = lista\_expresiones\_opt.\textbf{a} \\
     lista\_expresiones\_opt \longrightarrow \; lista\_expresiones \\

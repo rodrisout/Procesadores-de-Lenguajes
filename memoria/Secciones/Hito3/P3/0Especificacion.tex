@@ -1,0 +1,354 @@
+\section{Gramática s-atribuida}
+
+\begin{math}
+    programa \longrightarrow \; bloque \\
+        \phantom{---} programa.\textbf{a} = bloque.\textbf{a} \\
+    bloque \longrightarrow \; \{ seccion\_declaraciones\_opt \;\; seccion\_instrucciones\_opt \} \\
+        \phantom{---} bloque.\textbf{a} = bloq(seccion\_declaraciones\_opt.\textbf{a}, \; seccion\_instrucciones\_opt.\textbf{a})
+\end{math}
+
+\subsection{Declaraciones}
+
+\begin{math}
+    seccion\_declaraciones\_opt \longrightarrow \; seccion\_declaraciones \; \&\& \\
+        \phantom{---} seccion\_declaraciones\_opt.\textbf{a} = si\_decs(seccion\_declaraciones) \\
+    seccion\_declaraciones\_opt \longrightarrow \; \epsilon \\
+        \phantom{---} seccion\_declaraciones\_opt.\textbf{a} = no\_decs() \\
+    % RECURSION A IZQ 
+    %seccion\_declaraciones \longrightarrow \; seccion\_declaraciones \; ; \; declaracion \\
+    %    \phantom{---} seccion\_declaraciones_0.\textbf{a} = muchas\_decs(seccion\_declaraciones_1.\textbf{a}, \; declaracion.\textbf{a}) \\
+    %seccion\_declaraciones \longrightarrow \; declaracion \\
+    %    \phantom{---} seccion\_declaraciones.\textbf{a} = una\_dec(declaracion.\textbf{a}) \\
+    seccion\_declaraciones \longrightarrow \; declaracion \; resto\_sd \\
+        \phantom{---} resto\_sd.\textbf{ah} = una\_dec(declaracion.\textbf{a}) \\
+        \phantom{---} seccion\_declaraciones\_opt.\textbf{a} = resto\_sd.\textbf{a} \\
+    resto\_sd \longrightarrow \; ; \; declaracion \; resto\_sd \\
+        \phantom{---} resto\_sd_1.\textbf{ah} = muchas\_decs(resto\_sd_0.\textbf{ah}, \; declaracion.\textbf{a}) \\
+        \phantom{---} resto\_sd_0.\textbf{a} = resto\_sd_1.\textbf{a} \\
+    resto\_sd \longrightarrow \; \epsilon \\
+        \phantom{---} resto\_sd.\textbf{a} = resto\_sd.\textbf{ah} \\
+    %
+    declaracion \longrightarrow \; tipo\_nombre \\
+        \phantom{---} declaracion.\textbf{a} = dec\_base(tipo\_nombre.\textbf{a}) \\
+    declaracion \longrightarrow \; \textbf{type} \; tipo\_nombre \\
+        \phantom{---} declaracion.\textbf{a} = dec\_type(tipo\_nombre.\textbf{a}) \\
+    declaracion \longrightarrow \; \textbf{proc} \; \textbf{identificador} \; parametros\_formales \; bloque\\
+        \phantom{---} declaracion.\textbf{a} = dec\_proc(\textbf{identificador.lex}, \; parametros\_formales.\textbf{a}, \; bloque.\textbf{a}) \\
+    parametros\_formales \longrightarrow \; ( lista\_parametros\_opt ) \\
+        \phantom{---} parametros\_formales.\textbf{a} = lista\_parametros\_opt.\textbf{a} \\
+    lista\_parametros\_opt \longrightarrow \; lista\_parametros \\
+        \phantom{---} lista\_parametros\_opt.\textbf{a} = si\_params\_f(lista\_parametros.\textbf{a}) \\
+    lista\_parametros\_opt \longrightarrow \; \epsilon \\
+        \phantom{---} lista\_parametros\_opt.\textbf{a} = no\_params\_f() \\
+    % RECURSION A IZQ
+    %lista\_parametros \longrightarrow \; lista\_parametros \; , \; parametro \\
+    %    \phantom{---} lista\_parametros_0.\textbf{a} = muchos\_params\_f(lista\_parametros_1.\textbf{a}, \; parametro.\textbf{a}) \\
+    %lista\_parametros \longrightarrow \; parametro \\
+    %    \phantom{---} lista\_parametros.\textbf{a} = un\_param\_f(parametro.\textbf{a}) \\
+    lista\_parametros \longrightarrow \; parametro \; resto\_lp \\
+        \phantom{---} resto\_lp.\textbf{ah} = un\_param\_f(parametro.\textbf{a}) \\
+        \phantom{---} lista\_parametros.\textbf{a} = resto\_lp.\textbf{a} \\
+    resto\_lp \longrightarrow \; , \; parametro \; resto\_lp \\
+        \phantom{---} resto\_lp_1.\textbf{ah} = muchos\_params\_f(resto\_lp_0.\textbf{ah}, \; parametro.\textbf{a}) \\
+        \phantom{---} resto\_lp_0.\textbf{a} = resto\_lp_1.\textbf{a} \\
+    resto\_lp \longrightarrow \; \epsilon \\
+        \phantom{---} resto\_lp_0.\textbf{a} = resto\_lp_1.\textbf{ah} \\
+    %
+    % FACTOR COMUN
+    %parametro \longrightarrow \; tipo \; \& \; \textbf{identificador} \\
+    %    \phantom{---} parametro.\textbf{a} = si\_refparam\_f(tipo.\textbf{a}, \; \textbf{identificador.lex}) \\
+    %parametro \longrightarrow \; tipo \; \textbf{identificador} \\
+    %    \phantom{---} parametro.\textbf{a} = no\_refparam\_f(tipo.\textbf{a}, \; \textbf{identificador.lex})
+    parametro \longrightarrow \; tipo \; resto\_parametro \\
+        \phantom{---} resto\_parametro.\textbf{ah} = tipo.\textbf{a} \\
+        \phantom{---} parametro.\textbf{a} = resto\_parametro.\textbf{a}  \\
+    resto\_parametro \longrightarrow \; \& \; \textbf{identificador} \\
+        \phantom{---} resto\_parametro.\textbf{a} = si\_refparam\_f(resto\_parametro.\textbf{ah}, \; \textbf{identificador.lex}) \\
+    resto\_parametro \longrightarrow \; \textbf{identificador} \\
+        \phantom{---} resto\_parametro.\textbf{a} = no\_refparam\_f(resto\_parametro.\textbf{ah}, \; \textbf{identificador.lex})
+    %
+\end{math}
+
+\subsection{Tipos}
+
+\begin{math}
+    tipo\_nombre \longrightarrow \; tipo \; \textbf{identificador} \\
+        \phantom{---} tipo\_nombre.\textbf{a} = tipo\_nombre(tipo.\textbf{a}, \; \textbf{identificador.lex}) \\
+    tipo \longrightarrow \; tipo0 \\
+        \phantom{---} tipo.\textbf{a} = tipo0.\textbf{a} \\
+    % RECURSION A IZQ
+    %tipo0 \longrightarrow \; tipo0 \; [\textbf{literalEntero}] \\
+    %    \phantom{---} tipo0_0.\textbf{a} = tipo\_array(tipo0_1.\textbf{a}, \; \textbf{literalEntero.lex}) \\
+    %tipo0 \longrightarrow \; tipo1 \\
+    %    \phantom{---} tipo0.\textbf{a} = tipo1.\textbf{a} \\
+    tipo0 \longrightarrow \; tipo1 \; resto\_tipo0 \\
+        \phantom{---} resto\_tipo0.\textbf{ah} = tipo1.\textbf{a} \\
+        \phantom{---} tipo0.\textbf{a} = resto\_tipo0.\textbf{a} \\
+    resto\_tipo0 \longrightarrow \; [\textbf{literalEntero}] \; resto\_tipo0 \\
+        \phantom{---} resto\_tipo0_1.\textbf{ah} = tipo\_array(tipo0_0.\textbf{ah}, \; \textbf{literalEntero.lex}) \\
+        \phantom{---} tipo0_0.\textbf{a} = tipo0_1.\textbf{a} \\
+    resto\_tipo0 \longrightarrow \; \epsilon \\
+        \phantom{---} tipo0.\textbf{a} = tipo0.\textbf{ah} \\
+    %
+    tipo1 \longrightarrow \; \hat{} \; tipo1 \\
+        \phantom{---} tipo1_0.\textbf{a} = tipo\_indir(tipo1_1.\textbf{a}) \\
+    tipo1 \longrightarrow \; tipo\_base \\
+        \phantom{---} tipo1.\textbf{a} = tipo\_base.\textbf{a} \\
+    tipo\_base \longrightarrow \; \textbf{struct} \; \{ lista\_campos \} \\
+        \phantom{---} tipo\_base.\textbf{a} = tipo\_struct(lista\_campos.\textbf{a}) \\
+    tipo\_base \longrightarrow \; \textbf{int} \\
+        \phantom{---} tipo\_base.\textbf{a} = tipo\_int() \\
+    tipo\_base \longrightarrow \; \textbf{real} \\
+        \phantom{---} tipo\_base.\textbf{a} = tipo\_real() \\
+    tipo\_base \longrightarrow \; \textbf{bool} \\
+        \phantom{---} tipo\_base.\textbf{a} = tipo\_bool() \\
+    tipo\_base \longrightarrow \; \textbf{string} \\
+        \phantom{---} tipo\_base.\textbf{a} = tipo\_string() \\
+    tipo\_base \longrightarrow \; \textbf{identificador} \\
+        \phantom{---} tipo\_base.\textbf{a} = tipo\_type() \\
+    % RECURSION A IZQ
+    %lista\_campos \longrightarrow \; lista\_campos \; , \; tipo\_nombre \\
+    %    \phantom{---} lista\_campos_0.\textbf{a} = muchos\_campos(lista\_campos_1.\textbf{a}, \; tipo\_nombre.\textbf{a}) \\
+    %lista\_campos \longrightarrow \; tipo\_nombre \\
+    %    \phantom{---} lista\_campos.\textbf{a} = un\_campo(tipo\_nombre.\textbf{a})
+    lista\_campos \longrightarrow \; tipo\_nombre \; resto\_lc \\
+        \phantom{---} resto\_lc.\textbf{ah} = un\_campo(tipo\_nombre.\textbf{a}) \\
+        \phantom{---} lista\_campos.\textbf{a} = resto\_lc.\textbf{a} \\
+    resto\_lc \longrightarrow \; , \; tipo\_nombre \; resto\_lc \\
+        \phantom{---}  resto\_lc_1.\textbf{ah} = muchos\_campos(resto\_lc_0.\textbf{ah}, \; tipo\_nombre.\textbf{a}) \\
+        \phantom{---}  resto\_lc_0.\textbf{a} = resto\_lc_0.\textbf{a} \\
+    resto\_lc \longrightarrow \; \epsilon \\
+        \phantom{---}  resto\_lc.\textbf{a} = resto\_lc.\textbf{ah}
+    %
+\end{math}
+
+\subsection{Instrucciones}
+
+\begin{math}
+    seccion\_instrucciones\_opt \longrightarrow \; seccion\_instrucciones \\
+        \phantom{---} seccion\_instrucciones\_opt.\textbf{a} = si\_ins(seccion\_instrucciones) \\
+    seccion\_instrucciones\_opt \longrightarrow \; \epsilon \\
+        \phantom{---} sseccion\_instrucciones\_opt.\textbf{a} = no\_ins() \\
+    seccion\_instrucciones \longrightarrow \; lista\_instrucciones \\
+        \phantom{---}seccion\_instrucciones.\textbf{a} = lista\_instrucciones.\textbf{a} \\
+    % RECURSION A IZQ
+    %lista\_instrucciones \longrightarrow \; lista\_instrucciones \; ; \; instruccion \\
+    %    \phantom{---} lista\_instrucciones_0.\textbf{a} = muchas\_ins(lista\_instrucciones_1.\textbf{a}, \; instruccion.\textbf{a}) \\
+    %lista\_instrucciones \longrightarrow \; instruccion \\
+    %    \phantom{---} lista\_instrucciones.\textbf{a} = una\_ins(instruccion.\textbf{a}) \\
+    lista\_instrucciones \longrightarrow \; instruccion \; resto\_li \\
+        \phantom{---} resto\_li.\textbf{ah} = una\_ins(instruccion.\textbf{a}) \\
+        \phantom{---} lista\_instrucciones.\textbf{a} = resto\_li.\textbf{a} \\
+    resto\_li \longrightarrow \; ; \; instruccion \; resto\_li \\
+        \phantom{---} resto\_li_1.\textbf{ah} = muchas\_ins(resto\_li_0.\textbf{ah}, \; instruccion.\textbf{a}) \\
+        \phantom{---} resto\_li_0.\textbf{a} = resto\_li_1.\textbf{a} \\
+    resto\_li \longrightarrow \; \epsilon \\
+        \phantom{---} resto\_li.\textbf{a} = resto\_li.\textbf{ah} \\
+    %
+    instruccion \longrightarrow \; @ \; expresion \\
+        \phantom{---} instruccion.\textbf{a} = ins\_eval(expresion.\textbf{a}) \\
+    % FACTOR COMUN
+    %instruccion \longrightarrow \; if\_ins \\
+    %    \phantom{---} instruccion.\textbf{a} = if\_ins.\textbf{a} \\
+    %instruccion \longrightarrow \; if\_ins \; \textbf{else} \; bloque \\
+    %    \phantom{---} instruccion.\textbf{a} = ins\_if\_else(if\_ins.\textbf{a}, \; bloque_1.\textbf{a}) \\
+    instruccion \longrightarrow \; if\_ins \; resto\_ii \\
+        \phantom{---} resto\_ii.\textbf{ah} = ins\_if(expresion.\textbf{a}, \; bloque.\textbf{a}) \\
+        \phantom{---} instruccion.\textbf{a} = resto\_ii.\textbf{a} \\
+    resto\_ii \longrightarrow \; \textbf{else} \; bloque \\
+        \phantom{---} resto\_ii.\textbf{a} = ins\_if\_else(resto\_ii.\textbf{ah}, \; bloque_1.\textbf{a}) \\
+    resto\_ii \longrightarrow \; \epsilon \\
+        \phantom{---} resto\_ii.\textbf{a} = resto\_ii.\textbf{ah} \\
+    %
+    instruccion \longrightarrow \; \textbf{while} \;  expresion \; bloque \\
+        \phantom{---} instruccion.\textbf{a} = ins\_while(expresion.\textbf{a}, \; bloque.\textbf{a}) \\
+    instruccion \longrightarrow \; \textbf{read} \; expresion \\
+        \phantom{---} instruccion.\textbf{a} = ins\_read(expresion.\textbf{a}) \\
+    instruccion \longrightarrow \; \textbf{write} \; expresion \\
+        \phantom{---} instruccion.\textbf{a} = ins\_write(expresion.\textbf{a}) \\
+    instruccion \longrightarrow \; \textbf{nl} \\
+        \phantom{---} instruccion.\textbf{a} = ins\_nl() \\
+    instruccion \longrightarrow \; \textbf{new} \; expresion \\
+        \phantom{---} instruccion.\textbf{a} = ins\_new(expresion.\textbf{a}) \\
+    instruccion  \longrightarrow \; \textbf{delete} \; expresion \\
+        \phantom{---} instruccion.\textbf{a} = ins\_delete(expresion.\textbf{a}) \\
+    instruccion \longrightarrow \; \textbf{call} \; \textbf{identificador} \; parametros\_reales \\
+        \phantom{---} instruccion.\textbf{a} = ins\_call(\textbf{identificador.lex}, \; parametros\_reales.\textbf{a}) \\
+    instruccion \longrightarrow \; bloque \\
+        \phantom{---} instruccion.\textbf{a} = ins\_bloque(bloque.\textbf{a}) \\
+    if\_ins \longrightarrow \; \textbf{if} \; expresion \; bloque \\
+        \phantom{---} if\_ins.\textbf{a} = ins\_if(expresion.\textbf{a}, \; bloque.\textbf{a}) \\
+    parametros\_reales \longrightarrow \; ( lista\_expresiones\_opt ) \\
+        \phantom{---} parametros\_reales.\textbf{a} = lista\_expresiones\_opt.\textbf{a} \\
+    lista\_expresiones\_opt \longrightarrow \; lista\_expresiones \\
+        \phantom{---} lista\_expresiones\_opt.\textbf{a} = si\_params\_r(lista\_expresiones.\textbf{a}) \\
+    lista\_expresiones\_opt \longrightarrow \; \epsilon \\
+        \phantom{---} lista\_expresiones\_opt.\textbf{a} = no\_params\_r() \\
+    % RECURSION A IZQ
+    %lista\_expresiones \longrightarrow \; lista\_expresiones \; , \; expresion \\
+    %    \phantom{---} lista\_expresiones_0.\textbf{a} = muchos\_params\_r(lista\_expresiones_1.\textbf{a}, \; expresion.\textbf{a}) \\
+    %lista\_expresiones \longrightarrow \; expresion \\
+    %    \phantom{---} lista\_expresiones.\textbf{a} = un\_param\_r(expresion.\textbf{a})
+    lista\_expresiones \longrightarrow \; expresion \; resto\_le \\
+        \phantom{---} resto\_le.\textbf{ah} = un\_param\_r(expresion.\textbf{a}) \\
+        \phantom{---} lista\_expresiones.\textbf{a} = resto\_le.\textbf{a} \\
+    resto\_le \longrightarrow \; , \; expresion \; resto\_le \\
+        \phantom{---} resto\_le_1.\textbf{ah} = muchos\_params\_r(resto\_le_0.\textbf{ah}, \; expresion.\textbf{a}) \\
+        \phantom{---} resto\_le_0.\textbf{a} = resto\_le_1.\textbf{a} \\
+    resto\_le \longrightarrow \epsilon \\
+        \phantom{---} resto\_le.\textbf{a} = resto\_le.\textbf{ah}
+    %
+\end{math}
+
+\subsection{Expresiones}
+
+\begin{math}
+    expresion \longrightarrow \; E0 \\
+        \phantom{---} expresion.\textbf{a} = E0.\textbf{a} \\
+    % FACTOR COMUN
+    %E0 \longrightarrow \; E1 \; = \; E0 \\
+    %    \phantom{---} E0_0.\textbf{a} = mkopbin("=", \; E1.\textbf{a}, \; E0_1.\textbf{a}) \\
+    %E0 \longrightarrow \; E1 \\
+    %    \phantom{---} E0.\textbf{a} = E1.\textbf{a} \\
+    E0 \longrightarrow \; E1 \; resto\_E0 \\
+        \phantom{---} resto\_E0.\textbf{ah} = E1.\textbf{a} \\
+        \phantom{---} E0.\textbf{a} = resto\_E0.\textbf{a} \\
+    resto\_E0 \longrightarrow \; = \; E0 \\
+        \phantom{---} resto\_E0.\textbf{a} = mkopbin("=", \; resto\_E0.\textbf{ah}, \; E0.\textbf{a}) \\
+    resto\_E0 \longrightarrow \; \epsilon \\
+        \phantom{---} resto\_E0.\textbf{a} = resto\_E0.\textbf{ah} \\
+    %
+    % RECURSION A IZQ
+    %E1 \longrightarrow \; E1 \; op\_relacional \; E2 \\
+    %    \phantom{---} E1_0.\textbf{a} = mkopbin(op\_relacional.\textbf{op}, \; E1_1.\textbf{a}, \; E2.\textbf{a}) \\
+    %E1 \longrightarrow \; E2 \\
+    %    \phantom{---} E1.\textbf{a} = E2.\textbf{a} \\
+    E1 \longrightarrow \; E2 \; resto\_E1 \\
+        \phantom{---} resto\_E1.\textbf{ah} = E2.\textbf{a} \\
+        \phantom{---} E1.\textbf{a} = resto\_E1.\textbf{a} \\
+    resto\_E1 \longrightarrow \; op\_relacional \; E2 \; resto\_E1 \\
+        \phantom{---} resto\_E1_1.\textbf{ah} = mkopbin(op\_relacional.\textbf{op}, \; resto\_E1_0.\textbf{ah}, \; E2.\textbf{a}) \\
+        \phantom{---} resto\_E1_0.\textbf{a} = resto\_E1_1.\textbf{a} \\
+    resto\_E1 \longrightarrow \; \epsilon \\
+        \phantom{---} resto\_E1.\textbf{a} = resto\_E1.\textbf{ah} \\
+    %
+    % FACTOR COMUN y RECURSION A IZQ
+    %E2 \longrightarrow \; E2 \; + \; E3 \\
+    %    \phantom{---} E2_0.\textbf{a} = mkopbin("+", \; E2_1.\textbf{a}, \; E3.\textbf{a}) \\
+    %E2 \longrightarrow \; E3 \; - \; E3 \\
+    %    \phantom{---} E2.\textbf{a} = mkopbin("-", \; E3_0.\textbf{a}, \; E3_1.\textbf{a})\\
+    %E2 \longrightarrow \; E3 \\
+    %    \phantom{---} E2.\textbf{a} = E3.\textbf{a} \\
+    E2 \longrightarrow \; E3 \; resto\_E2\_F \; resto\_E2\_R \\
+        \phantom{---} resto\_E2\_F.\textbf{ah} = E3.\textbf{a} \\
+        \phantom{---} resto\_E2\_R.\textbf{ah} = resto\_E2\_F.\textbf{a} \\
+        \phantom{---} E2.\textbf{a} = resto\_E2\_R.\textbf{a} \\
+    resto\_E2\_R \longrightarrow \; + \; E3 \; resto\_E2\_R \\
+        \phantom{---} resto\_E2\_R_1.\textbf{ah} = mkopbin("+", \; resto\_E2\_R_0.\textbf{ah}, \; E3.\textbf{a}) \\
+        \phantom{---} resto\_E2\_R_0.\textbf{a} = resto\_E2\_R_1.\textbf{a} \\
+    resto\_E2\_R \longrightarrow \; \epsilon \\
+        \phantom{---} resto\_E2\_R.\textbf{a} = resto\_E2\_R.\textbf{ah} \\
+    resto\_E2\_F \longrightarrow \; - \; E3 \\
+        \phantom{---} resto\_E2\_F.\textbf{a} =  mkopbin("-", \; resto\_E2\_F.\textbf{ah}, \; E3.\textbf{a}) \\
+    resto\_E2\_F \longrightarrow \; \epsilon \\
+        \phantom{---} resto\_E2\_F.\textbf{a} =  resto\_E2\_F.\textbf{ah} \\
+    %
+    % FACTOR COMUN
+    %E3 \longrightarrow \; E4 \; \textbf{and} \; E3 \\
+    %    \phantom{---} E3_0.\textbf{a} = mkopbin("and", E4.\textbf{a}, \; E3_1.\textbf{a}) \\
+    %E3 \longrightarrow \; E4 \; \textbf{or} \; E4 \\
+    %    \phantom{---} E3.\textbf{a} = mkopbin("or", E4_0.\textbf{a}, \; E4_1.\textbf{a}) \\
+    %E3 \longrightarrow \; E4 \\
+    %    \phantom{---} E3.\textbf{a} = E4.\textbf{a} \\
+    E3 \longrightarrow \; E4 \; resto\_E3 \\
+        \phantom{---} resto\_E3.\textbf{ah} = E4.\textbf{a} \\
+        \phantom{---} E3.\textbf{a} = resto\_E3.\textbf{a} \\
+    resto\_E3 \longrightarrow \; \textbf{and} \; E3 \\
+        \phantom{---} resto\_E3.\textbf{a} = mkopbin("and", resto\_E3.\textbf{ah}, \; E3.\textbf{a}) \\
+    resto\_E3 \longrightarrow \; \textbf{or} \; E4 \\
+        \phantom{---} resto\_E3.\textbf{a} = mkopbin("or", resto\_E3.\textbf{ah}, \; E4.\textbf{a}) \\
+    resto\_E3 \longrightarrow \; \epsilon \\
+        \phantom{---} resto\_E3.\textbf{a} = resto\_E3.\textbf{ah} \\
+    %
+    % RECURSION A IZQ
+    %E4 \longrightarrow \; E4 \; op\_mult \; E5 \\
+    %    \phantom{---} E4_0.\textbf{a} = mkopbin(op\_mult.\textbf{op}, \; E4_1.\textbf{a}, \; E5.\textbf{a}) \\
+    %E4 \longrightarrow \; E5 \\
+    %    \phantom{---} E4.\textbf{a} = E5.\textbf{a} \\
+    E4 \longrightarrow \; E5 \; resto\_E4 \\
+        \phantom{---} resto\_E4.\textbf{ah} = E5.\textbf{a} \\
+        \phantom{---} E4.\textbf{a} = resto\_E4.\textbf{a} \\
+    resto\_E4 \longrightarrow \; op\_mult \; E5 \; resto\_E4 \\
+        \phantom{---} resto\_E4_1.\textbf{ah} = mkopbin(op\_mult.\textbf{op}, \; resto\_E4_0.\textbf{ah}, \; E5.\textbf{a}) \\
+        \phantom{---} resto\_E4_0.\textbf{a} = resto\_E4_1.\textbf{a} \\
+    resto\_E4 \longrightarrow \epsilon \\
+        \phantom{---} resto\_E4.\textbf{a} = resto\_E4.\textbf{ah} \\
+    %
+    E5  \longrightarrow \; - \; E5 \\
+        \phantom{---} E5_0.\textbf{a} = mkopun("-", E5_1.\textbf{a}) \\   
+    E5 \longrightarrow \; \textbf{not} \; E5 \\
+        \phantom{---} E5_0.\textbf{a} = mkopun("not", E5_1.\textbf{a}) \\
+    E5 \longrightarrow \; E6 \\
+        \phantom{---} E5.\textbf{a} = E6.\textbf{a} \\
+    % RECURSION A IZQ
+    %E6 \longrightarrow \; E6 \; op\_dirs \\
+    %    \phantom{---} E6_0.\textbf{a} = mkopun(op\_dirs.\textbf{op}, \; E6_1.\textbf{a}) \\
+    %E6 \longrightarrow \; E7 \\
+    %    \phantom{---} E6.\textbf{a} = E7.\textbf{a} \\  
+    E6 \longrightarrow \; E7 \; resto\_E6 \\
+        \phantom{---} resto\_E6.\textbf{ah} = E7.\textbf{a} \\  
+        \phantom{---} E6.\textbf{a} = resto\_E6.\textbf{a} \\  
+    resto\_E6 \longrightarrow \; op\_dirs \; resto\_E6 \\
+        \phantom{---} resto\_E6_1.\textbf{ah} = mkopun(op\_dirs.\textbf{op}, \; resto\_E6_0.\textbf{ah}) \\  
+        \phantom{---} resto\_E6_0.\textbf{a} = resto\_E6_1.\textbf{a} \\  
+    resto\_E6 \longrightarrow \; \epsilon \\
+        \phantom{---} resto\_E6.\textbf{a} = resto\_E6.\textbf{ah} \\  
+    %
+    E7 \longrightarrow \; expresion\_basica \\
+        \phantom{---} E7.\textbf{a} = expresion\_basica.\textbf{a} \\
+    E7 \longrightarrow \; (E0) \\
+        \phantom{---} E7.\textbf{a} = E0.\textbf{a} \\
+    expresion\_basica \longrightarrow \; \textbf{literalEntero} \\
+        \phantom{---} expresion\_basica.\textbf{a} = exp\_entero(\textbf{literalEntero.lex}) \\
+    expresion\_basica \longrightarrow \; \textbf{literalReal} \\
+        \phantom{---} expresion\_basica.\textbf{a} = exp\_real(\textbf{literalReal.lex}) \\
+    expresion\_basica \longrightarrow \; \textbf{true} \\
+        \phantom{---} expresion\_basica.\textbf{a} = exp\_true() \\
+    expresion\_basica \longrightarrow \; \textbf{false} \\
+        \phantom{---} expresion\_basica.\textbf{a} = exp\_false() \\
+    expresion\_basica \longrightarrow \; \textbf{literalCadena} \\
+        \phantom{---} expresion\_basica.\textbf{a} = exp\_cadena(\textbf{literalCadena.lex}) \\
+    expresion\_basica \longrightarrow \; \textbf{identificador} \\
+        \phantom{---} expresion\_basica.\textbf{a} = exp\_iden(\textbf{identificador.lex}) \\
+    expresion\_basica \longrightarrow \; \textbf{null} \\
+        \phantom{---} expresion\_basica.\textbf{a} = exp\_null()
+\end{math}
+
+\subsection{Operadores}
+
+\begin{math}
+    op\_relacional \longrightarrow \; < \\
+        \phantom{---} op\_relacional.\textbf{op} = \; "<" \\
+    op\_relacional \longrightarrow \; <= \\
+        \phantom{---} op\_relacional.\textbf{op} = \; "<=" \\
+    op\_relacional \longrightarrow \; > \\
+        \phantom{---} op\_relacional.\textbf{op} = \; ">" \\
+    op\_relacional \longrightarrow \; >= \\
+        \phantom{---} op\_relacional.\textbf{op} = \; ">=" \\
+    op\_relacional \longrightarrow \; == \\
+        \phantom{---} op\_relacional.\textbf{op} = \; "==" \\
+    op\_relacional \longrightarrow \; != \\
+        \phantom{---} op\_relacional.\textbf{op} = \; "!=" \\
+    op\_mult \longrightarrow \; * \\
+        \phantom{---} op\_mult.\textbf{op} = \; "*" \\
+    op\_mult \longrightarrow \; / \\
+        \phantom{---} op\_mult.\textbf{op} = \; "/" \\
+    op\_mult \longrightarrow \% \\
+        \phantom{---} op\_mult.\textbf{op} = \; "\%" \\
+    op\_dirs \longrightarrow \; [ expresion ] \\
+        \phantom{---} op\_dirs.\textbf{op} = \; "index" \\
+    op\_dirs \longrightarrow \; . \; \textbf{identificador} \\
+        \phantom{---} op\_dirs.\textbf{op} = \; "reg" \\
+    op\_dirs \longrightarrow \; \hat{} \\
+        \phantom{---} op\_dirs.\textbf{op} = \; "\; \hat{} \;"
+\end{math}
