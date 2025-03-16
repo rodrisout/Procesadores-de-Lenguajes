@@ -1,16 +1,5 @@
 \section{Funciones semánticas auxiliares}
 
-\subsection{Expresiones unarias}
-
-\begin{math}
-    \textbf{fun} \; mkopun(op, \; opnd):\\
-        \phantom{---} op \; = \; "-" \longrightarrow \; \textbf{return \; exp\_menos}(opnd)\\
-        \phantom{---} op \; = \; "not" \longrightarrow \; \textbf{return \; exp\_not}(opnd)\\
-        \phantom{---} op \; = \; "index" \longrightarrow \; \textbf{return \; exp\_index}(opnd)\\
-        \phantom{---} op \; = \; "reg" \longrightarrow \; \textbf{return \; exp\_reg}(opnd)\\
-        \phantom{---} op \; = \; "\; \hat{} \;" \longrightarrow \; \textbf{return \; exp\_indir}(opnd)
-\end{math}
-
 \subsection{Expresiones binarias}
 
 \begin{math}

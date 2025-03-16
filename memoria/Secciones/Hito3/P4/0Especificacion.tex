@@ -1,0 +1,378 @@
+Imprime los tokens del programa leído, uno en cada línea, pero omitiendo los paréntesis redundantes en las expresiones 
+(es decir, aquellos paréntesis que, eliminados, no cambian el significado de dichas expresiones). 
+Las palabras reservadas se escribirán con todas las letras en minúscula, y entre ángulos (<…>). 
+El fin de fichero se escribirá como <EOF>.
+
+\section{Funciones de procesamiento}
+
+\begin{math}
+    \textbf{imprime}(\textbf{bloque}(SecDecs, \; SecIs)): \\
+        \phantom{---} \textbf{print} \; "\{" \\
+        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{imprime}(SecDecs) \\
+        \phantom{---} \textbf{imprime}(SecIs) \\
+        \phantom{---} \textbf{print} \; "\}" \\
+        \phantom{---} \textbf{nl} \\
+    \\
+    \textbf{imprime}(\textbf{EOF}()): \\
+        \phantom{---} \textbf{print} \; "<EOF>" \\
+        \phantom{---} \textbf{nl}
+\end{math}
+
+\subsection{Declaraciones}
+
+\begin{math}
+    \textbf{imprime}(\textbf{si\_decs}(LDecs)): \\
+        \phantom{---} \textbf{imprime}(LDecs) \\
+        \phantom{---} \textbf{print} \; "\&\&" \\
+        \phantom{---} \textbf{nl} \\
+    \\
+    \textbf{imprime}(\textbf{no\_decs()}): \textbf{noop} \\
+    \\
+    \textbf{imprime}(\textbf{muchas\_decs}(LDecs, \; Dec)): \\
+        \phantom{---} \textbf{imprime}(LDecs) \\
+        \phantom{---} \textbf{print} \; ";" \\
+        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{imprime}(Dec) \\
+    \\
+    \textbf{imprime}(\textbf{una\_dec}(Dec)): \\
+        \phantom{---} \textbf{imprime}(Dec) \\
+    \\
+    \textbf{imprime}(\textbf{dec\_base}(TipoNom)): \\
+        \phantom{---} \textbf{imprime}(TipoNom) \\
+    \\
+    \textbf{imprime}(\textbf{dec\_type}(TipoNom)): \\
+        \phantom{---} \textbf{imprime}(TipoNom) \\
+    \\
+    \textbf{imprime}(\textbf{dec\_proc}(iden, \; ParamFs, \; Bloq)): \\
+        \phantom{---} \textbf{print} \; "<proc>" \\
+        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{print} \; iden \\
+        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{imprime}(ParamFs) \\
+        \phantom{---} \textbf{imprime}(Bloq) \\
+    \\
+    \textbf{imprime}(\textbf{si\_params\_f}(LParamFs)): \\
+        \phantom{---} \textbf{imprime}(LParamFs) \\
+    \\
+    \textbf{imprime}(\textbf{no\_params\_f()}): \textbf{noop} \\
+    \\
+    \textbf{imprime}(\textbf{muchos\_params\_f}(LParamFs, \; ParamF)): \\
+        \phantom{---} \textbf{imprime}(LParamFs) \\
+        \phantom{---} \textbf{print} \; "," \\
+        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{imprime}(ParamF) \\
+    \\
+    \textbf{imprime}(\textbf{un\_param\_f}(ParamF)): \\
+        \phantom{---} \textbf{imprime}(ParamF) \\
+    \\
+    \textbf{imprime}(\textbf{si\_refparam\_f}(Tipo, \; iden)): \\
+        \phantom{---} \textbf{imprime}(Tipo) \\
+        \phantom{---} \textbf{print} \; "\&" \\
+        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{print} \; iden\\
+        \phantom{---} \textbf{nl} \\
+    \\
+    \textbf{imprime}(\textbf{no\_refparam\_f}(Tipo, \; iden)): \\
+        \phantom{---} \textbf{imprime}(Tipo) \\
+        \phantom{---} \textbf{print} \; iden \\
+        \phantom{---} \textbf{nl}
+\end{math}
+
+\subsection{Tipos}
+
+\begin{math}
+    \textbf{imprime}(\textbf{tipo\_nombre}(Tipo, \; iden)): \\
+        \phantom{---} \textbf{imprime}(Tipo) \\
+        \phantom{---} \textbf{print} \; iden\\
+        \phantom{---} \textbf{nl} \\
+    \\
+    \textbf{imprime}(\textbf{tipo\_array}(Tipo, \; litEntero)): \\
+        \phantom{---} \textbf{imprime}(Tipo) \\
+        \phantom{---} \textbf{print} \; "["\\
+        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{print} \; litEntero\\
+        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{print} \; "]"\\
+        \phantom{---} \textbf{nl} \\
+    \\
+    \textbf{imprime}(\textbf{tipo\_indir}(Tipo)): \\
+        \phantom{---} \textbf{print} \; "\; \hat{} \;"\\
+        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{imprime}(Tipo) \\
+    \\
+    \textbf{imprime}(\textbf{tipo\_struct}(LCampos)): \\
+        \phantom{---} \textbf{print} \; "<struct>" \\
+        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{print} \; "\{" \\
+        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{imprime}(LCampos) \\
+        \phantom{---} \textbf{print} \; "\}" \\
+        \phantom{---} \textbf{nl} \\
+    \\
+    \textbf{imprime}(\textbf{tipo\_int}()): \\
+        \phantom{---} \textbf{print} \; "<int>" \\
+        \phantom{---} \textbf{nl} \\
+    \\
+    \textbf{imprime}(\textbf{tipo\_real}()): \\
+        \phantom{---} \textbf{print} \; "<real>" \\
+        \phantom{---} \textbf{nl} \\
+    \\
+    \textbf{imprime}(\textbf{tipo\_bool}()): \\
+        \phantom{---} \textbf{print} \; "<bool>" \\
+        \phantom{---} \textbf{nl} \\
+    \\
+    \textbf{imprime}(\textbf{tipo\_string}()): \\
+        \phantom{---} \textbf{print} \; "<string>" \\
+        \phantom{---} \textbf{nl} \\
+    \\
+    \textbf{imprime}(\textbf{tipo\_type}(iden)): \\
+        \phantom{---} \textbf{print} \; iden \\
+        \phantom{---} \textbf{nl} \\
+    \\
+    \textbf{imprime}(\textbf{muchos\_campos}(LCampos, \; TipoNom)): \\
+        \phantom{---} \textbf{imprime}(LCampos) \\
+        \phantom{---} \textbf{print} \; "," \\
+        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{imprime}(TipoNom) \\
+    \\
+    \textbf{imprime}(\textbf{un\_campo}(TipoNom)): \\
+        \phantom{---} \textbf{imprime}(TipoNom)
+\end{math}
+
+\subsection{Instrucciones}
+
+\begin{math}
+    \textbf{imprime}(\textbf{si\_ins}(LIs)): \\
+        \phantom{---} \textbf{imprime}(LIs) \\
+    \\
+    \textbf{imprime}(\textbf{no\_ins()}): \textbf{noop} \\
+    \\
+    \textbf{imprime}(\textbf{muchas\_ins}(LIs, \; I)): \\
+        \phantom{---} \textbf{imprime}(LIs) \\
+        \phantom{---} \textbf{print} \; ";" \\
+        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{imprime}(I) \\
+    \\
+    \textbf{imprime}(\textbf{una\_ins}(I)): \\
+        \phantom{---} \textbf{imprime}(I) \\
+    \\
+    \textbf{imprime}(\textbf{ins\_eval}(Exp)): \\
+        \phantom{---} \textbf{print} \; "<@>" \\
+        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{imprime}(Exp) \\
+    \\
+    \textbf{imprime}(\textbf{ins\_if}(Exp, \; Bloq)): \\
+        \phantom{---} \textbf{print} \; "<if>" \\
+        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{imprime}(Exp) \\
+        \phantom{---} \textbf{imprime}(Bloq) \\
+    \\
+    \textbf{imprime}(\textbf{ins\_if\_else}(I, \; Bloq)): \\
+        \phantom{---} \textbf{imprime}(I) \\
+        \phantom{---} \textbf{print} \; "<else>" \\
+        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{imprime}(Bloq) \\
+    \\
+    \textbf{imprime}(\textbf{ins\_while}(Exp, \; Bloq)): \\
+        \phantom{---} \textbf{print} \; "<while>" \\
+        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{imprime}(Exp) \\
+        \phantom{---} \textbf{imprime}(Bloq) \\
+    \\
+    \textbf{imprime}(\textbf{ins\_read}(Exp)): \\
+        \phantom{---} \textbf{print} \; "<read>" \\
+        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{imprime}(Exp) \\
+    \\
+    \textbf{imprime}(\textbf{ins\_write}(Exp)): \\
+        \phantom{---} \textbf{print} \; "<write>" \\
+        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{imprime}(Exp) \\
+    \\
+    \textbf{imprime}(\textbf{ins\_nl}(Exp)): \\
+        \phantom{---} \textbf{print} \; "<nl>" \\
+        \phantom{---} \textbf{nl} \\
+    \\
+    \textbf{imprime}(\textbf{ins\_new}(<Exp>)): \\
+        \phantom{---} \textbf{print} \; "<new>" \\
+        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{imprime}(Exp) \\
+    \\
+    \textbf{imprime}(\textbf{ins\_delete}(Exp)): \\
+        \phantom{---} \textbf{print} \; "<delete>" \\
+        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{imprime}(Exp) \\
+    \\
+    \textbf{imprime}(\textbf{ins\_call}(iden, \; ParamRs)): \\
+        \phantom{---} \textbf{print} \; "<call>" \\
+        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{print} \; iden \\
+        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{imprime}(ParamRs) \\
+    \\
+    \textbf{imprime}(\textbf{ins\_bloque}(Bloq)): \\
+        \phantom{---} \textbf{imprime}(Bloq) \\
+    \\
+    \textbf{imprime}(\textbf{si\_params\_r}(LParamRs)): \\
+        \phantom{---} \textbf{imprime}(LParamRs) \\
+    \\
+    \textbf{imprime}(\textbf{no\_params\_r()}): \textbf{noop} \\
+    \\
+    \textbf{imprime}(\textbf{muchos\_params\_r}(LParamRs, \; Exp)): \\
+        \phantom{---} \textbf{imprime}(LParamRs) \\
+        \phantom{---} \textbf{print} \; "," \\
+        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{imprime}(Exp) \\
+    \\
+    \textbf{imprime}(\textbf{un\_param\_r}(Exp)): \\
+        \phantom{---} \textbf{imprime}(Exp)
+\end{math}
+
+\subsection{Expresiones}
+
+\begin{math}
+    \textbf{imprime}(\textbf{exp\_asig}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \textbf{imprimeExpBin}(Opnd0, \; "=", \; Opnd1, 1, 0) \\
+    \\
+    \textbf{imprime}(\textbf{exp\_menor}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \textbf{imprimeExpBin}(Opnd0, \; "<", \; Opnd1, 1, 2) \\
+    \\
+    \textbf{imprime}(\textbf{exp\_menor\_ig}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \textbf{imprimeExpBin}(Opnd0, \; "<=", \; Opnd1, 1, 2) \\
+    \\
+    \textbf{imprime}(\textbf{exp\_mayor}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \textbf{imprimeExpBin}(Opnd0, \; ">", \; Opnd1, 1, 2) \\
+    \\
+    \textbf{imprime}(\textbf{exp\_mayor\_ig}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \textbf{imprimeExpBin}(Opnd0, \; ">=", \; Opnd1, 1, 2) \\
+    \\
+    \textbf{imprime}(\textbf{exp\_ig}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \textbf{imprimeExpBin}(Opnd0, \; "==", \; Opnd1, 1, 2) \\
+    \\
+    \textbf{imprime}(\textbf{exp\_dist}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \textbf{imprimeExpBin}(Opnd0, \; "!=", \; Opnd1, 1, 2) \\
+    \\
+    \textbf{imprime}(\textbf{exp\_suma}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \textbf{imprimeExpBin}(Opnd0, \; "+", \; Opnd1, 2, 3) \\
+    \\
+    \textbf{imprime}(\textbf{exp\_resta}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \textbf{imprimeExpBin}(Opnd0, \; "-", \; Opnd1, 3, 3) \\
+    \\
+    \textbf{imprime}(\textbf{exp\_and}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \textbf{imprimeExpBin}(Opnd0, \; "and", \; Opnd1, 4, 3) \\
+    \\
+    \textbf{imprime}(\textbf{exp\_or}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \textbf{imprimeExpBin}(Opnd0, \; "or", \; Opnd1, 4, 4) \\
+    \\
+    \textbf{imprime}(\textbf{exp\_mul}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \textbf{imprimeExpBin}(Opnd0, \; "*", \; Opnd1, 4, 5) \\
+    \\
+    \textbf{imprime}(\textbf{exp\_div}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \textbf{imprimeExpBin}(Opnd0, \; "/", \; Opnd1, 4, 5) \\
+    \\
+    \textbf{imprime}(\textbf{exp\_mod}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \textbf{imprimeExpBin}(Opnd0, \; "\%", \; Opnd1, 4, 5) \\
+    \\
+    \textbf{imprime}(\textbf{exp\_menos}(Opnd)): \\
+        \phantom{---} \textbf{print} \; "-" \\
+        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{imprimeOpnd}(Opnd, 5) \\
+    \\
+    \textbf{imprime}(\textbf{exp\_not}(Opnd)): \\
+        \phantom{---} \textbf{print} \; "not" \\
+        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{imprimeOpnd}(Opnd, 5) \\
+    \\
+    \textbf{imprime}(\textbf{exp\_index}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \textbf{imprimeOpnd}(Opnd0, 6) \\
+        \phantom{---} \textbf{print} \; "[" \\
+        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{imprimeOpnd}(Opnd1, 0) \\
+        \phantom{---} \textbf{print} \; "]" \\
+        \phantom{---} \textbf{nl} \\
+    \\
+    \textbf{imprime}(\textbf{exp\_reg}(Opnd, iden)): \\
+        \phantom{---} \textbf{imprimeOpnd}(Opnd, 6) \\
+        \phantom{---} \textbf{print} \; "." \\
+        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{print} \; iden \\
+        \phantom{---} \textbf{nl} \\
+    \\
+    \textbf{imprime}(\textbf{exp\_indir}(Opnd)): \\
+        \phantom{---} \textbf{imprimeOpnd}(Opnd, 6) \\
+        \phantom{---} \textbf{print} \; "\; \hat{} \;"" \\
+        \phantom{---} \textbf{nl} \\
+    \\
+    \textbf{imprime}(\textbf{exp\_entero}(litEntero)): \\
+        \phantom{---} \textbf{print} \; litEntero \\
+        \phantom{---} \textbf{nl} \\
+    \\
+    \textbf{imprime}(\textbf{exp\_real}(litReal)): \\
+        \phantom{---} \textbf{print} \; litReal \\
+        \phantom{---} \textbf{nl} \\
+    \\
+    \textbf{imprime}(\textbf{exp\_true}()): \\
+        \phantom{---} \textbf{print} \; "<true>" \\
+        \phantom{---} \textbf{nl} \\
+    \\
+    \textbf{imprime}(\textbf{exp\_false}()): \\
+        \phantom{---} \textbf{print} \; "<false>" \\
+        \phantom{---} \textbf{nl} \\
+    \\
+    \textbf{imprime}(\textbf{exp\_cadena}(litCadena)): \\
+        \phantom{---} \textbf{print} \; litCadena \\
+        \phantom{---} \textbf{nl} \\
+    \\
+    \textbf{imprime}(\textbf{exp\_iden}(iden)): \\
+        \phantom{---} \textbf{print} \; iden \\
+        \phantom{---} \textbf{nl} \\
+    \\
+    \textbf{imprime}(\textbf{exp\_null}()): \\
+        \phantom{---} \textbf{print} \; "<null>" \\
+        \phantom{---} \textbf{nl} \\
+    \\ \\ \\
+    \textbf{imprimeExpBin}(Opnd0,Op,Opnd1,np0,np1): \\
+        \phantom{---} \textbf{imprimeOpnd}(Opnd0,np0) \\
+        \phantom{---} \textbf{print} \; Op \\
+        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{imprimeOpnd}(Opnd1,np1) \\
+    \\
+    \textbf{imprimeOpnd}(Opnd,MinPrior): \\
+        \phantom{---} \textbf{if prioridad}(Opnd) < MinPrior \\
+            \phantom{------} \textbf{print} \; "(" \\
+            \phantom{------} \textbf{nl} \\
+        \phantom{---} \textbf{end if} \\
+        \phantom{---}\textbf{imprime}(Opnd) \\
+        \phantom{---} \textbf{if prioridad}(Opnd) < MinPrior \\
+            \phantom{------} \textbf{print} \; ")" \\
+            \phantom{------} \textbf{nl} \\
+        \phantom{---} \textbf{end if} \\
+    \\
+    \textbf{prioridad}(\textbf{exp\_asig}(\_,\_)): \textbf{return} \; 0 \\
+    \textbf{prioridad}(\textbf{exp\_menor}(\_,\_)): \textbf{return} \; 1 \\
+    \textbf{prioridad}(\textbf{exp\_menor\_ig}(\_,\_)): \textbf{return} \; 1 \\
+    \textbf{prioridad}(\textbf{exp\_mayor}(\_,\_)): \textbf{return} \; 1 \\
+    \textbf{prioridad}(\textbf{exp\_mayor\_ig}(\_,\_)): \textbf{return} \; 1 \\
+    \textbf{prioridad}(\textbf{exp\_ig}(\_,\_)): \textbf{return} \; 1 \\
+    \textbf{prioridad}(\textbf{exp\_dist}(\_,\_)): \textbf{return} \; 1 \\
+    \textbf{prioridad}(\textbf{exp\_suma}(\_,\_)): \textbf{return} \; 2 \\
+    \textbf{prioridad}(\textbf{exp\_resta}(\_,\_)): \textbf{return} \; 2 \\
+    \textbf{prioridad}(\textbf{exp\_and}(\_,\_)): \textbf{return} \; 3 \\
+    \textbf{prioridad}(\textbf{exp\_or}(\_,\_)): \textbf{return} \; 3 \\
+    \textbf{prioridad}(\textbf{exp\_mul}(\_,\_)): \textbf{return} \; 4 \\
+    \textbf{prioridad}(\textbf{exp\_div}(\_,\_)): \textbf{return} \; 4 \\
+    \textbf{prioridad}(\textbf{exp\_mod}(\_,\_)): \textbf{return} \; 4 \\
+    \textbf{prioridad}(\textbf{exp\_menos}(\_,\_)): \textbf{return} \; 5 \\
+    \textbf{prioridad}(\textbf{exp\_not}(\_,\_)): \textbf{return} \; 5 \\
+    \textbf{prioridad}(\textbf{exp\_index}(\_,\_)): \textbf{return} \; 6 \\
+    \textbf{prioridad}(\textbf{exp\_reg}(\_,\_)): \textbf{return} \; 6 \\
+    \textbf{prioridad}(\textbf{exp\_indir}(\_,\_)): \textbf{return} \; 6
+    %\textbf{prioridad}(\textbf{exp\_entero}(\_,\_)): \textbf{return} \; 7 \\
+    %\textbf{prioridad}(\textbf{exp\_real}(\_,\_)): \textbf{return} \; 7 \\
+    %\textbf{prioridad}(\textbf{exp\_true}(\_,\_)): \textbf{return} \; 7 \\
+    %\textbf{prioridad}(\textbf{exp\_false}(\_,\_)): \textbf{return} \; 7 \\
+    %\textbf{prioridad}(\textbf{exp\_cadena}(\_,\_)): \textbf{return} \; 7 \\
+    %\textbf{prioridad}(\textbf{exp\_iden}(\_,\_)): \textbf{return} \; 7 \\
+    %\textbf{prioridad}(\textbf{exp\_null}(\_,\_)): \textbf{return} \; 7 \\
+\end{math}

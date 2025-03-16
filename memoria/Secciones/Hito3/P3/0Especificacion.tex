@@ -105,7 +105,7 @@
     tipo\_base \longrightarrow \; \textbf{string} \\
         \phantom{---} tipo\_base.\textbf{a} = tipo\_string() \\
     tipo\_base \longrightarrow \; \textbf{identificador} \\
-        \phantom{---} tipo\_base.\textbf{a} = tipo\_type() \\
+        \phantom{---} tipo\_base.\textbf{a} = tipo\_type(\textbf{identificador.lex}) \\
     % RECURSION A IZQ
     %lista\_campos \longrightarrow \; lista\_campos \; , \; tipo\_nombre \\
     %    \phantom{---} lista\_campos_0.\textbf{a} = muchos\_campos(lista\_campos_1.\textbf{a}, \; tipo\_nombre.\textbf{a}) \\
@@ -291,15 +291,25 @@
     E5 \longrightarrow \; E6 \\
         \phantom{---} E5.\textbf{a} = E6.\textbf{a} \\
     % RECURSION A IZQ
-    %E6 \longrightarrow \; E6 \; op\_dirs \\
-    %    \phantom{---} E6_0.\textbf{a} = mkopun(op\_dirs.\textbf{op}, \; E6_1.\textbf{a}) \\
+    %E6 \longrightarrow \; E6 \; [ expresion ] \\
+    %    \phantom{---} E6_0.\textbf{a} = exp\_index(E6.a, expresion.a) \\
+    %E6 \longrightarrow \; E6 \; . \; \textbf{identificador} \\
+    %    \phantom{---} E6_0.\textbf{a} = exp\_ref(E6.a, identificador.lex) \\
+    %E6 \longrightarrow \; E6 \; \hat{} \\
+    %    \phantom{---} E6_0.\textbf{a} = exp\_indir(E6.a) \\
     %E6 \longrightarrow \; E7 \\
     %    \phantom{---} E6.\textbf{a} = E7.\textbf{a} \\  
     E6 \longrightarrow \; E7 \; resto\_E6 \\
         \phantom{---} resto\_E6.\textbf{ah} = E7.\textbf{a} \\  
         \phantom{---} E6.\textbf{a} = resto\_E6.\textbf{a} \\  
-    resto\_E6 \longrightarrow \; op\_dirs \; resto\_E6 \\
-        \phantom{---} resto\_E6_1.\textbf{ah} = mkopun(op\_dirs.\textbf{op}, \; resto\_E6_0.\textbf{ah}) \\  
+    resto\_E6 \longrightarrow \; [ expresion ] \; resto\_E6 \\
+        \phantom{---} resto\_E6_1.\textbf{ah} = exp\_index(resto\_E6_0.\textbf{ah}, expresion.\textbf{a}) \\  
+        \phantom{---} resto\_E6_0.\textbf{a} = resto\_E6_1.\textbf{a} \\ 
+    resto\_E6 \longrightarrow \; . \; \textbf{identificador} \; resto\_E6 \\
+        \phantom{---} resto\_E6_1.\textbf{ah} = exp\_ref(resto\_E6_0.\textbf{ah}, \textbf{identificador.lex}) \\  
+        \phantom{---} resto\_E6_0.\textbf{a} = resto\_E6_1.\textbf{a} \\ 
+    resto\_E6 \longrightarrow \; \hat{} \; resto\_E6 \\
+        \phantom{---} resto\_E6_1.\textbf{ah} = exp\_indir(resto\_E6_0.\textbf{ah}) \\ 
         \phantom{---} resto\_E6_0.\textbf{a} = resto\_E6_1.\textbf{a} \\  
     resto\_E6 \longrightarrow \; \epsilon \\
         \phantom{---} resto\_E6.\textbf{a} = resto\_E6.\textbf{ah} \\  
@@ -344,11 +354,5 @@
     op\_mult \longrightarrow \; / \\
         \phantom{---} op\_mult.\textbf{op} = \; "/" \\
     op\_mult \longrightarrow \% \\
-        \phantom{---} op\_mult.\textbf{op} = \; "\%" \\
-    op\_dirs \longrightarrow \; [ expresion ] \\
-        \phantom{---} op\_dirs.\textbf{op} = \; "index" \\
-    op\_dirs \longrightarrow \; . \; \textbf{identificador} \\
-        \phantom{---} op\_dirs.\textbf{op} = \; "reg" \\
-    op\_dirs \longrightarrow \; \hat{} \\
-        \phantom{---} op\_dirs.\textbf{op} = \; "\; \hat{} \;"
+        \phantom{---} op\_mult.\textbf{op} = \; "\%"
 \end{math}

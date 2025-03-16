@@ -66,7 +66,7 @@
     tipo\_base \longrightarrow \; \textbf{string} \\
         \phantom{---} tipo\_base.\textbf{a} = tipo\_string() \\
     tipo\_base \longrightarrow \; \textbf{identificador} \\
-        \phantom{---} tipo\_base.\textbf{a} = tipo\_type() \\
+        \phantom{---} tipo\_base.\textbf{a} = tipo\_type(\textbf{identificador.lex}) \\
     lista\_campos \longrightarrow \; lista\_campos \; , \; tipo\_nombre \\
         \phantom{---} lista\_campos_0.\textbf{a} = muchos\_campos(lista\_campos_1.\textbf{a}, \; tipo\_nombre.\textbf{a}) \\
     lista\_campos \longrightarrow \; tipo\_nombre \\
@@ -152,13 +152,17 @@
     E4 \longrightarrow \; E5 \\
         \phantom{---} E4.\textbf{a} = E5.\textbf{a} \\
     E5  \longrightarrow \; - \; E5 \\
-        \phantom{---} E5_0.\textbf{a} = mkopun("-", E5_1.\textbf{a}) \\   
+        \phantom{---} E5_0.\textbf{a} = exp\_menos(E5.\textbf{a}) \\   
     E5 \longrightarrow \; \textbf{not} \; E5 \\
-        \phantom{---} E5_0.\textbf{a} = mkopun("not", E5_1.\textbf{a}) \\
+        \phantom{---} E5_0.\textbf{a} = exp\_not(E5.\textbf{a}) \\
     E5 \longrightarrow \; E6 \\
         \phantom{---} E5.\textbf{a} = E6.\textbf{a} \\
-    E6 \longrightarrow \; E6 \; op\_dirs \\
-        \phantom{---} E6_0.\textbf{a} = mkopun(op\_dirs.\textbf{op}, \; E6_1.\textbf{a}) \\
+    E6 \longrightarrow \; E6 \; [ expresion ] \\
+        \phantom{---} E6_0.\textbf{a} = exp\_index(E6_1.\textbf{a}, expresion.\textbf{a}) \\
+    E6 \longrightarrow \; E6 \; . \; \textbf{identificador} \\
+        \phantom{---} E6_0.\textbf{a} = exp\_ref(E6_1.\textbf{a}, \textbf{identificador.lex}) \\
+    E6 \longrightarrow \; E6 \; \hat{} \\
+        \phantom{---} E6_0.\textbf{a} = exp\_indir(E6_1.\textbf{a}) \\
     E6 \longrightarrow \; E7 \\
         \phantom{---} E6.\textbf{a} = E7.\textbf{a} \\  
     E7 \longrightarrow \; expresion\_basica \\
@@ -201,11 +205,5 @@
     op\_mult \longrightarrow \; / \\
         \phantom{---} op\_mult.\textbf{op} = \; "/" \\
     op\_mult \longrightarrow \% \\
-        \phantom{---} op\_mult.\textbf{op} = \; "\%" \\
-    op\_dirs \longrightarrow \; [ expresion ] \\
-        \phantom{---} op\_dirs.\textbf{op} = \; "index" \\
-    op\_dirs \longrightarrow \; . \; \textbf{identificador} \\
-        \phantom{---} op\_dirs.\textbf{op} = \; "reg" \\
-    op\_dirs \longrightarrow \; \hat{} \\
-        \phantom{---} op\_dirs.\textbf{op} = \; "\; \hat{} \;"
+        \phantom{---} op\_mult.\textbf{op} = \; "\%"
 \end{math}
