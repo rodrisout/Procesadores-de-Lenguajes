@@ -7,16 +7,13 @@ El fin de fichero se escribirá como <EOF>.
 
 \begin{math}
     \textbf{imprime}(\textbf{bloque}(SecDecs, \; SecIs)): \\
-        \phantom{---} \textbf{print} \; "\{" \\
-        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{println} \; "\{" \\
         \phantom{---} \textbf{imprime}(SecDecs) \\
         \phantom{---} \textbf{imprime}(SecIs) \\
-        \phantom{---} \textbf{print} \; "\}" \\
-        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{println} \; "\}" \\
     \\
     \textbf{imprime}(\textbf{EOF}()): \\
-        \phantom{---} \textbf{print} \; "<EOF>" \\
-        \phantom{---} \textbf{nl}
+        \phantom{---} \textbf{println} \; "<EOF>" \\
 \end{math}
 
 \subsection{Declaraciones}
@@ -24,15 +21,13 @@ El fin de fichero se escribirá como <EOF>.
 \begin{math}
     \textbf{imprime}(\textbf{si\_decs}(LDecs)): \\
         \phantom{---} \textbf{imprime}(LDecs) \\
-        \phantom{---} \textbf{print} \; "\&\&" \\
-        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{println} \; "\&\&" \\
     \\
     \textbf{imprime}(\textbf{no\_decs()}): \textbf{noop} \\
     \\
     \textbf{imprime}(\textbf{muchas\_decs}(LDecs, \; Dec)): \\
         \phantom{---} \textbf{imprime}(LDecs) \\
-        \phantom{---} \textbf{print} \; ";" \\
-        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{println} \; ";" \\
         \phantom{---} \textbf{imprime}(Dec) \\
     \\
     \textbf{imprime}(\textbf{una\_dec}(Dec)): \\
@@ -45,11 +40,11 @@ El fin de fichero se escribirá como <EOF>.
         \phantom{---} \textbf{imprime}(TipoNom) \\
     \\
     \textbf{imprime}(\textbf{dec\_proc}(iden, \; ParamFs, \; Bloq)): \\
-        \phantom{---} \textbf{print} \; "<proc>" \\
-        \phantom{---} \textbf{nl} \\
-        \phantom{---} \textbf{print} \; iden \\
-        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{println} \; "<proc>" \\
+        \phantom{---} \textbf{println} \; iden \\
+        \phantom{---} \textbf{println} \; "(" \\
         \phantom{---} \textbf{imprime}(ParamFs) \\
+        \phantom{---} \textbf{println} \; ")" \\
         \phantom{---} \textbf{imprime}(Bloq) \\
     \\
     \textbf{imprime}(\textbf{si\_params\_f}(LParamFs)): \\
@@ -59,8 +54,7 @@ El fin de fichero se escribirá como <EOF>.
     \\
     \textbf{imprime}(\textbf{muchos\_params\_f}(LParamFs, \; ParamF)): \\
         \phantom{---} \textbf{imprime}(LParamFs) \\
-        \phantom{---} \textbf{print} \; "," \\
-        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{println} \; "," \\
         \phantom{---} \textbf{imprime}(ParamF) \\
     \\
     \textbf{imprime}(\textbf{un\_param\_f}(ParamF)): \\
@@ -68,15 +62,12 @@ El fin de fichero se escribirá como <EOF>.
     \\
     \textbf{imprime}(\textbf{si\_refparam\_f}(Tipo, \; iden)): \\
         \phantom{---} \textbf{imprime}(Tipo) \\
-        \phantom{---} \textbf{print} \; "\&" \\
-        \phantom{---} \textbf{nl} \\
-        \phantom{---} \textbf{print} \; iden\\
-        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{println} \; "\&" \\
+        \phantom{---} \textbf{println} \; iden\\
     \\
     \textbf{imprime}(\textbf{no\_refparam\_f}(Tipo, \; iden)): \\
         \phantom{---} \textbf{imprime}(Tipo) \\
-        \phantom{---} \textbf{print} \; iden \\
-        \phantom{---} \textbf{nl}
+        \phantom{---} \textbf{println} \; iden \\
 \end{math}
 
 \subsection{Tipos}
@@ -84,56 +75,42 @@ El fin de fichero se escribirá como <EOF>.
 \begin{math}
     \textbf{imprime}(\textbf{tipo\_nombre}(Tipo, \; iden)): \\
         \phantom{---} \textbf{imprime}(Tipo) \\
-        \phantom{---} \textbf{print} \; iden\\
-        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{println} \; iden\\
     \\
     \textbf{imprime}(\textbf{tipo\_array}(Tipo, \; litEntero)): \\
         \phantom{---} \textbf{imprime}(Tipo) \\
-        \phantom{---} \textbf{print} \; "["\\
-        \phantom{---} \textbf{nl} \\
-        \phantom{---} \textbf{print} \; litEntero\\
-        \phantom{---} \textbf{nl} \\
-        \phantom{---} \textbf{print} \; "]"\\
-        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{println} \; "["\\
+        \phantom{---} \textbf{println} \; litEntero\\
+        \phantom{---} \textbf{println} \; "]"\\
     \\
     \textbf{imprime}(\textbf{tipo\_indir}(Tipo)): \\
-        \phantom{---} \textbf{print} \; "\; \hat{} \;"\\
-        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{println} \; "\; \hat{} \;"\\
         \phantom{---} \textbf{imprime}(Tipo) \\
     \\
     \textbf{imprime}(\textbf{tipo\_struct}(LCampos)): \\
-        \phantom{---} \textbf{print} \; "<struct>" \\
-        \phantom{---} \textbf{nl} \\
-        \phantom{---} \textbf{print} \; "\{" \\
-        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{println} \; "<struct>" \\
+        \phantom{---} \textbf{println} \; "\{" \\
         \phantom{---} \textbf{imprime}(LCampos) \\
-        \phantom{---} \textbf{print} \; "\}" \\
-        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{println} \; "\}" \\
     \\
     \textbf{imprime}(\textbf{tipo\_int}()): \\
-        \phantom{---} \textbf{print} \; "<int>" \\
-        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{println} \; "<int>" \\
     \\
     \textbf{imprime}(\textbf{tipo\_real}()): \\
-        \phantom{---} \textbf{print} \; "<real>" \\
-        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{println} \; "<real>" \\
     \\
     \textbf{imprime}(\textbf{tipo\_bool}()): \\
-        \phantom{---} \textbf{print} \; "<bool>" \\
-        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{println} \; "<bool>" \\
     \\
     \textbf{imprime}(\textbf{tipo\_string}()): \\
-        \phantom{---} \textbf{print} \; "<string>" \\
-        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{println} \; "<string>" \\
     \\
     \textbf{imprime}(\textbf{tipo\_type}(iden)): \\
-        \phantom{---} \textbf{print} \; iden \\
-        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{println} \; iden \\
     \\
     \textbf{imprime}(\textbf{muchos\_campos}(LCampos, \; TipoNom)): \\
         \phantom{---} \textbf{imprime}(LCampos) \\
-        \phantom{---} \textbf{print} \; "," \\
-        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{println} \; "," \\
         \phantom{---} \textbf{imprime}(TipoNom) \\
     \\
     \textbf{imprime}(\textbf{un\_campo}(TipoNom)): \\
@@ -150,66 +127,56 @@ El fin de fichero se escribirá como <EOF>.
     \\
     \textbf{imprime}(\textbf{muchas\_ins}(LIs, \; I)): \\
         \phantom{---} \textbf{imprime}(LIs) \\
-        \phantom{---} \textbf{print} \; ";" \\
-        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{println} \; ";" \\
         \phantom{---} \textbf{imprime}(I) \\
     \\
     \textbf{imprime}(\textbf{una\_ins}(I)): \\
         \phantom{---} \textbf{imprime}(I) \\
     \\
     \textbf{imprime}(\textbf{ins\_eval}(Exp)): \\
-        \phantom{---} \textbf{print} \; "<@>" \\
-        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{println} \; "<@>" \\
         \phantom{---} \textbf{imprime}(Exp) \\
     \\
     \textbf{imprime}(\textbf{ins\_if}(Exp, \; Bloq)): \\
-        \phantom{---} \textbf{print} \; "<if>" \\
-        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{println} \; "<if>" \\
         \phantom{---} \textbf{imprime}(Exp) \\
         \phantom{---} \textbf{imprime}(Bloq) \\
     \\
     \textbf{imprime}(\textbf{ins\_if\_else}(I, \; Bloq)): \\
         \phantom{---} \textbf{imprime}(I) \\
-        \phantom{---} \textbf{print} \; "<else>" \\
-        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{println} \; "<else>" \\
         \phantom{---} \textbf{imprime}(Bloq) \\
     \\
     \textbf{imprime}(\textbf{ins\_while}(Exp, \; Bloq)): \\
-        \phantom{---} \textbf{print} \; "<while>" \\
-        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{println} \; "<while>" \\
         \phantom{---} \textbf{imprime}(Exp) \\
         \phantom{---} \textbf{imprime}(Bloq) \\
     \\
     \textbf{imprime}(\textbf{ins\_read}(Exp)): \\
-        \phantom{---} \textbf{print} \; "<read>" \\
-        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{println} \; "<read>" \\
         \phantom{---} \textbf{imprime}(Exp) \\
     \\
     \textbf{imprime}(\textbf{ins\_write}(Exp)): \\
-        \phantom{---} \textbf{print} \; "<write>" \\
-        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{println} \; "<write>" \\
         \phantom{---} \textbf{imprime}(Exp) \\
     \\
     \textbf{imprime}(\textbf{ins\_nl}(Exp)): \\
-        \phantom{---} \textbf{print} \; "<nl>" \\
-        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{println} \; "<nl>" \\
     \\
     \textbf{imprime}(\textbf{ins\_new}(<Exp>)): \\
-        \phantom{---} \textbf{print} \; "<new>" \\
-        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{println} \; "<new>" \\
         \phantom{---} \textbf{imprime}(Exp) \\
     \\
     \textbf{imprime}(\textbf{ins\_delete}(Exp)): \\
-        \phantom{---} \textbf{print} \; "<delete>" \\
-        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{println} \; "<delete>" \\
         \phantom{---} \textbf{imprime}(Exp) \\
     \\
     \textbf{imprime}(\textbf{ins\_call}(iden, \; ParamRs)): \\
-        \phantom{---} \textbf{print} \; "<call>" \\
-        \phantom{---} \textbf{nl} \\
-        \phantom{---} \textbf{print} \; iden \\
-        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{println} \; "<call>" \\
+        \phantom{---} \textbf{println} \; iden \\
+        \phantom{---} \textbf{println} \; "(" \\
         \phantom{---} \textbf{imprime}(ParamRs) \\
+        \phantom{---} \textbf{println} \; ")" \\
     \\
     \textbf{imprime}(\textbf{ins\_bloque}(Bloq)): \\
         \phantom{---} \textbf{imprime}(Bloq) \\
@@ -221,8 +188,7 @@ El fin de fichero se escribirá como <EOF>.
     \\
     \textbf{imprime}(\textbf{muchos\_params\_r}(LParamRs, \; Exp)): \\
         \phantom{---} \textbf{imprime}(LParamRs) \\
-        \phantom{---} \textbf{print} \; "," \\
-        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{println} \; "," \\
         \phantom{---} \textbf{imprime}(Exp) \\
     \\
     \textbf{imprime}(\textbf{un\_param\_r}(Exp)): \\
@@ -275,67 +241,52 @@ El fin de fichero se escribirá como <EOF>.
         \phantom{---} \textbf{imprimeExpBin}(Opnd0, \; "\%", \; Opnd1, 4, 5) \\
     \\
     \textbf{imprime}(\textbf{exp\_menos}(Opnd)): \\
-        \phantom{---} \textbf{print} \; "-" \\
-        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{println} \; "-" \\
         \phantom{---} \textbf{imprimeOpnd}(Opnd, 5) \\
     \\
     \textbf{imprime}(\textbf{exp\_not}(Opnd)): \\
-        \phantom{---} \textbf{print} \; "not" \\
-        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{println} \; "not" \\
         \phantom{---} \textbf{imprimeOpnd}(Opnd, 5) \\
     \\
     \textbf{imprime}(\textbf{exp\_index}(Opnd0, \; Opnd1)): \\
         \phantom{---} \textbf{imprimeOpnd}(Opnd0, 6) \\
-        \phantom{---} \textbf{print} \; "[" \\
-        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{println} \; "[" \\
         \phantom{---} \textbf{imprimeOpnd}(Opnd1, 0) \\
-        \phantom{---} \textbf{print} \; "]" \\
-        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{println} \; "]" \\
     \\
     \textbf{imprime}(\textbf{exp\_reg}(Opnd, iden)): \\
         \phantom{---} \textbf{imprimeOpnd}(Opnd, 6) \\
-        \phantom{---} \textbf{print} \; "." \\
-        \phantom{---} \textbf{nl} \\
-        \phantom{---} \textbf{print} \; iden \\
-        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{println} \; "." \\
+        \phantom{---} \textbf{println} \; iden \\
     \\
     \textbf{imprime}(\textbf{exp\_indir}(Opnd)): \\
         \phantom{---} \textbf{imprimeOpnd}(Opnd, 6) \\
-        \phantom{---} \textbf{print} \; "\; \hat{} \;"" \\
-        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{println} \; "\; \hat{} \;"" \\
     \\
     \textbf{imprime}(\textbf{exp\_entero}(litEntero)): \\
-        \phantom{---} \textbf{print} \; litEntero \\
-        \phantom{---} \textbf{nl} \\
-    \\
+        \phantom{---} \textbf{println} \; litEntero \\
+    \
     \textbf{imprime}(\textbf{exp\_real}(litReal)): \\
-        \phantom{---} \textbf{print} \; litReal \\
-        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{println} \; litReal \\
     \\
     \textbf{imprime}(\textbf{exp\_true}()): \\
-        \phantom{---} \textbf{print} \; "<true>" \\
-        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{println} \; "<true>" \\
     \\
     \textbf{imprime}(\textbf{exp\_false}()): \\
-        \phantom{---} \textbf{print} \; "<false>" \\
-        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{println} \; "<false>" \\
     \\
     \textbf{imprime}(\textbf{exp\_cadena}(litCadena)): \\
-        \phantom{---} \textbf{print} \; litCadena \\
-        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{println} \; litCadena \\
     \\
     \textbf{imprime}(\textbf{exp\_iden}(iden)): \\
-        \phantom{---} \textbf{print} \; iden \\
-        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{println} \; iden \\
     \\
     \textbf{imprime}(\textbf{exp\_null}()): \\
-        \phantom{---} \textbf{print} \; "<null>" \\
-        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{println} \; "<null>" \\
     \\ \\ \\
     \textbf{imprimeExpBin}(Opnd0,Op,Opnd1,np0,np1): \\
         \phantom{---} \textbf{imprimeOpnd}(Opnd0,np0) \\
-        \phantom{---} \textbf{print} \; Op \\
-        \phantom{---} \textbf{nl} \\
+        \phantom{---} \textbf{println} \; Op \\
         \phantom{---} \textbf{imprimeOpnd}(Opnd1,np1) \\
     \\
     \textbf{imprimeOpnd}(Opnd,MinPrior): \\
@@ -344,6 +295,7 @@ El fin de fichero se escribirá como <EOF>.
             \phantom{------} \textbf{nl} \\
         \phantom{---} \textbf{end if} \\
         \phantom{---}\textbf{imprime}(Opnd) \\
+        \phantom{---} \textbf{nl} \\
         \phantom{---} \textbf{if prioridad}(Opnd) < MinPrior \\
             \phantom{------} \textbf{print} \; ")" \\
             \phantom{------} \textbf{nl} \\
