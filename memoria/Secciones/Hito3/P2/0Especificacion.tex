@@ -11,7 +11,7 @@
 
 \begin{math}
     seccion\_declaraciones\_opt \longrightarrow \; seccion\_declaraciones \; \&\& \\
-        \phantom{---} seccion\_declaraciones\_opt.\textbf{a} = si\_decs(seccion\_declaraciones) \\
+        \phantom{---} seccion\_declaraciones\_opt.\textbf{a} = si\_decs(seccion\_declaraciones.\textbf{a}) \\
     seccion\_declaraciones\_opt \longrightarrow \; \epsilon \\
         \phantom{---} seccion\_declaraciones\_opt.\textbf{a} = no\_decs() \\
     seccion\_declaraciones \longrightarrow \; seccion\_declaraciones \; ; \; declaracion \\
@@ -77,7 +77,7 @@
 
 \begin{math}
     seccion\_instrucciones\_opt \longrightarrow \; seccion\_instrucciones \\
-        \phantom{---} seccion\_instrucciones\_opt.\textbf{a} = si\_ins(seccion\_instrucciones) \\
+        \phantom{---} seccion\_instrucciones\_opt.\textbf{a} = si\_ins(seccion\_instrucciones.\textbf{a}) \\
     seccion\_instrucciones\_opt \longrightarrow \; \epsilon \\
         \phantom{---} sseccion\_instrucciones\_opt.\textbf{a} = no\_ins() \\
     seccion\_instrucciones \longrightarrow \; lista\_instrucciones \\
