@@ -77,12 +77,12 @@ PARSER_END(ASTBuilderJavacc)
   TOKEN:{<corcheteCierre:"]">}
 
 Prog programa() : { Bloq b; } {
-	b = bloque() <EOF> { return b; }
+	b = bloque() <EOF> { return new Prog(b); }
 }
 
-Bloq bloque() : { LDec sd; SeccionInstrucciones si; } {
-	<llaveApert> sd = seccion_declaraciones_opt() si = seccion_instrucciones_opt() <llaveCierre>
-	{ return new Bloq(sd, si); }
+Bloq bloque() : { LDec ld; LIns li; } {
+	<llaveApert> ld = seccion_declaraciones_opt() li = seccion_instrucciones_opt() <llaveCierre>
+	{ return new Bloq(ld, li); }
 }
 
 /* [= declaraciones =] */
@@ -97,10 +97,10 @@ LDec seccion_declaraciones() : { Dec d; LDec ld; } {
 
 LDec resto_sd(LDec ld0) : { Dec d; LDec ld; } {
 	<puntoComa> d = declaracion() ld = resto_sd(new LDec(ld0, d)) { return ld; }
-	| { return LDec(ld0, d); }
+	| { return ld0; }
 }
 
-Dec declaracion() : { Tipo t; Token i; ParametrosFormales p; Bloq b; } {
+Dec declaracion() : { Tipo t; Token i; LParamF p; Bloq b; } {
 	t = tipo() i = <identificador> { return new DecVar(t, i.image); }
 	| <type_> t = tipo() i = <identificador> { return new DecTipo(t, i.image); }
 	| <proc_> i = <identificador> p = lista_parametros_opt() b = bloque()
@@ -124,7 +124,7 @@ ParamF parametro() : { Tipo t; boolean r; Token i; } {
 	t = tipo()
 	r = ref_opt()
 	i = <identificador>
-	{ return new ParamF(t, r, i.image)}
+	{ return new ParamF(t, r, i.image); }
 }
 
 boolean ref_opt() : {} {
@@ -143,7 +143,7 @@ Tipo tipo0() : { Tipo t0, t1; } {
 
 Tipo resto_tipo0(Tipo t0) : { Token i; Tipo t; } {
 	<corcheteApert> i = <literalEntero> <corcheteCierre>
-	t = resto_tipo0(new TipoArray(t0, Integer.toString(i.image)))
+	t = resto_tipo0(new TipoArray(t0, Integer.parseInt(i.image)))
 	{ return t; }
 	| { return t0; }
 }
@@ -153,11 +153,11 @@ Tipo tipo1() : { Tipo t; } {
 	| t = tipo_base() { return t; }
 }
 
-Tipo tipo_base() : { Token i; ListaCampos l; } {
-	<int_> { return new TipoBasico(INT); }
-	| <real_> { return new TipoBasico(REAL); }
-	| <bool_> { return new TipoBasico(BOOL); }
-	| <string_> { return new TipoBasico(STRING); }
+Tipo tipo_base() : { Token i; LCampo l; } {
+	<int_> { return new TipoBasico(TTipoBasico.INT); }
+	| <real_> { return new TipoBasico(TTipoBasico.REAL); }
+	| <bool_> { return new TipoBasico(TTipoBasico.BOOL); }
+	| <string_> { return new TipoBasico(TTipoBasico.STRING); }
 	| i = <identificador> { return new TipoIdent(i.image); }
 	| <struct_> <llaveApert> l = lista_campos() <llaveCierre> { return new TipoStruct(l); }
 }
@@ -166,7 +166,7 @@ LCampo lista_campos() : { Campo c; LCampo lc; } {
 	c = campo() lc = resto_lc(new LCampo(null, c)) { return lc; }
 }
 
-void resto_lc(LCampo lc0) : { Campo c; LCampo lc; } {
+LCampo resto_lc(LCampo lc0) : { Campo c; LCampo lc; } {
 	<coma> c = campo() lc = resto_lc(new LCampo(lc0, c)) { return lc; }
 	| { return lc0; }
 }
@@ -176,32 +176,31 @@ Campo campo() : { Tipo t; Token i; } {
 }
 
 /* [= instrucciones =] */
-SeccionInstrucciones seccion_instrucciones_opt() : { LIns li; } {
-	li = seccion_instrucciones()
-	{ return li; }
+LIns seccion_instrucciones_opt() : { LIns li; } {
+	li = seccion_instrucciones() { return li; }
 	| { return null; }
 }
 
-SeccionInstrucciones seccion_instrucciones() : { Ins i; LIns li; } {
+LIns seccion_instrucciones() : { Ins i; LIns li; } {
 	i = instruccion() li = resto_li(new LIns(null, i)) { return li; }
 }
 
-.SeccionInstrucciones resto_li(LIns li0) : { Ins i; Lins li; } {
+LIns resto_li(LIns li0) : { Ins i; LIns li; } {
 	<puntoComa> i = instruccion() li = resto_li(new LIns(li0, i)) { return li; }
 	| { return li0; }
 }
 
-Instruccion instruccion() : { Exp e; Bloq b0, b1; } {
-	<arroba> e = expresion() { return e; }
+Ins instruccion() : { Token i; Exp e; LParamR lp; Bloq b0, b1; } {
+	<arroba> e = expresion() { return new InsExp(e); }
 	| <if_> e = expresion() b0 = bloque() b1 = resto_ii() { return new InsIfElse(e, b0, b1); }
 	| <while_> e = expresion() b0 = bloque() { return new InsWhile(e, b0); }
-	| <read_> e = expresion() { return new InsBuiltin(READ, e); }
-	| <write_> e = expresion() { return new InsBuiltin(WRITE, e); }
-	| <nl_> { return new InsBuiltin(NL, NULL); }
-	| <new_> e = expresion() { return new InsBuiltin(NEW, e); }
-	| <delete_> e = expresion() { return new InsBuiltin(DELETE, e); }
-	| <call_> i = <identificador> <parenApert> le = lista_expresiones_opt() <parenCierre> { return new InsCall(i.image, le); }
-	| b0 = bloque() { return InsBloq(b0); }
+	| <read_> e = expresion() { return new InsBuiltin(TInsBuiltin.READ, e); }
+	| <write_> e = expresion() { return new InsBuiltin(TInsBuiltin.WRITE, e); }
+	| <nl_> { return new InsBuiltin(TInsBuiltin.NL, null); }
+	| <new_> e = expresion() { return new InsBuiltin(TInsBuiltin.NEW, e); }
+	| <delete_> e = expresion() { return new InsBuiltin(TInsBuiltin.DELETE, e); }
+	| <call_> i = <identificador> <parenApert> lp = lista_expresiones_opt() <parenCierre> { return new InsCall(i.image, lp); }
+	| b0 = bloque() { return new InsBloq(b0); }
 }
 Bloq resto_ii() : { Bloq b; } {
 	<else_> b = bloque() { return b; }
@@ -211,9 +210,8 @@ LParamR lista_expresiones_opt() : { LParamR lp; } {
 	lp = lista_expresiones() { return lp; }
 	| { return null; }
 }
-LParamR lista_expresiones(LParamR lp) : { Exp e; LParamR lp; } {
+LParamR lista_expresiones() : { Exp e; LParamR lp; } {
 	e = expresion() lp = resto_le(new LParamR(null, e)) { return lp; }
-	{ return l; }
 }
 LParamR resto_le(LParamR lp0) : { Exp e; LParamR lp; } {
 	<coma> e = expresion() lp = resto_le(new LParamR(lp0, e)) { return lp; }
@@ -228,10 +226,10 @@ Exp E0() : { Exp e0, e1; } {
 	e0 = E1() e1 = resto_E0(e0) { return e1; }
 }
 Exp resto_E0(Exp e0) : { Exp e1; } {
-	<asig> e1 = E0() { return ExpBin(e0, ASIG, e1); }
-	| { return t0; }
+	<asig> e1 = E0() { return new ExpBin(e0, TExpBin.ASIG, e1); }
+	| { return e0; }
 }
-Exp E1() : { Exp t0, t1; } {
+Exp E1() : { Exp e0, e1; } {
 	e0 = E2() e1 = resto_E1(e0) { return e1; }
 }
 Exp resto_E1(Exp e0) : { TExpBin et; Exp e1, e2; } {
@@ -242,22 +240,22 @@ Exp E2() : { Exp e0, e1, e2; } {
 	e0 = E3() e1 = resto_E2_F(e0) e2 = resto_E2_R(e1) { return e2; }
 }
 Exp resto_E2_R(Exp e0) : { Exp e1, e2; } {
-	<suma> e1 = E3() e2 = resto_E2_R(new ExpBin(e0, SUMA, e1)) { return e2; }
+	<suma> e1 = E3() e2 = resto_E2_R(new ExpBin(e0, TExpBin.SUMA, e1)) { return e2; }
 	| { return e0; }
 }
 Exp resto_E2_F(Exp e0) : { Exp e1; } {
-	<resta> e1 = E3() { return new ExpBin(e0, RESTA, e1); }
+	<resta> e1 = E3() { return new ExpBin(e0, TExpBin.RESTA, e1); }
 	| { return e0; }
 }
 Exp E3() : { Exp e0, e1; } {
 	e0 = E4() e1 = resto_E3(e0) { return e1;}
 }
 Exp resto_E3(Exp e0) : { Exp e1; } {
-	<and_> e1 = E3() { return new ExpBin(e0, AND, e1); }
-	| <or_> e1 = E4() { return new ExpBin(e0, OR, e1); }
+	<and_> e1 = E3() { return new ExpBin(e0, TExpBin.AND, e1); }
+	| <or_> e1 = E4() { return new ExpBin(e0, TExpBin.OR, e1); }
 	| { return e0; }
 }
-Exp E4() : { Exp e0; } {
+Exp E4() : { Exp e0, e1; } {
 	e0 = E5() e1 = resto_E4(e0) { return e1; }
 }
 Exp resto_E4(Exp e0) : { TExpBin et; Exp e1, e2; } {
@@ -265,15 +263,15 @@ Exp resto_E4(Exp e0) : { TExpBin et; Exp e1, e2; } {
 	| { return e0; }
 }
 Exp E5() : { Exp e0; } {
-	<resta> e0 = E5() { return ExpNeg(e0); }
-	| <not_> e0 = E5() { return ExpNot(e0); }
+	<resta> e0 = E5() { return new ExpNeg(e0); }
+	| <not_> e0 = E5() { return new ExpNot(e0); }
 	| e0 = E6() { return e0; }
 }
 Exp E6() : { Exp e0, e1; } {
 	e0 = E7() e1 = resto_E6(e0) { return e1; }
 }
-Exp resto_E6(Exp e0) : { ExpIndireccion.Modo m; Exp e1; } {
-	m = op_dirs() e1 = resto_E6(new ExpIndirect(e0, m)) { return e1; }
+Exp resto_E6(Exp e0) : { Exp e1, e2; } {
+	e1 = op_dirs(e0) e2 = resto_E6(e1) { return e2; }
 	| { return e0; }
 }
 Exp E7() : {Exp e; } {
@@ -282,13 +280,13 @@ Exp E7() : {Exp e; } {
 }
 
 Exp expresion_basica() : { Token i; } {
-	<true_> { return new ExpBasicaUni(TExpBasicaUni.TRUE); }
-	| <false_> { return new ExpBasicaUni(TExpBasicaUni.FALSE); }
-	| <null_> { return new ExpBasicaUni(TExpBasicaUni.NULL); }
-	| i = <literalReal> { return new ExpBasicaV<Float>(Float.parseFloat(i.image)); }
-	| i = <literalEntero> { return new ExpBasicaV<Integer>(Integer.parseInt(i.image)); }
-	| i = <literalCadena> { return new ExpBasicaV<String>(i.image); }
-	| i = <identificador> { return new ExpBasicaIdent(i.image); }
+	<true_> { return new ExpBasicUni(TExpBasicUni.TRUE); }
+	| <false_> { return new ExpBasicUni(TExpBasicUni.FALSE); }
+	| <null_> { return new ExpBasicUni(TExpBasicUni.NULL); }
+	| i = <literalReal> { return new ExpBasicV<Float>(Float.parseFloat(i.image)); }
+	| i = <literalEntero> { return new ExpBasicV<Integer>(Integer.parseInt(i.image)); }
+	| i = <literalCadena> { return new ExpBasicV<String>(i.image); }
+	| i = <identificador> { return new ExpBasicIdent(i.image); }
 }
 
 TExpBin op_relacional() : {} {
@@ -306,8 +304,8 @@ TExpBin op_mult() : {} {
 	| <mod> { return TExpBin.MOD; }
 }
 
-ExpIndireccion.Modo op_dirs() : { Exp e; Token i; } {
-	<corcheteApert> e = expresion() <corcheteCierre> { return new ExpIndireccion.Index(e); }
-	| <punto> i = <identificador> { return new ExpIndireccion.Campo(i.image); }
-	| <indireccion> { return new ExpIndireccion.Deref(); }
+Exp op_dirs(Exp e0) : { Exp e; Token i; } {
+	<corcheteApert> e = expresion() <corcheteCierre> { return new ExpIndirectArray(e0, e); }
+	| <punto> i = <identificador> { return new ExpIndirectCampo(e0, i.image); }
+	| <indireccion> { return new ExpIndirectDeref(e0); }
 }

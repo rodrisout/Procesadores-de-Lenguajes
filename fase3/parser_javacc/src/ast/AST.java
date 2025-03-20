@@ -4,15 +4,15 @@ public abstract class AST {
     //
     // PROGRAM
     //
-    class Prog {
+    public class Prog {
         Bloq bloq;
-        Prog(Bloq bloq) { this.bloq = bloq; }
+        public Prog(Bloq bloq) { this.bloq = bloq; }
     }
 
-    class Bloq {
+    public class Bloq {
         LDec decl;
         LIns ins;
-        Bloq(LDec decl, LIns ins) {
+        public Bloq(LDec decl, LIns ins) {
             this.decl = decl;
             this.ins = ins;
         }
@@ -21,59 +21,59 @@ public abstract class AST {
     //
     // DECLARATIONS
     //
-    class Dec {}
-    class LDec extends Dec {
+    public class Dec {}
+    public class LDec {
         LDec prev;
         Dec decl;
-        LDec(LDec prev, Dec decl) {
+        public LDec(LDec prev, Dec decl) {
             this.decl = decl;
             this.prev = prev;
         }
     }
 
-    class DecVar extends Dec {
+    public class DecVar extends Dec {
         Tipo tipo;
         String ident;
-        DecVar(Tipo tipo, String ident) {
+        public DecVar(Tipo tipo, String ident) {
             this.tipo = tipo;
             this.ident = ident;
         }
     }
 
-    class DecTipo extends Dec {
+    public class DecTipo extends Dec {
         Tipo tipo;
         String ident;
-        DecTipo(Tipo tipo, String ident) {
+        public DecTipo(Tipo tipo, String ident) {
             this.tipo = tipo;
             this.ident = ident;
         }
     }
 
-    class DecProc extends Dec {
+    public class DecProc extends Dec {
         String ident;
         LParamF args;
         Bloq bloq;
-        DecProc(String ident, LParamF args, Bloq bloq) {
+        public DecProc(String ident, LParamF args, Bloq bloq) {
             this.ident = ident;
             this.args = args;
             this.bloq = bloq;
         }
     }
 
-    class LParamF {
+    public class LParamF {
         LParamF prev;
         ParamF param;
-        LParamF(LParamF prev, ParamF param) {
+        public LParamF(LParamF prev, ParamF param) {
             this.prev = prev;
             this.param = param;
         }
     }
 
-    class ParamF {
+    public class ParamF {
         Tipo tipo;
         boolean isRef;
         String ident;
-        ParamF(Tipo tipo, boolean isRef, String ident) {
+        public ParamF(Tipo tipo, boolean isRef, String ident) {
             this.tipo = tipo;
             this.isRef = isRef;
             this.ident = ident;
@@ -83,187 +83,202 @@ public abstract class AST {
     //
     // TYPES
     //
-    class Tipo { }
-    class TipoIndir extends Tipo {
+    public class Tipo { }
+    public class TipoIndir extends Tipo {
         Tipo tipo;
-        TipoIndir(Tipo tipo) {
+        public TipoIndir(Tipo tipo) {
             this.tipo = tipo;
         }
     }
-    class TipoArray extends Tipo {
+    public class TipoArray extends Tipo {
         Tipo tipo;
         int tam;
-        TipoArray(Tipo tipo, int tam) {
+        public TipoArray(Tipo tipo, int tam) {
             this.tipo = tipo;
             this.tam = tam;
         }
     }
 
-    enum TTipoBasico { INT, REAL, BOOL, STRING };
-    class TipoBasico extends Tipo {
+    public enum TTipoBasico { INT, REAL, BOOL, STRING };
+    public class TipoBasico extends Tipo {
         TTipoBasico t;
-        TipoBasico(TTipoBasico t) { this.t = t; }
+        public TipoBasico(TTipoBasico t) { this.t = t; }
     }
-    class TipoIdent extends Tipo {
+    public class TipoIdent extends Tipo {
         String ident;
-        TipoIdent(String ident) {
+        public TipoIdent(String ident) {
             this.ident = ident;
         }
     }
-    class TipoStruct extends Tipo {
-        LCampos campos;
-        TipoStruct(LCampos campos) {
+    public class TipoStruct extends Tipo {
+        LCampo campos;
+        public TipoStruct(LCampo campos) {
             this.campos = campos;
         }
     }
 
-    class Campo {
+    public class Campo {
         Tipo tipo;
         String ident;
-        Campo(Tipo tipo, String ident) {
+        public Campo(Tipo tipo, String ident) {
             this.tipo = tipo;
             this.ident = ident;
         }
     }
 
-    class LCampos {
+    public class LCampo {
+        LCampo prev;
         Campo campo;
-        LCampos rest;
-        LCampos(Campo campo, LCampos rest) {
+        public LCampo(LCampo prev, Campo campo) {
+            this.prev = prev;
             this.campo = campo;
-            this.rest = rest;
         }
     }
 
     //
     // INSTRUCTIONS
     //
-    class LIns {
+    public class LIns {
+        LIns prev;
         Ins instr;
-        LIns rest;
-        LIns(Ins instr, LIns rest) {
-
+        public LIns(LIns prev, Ins instr) {
+            this.prev = prev;
+            this.instr = instr;
         }
     }
 
-    class Ins { }
-    class InsExp {
-        Exp expr;
-        InsExp(Exp expr) {
-            this.expr = expr;
+    public class Ins { }
+    public class InsExp extends Ins {
+        Exp exp;
+        public InsExp(Exp exp) {
+            this.exp = exp;
         }
     }
-    class InsIfElse {
-        Exp expr;
+    public class InsIfElse extends Ins {
+        Exp exp;
         Bloq bloqtrue, bloqfalse;
-        InsIfElse(Exp expr, Bloq bloqtrue, Bloq bloqfalse) {
-            this.expr = expr;
+        public InsIfElse(Exp exp, Bloq bloqtrue, Bloq bloqfalse) {
+            this.exp = exp;
             this.bloqtrue = bloqtrue;
             this.bloqfalse = bloqfalse;
         }
     }
-    class InsWhile {
-        Exp expr;
+    public class InsWhile extends Ins {
+        Exp exp;
         Bloq bloq;
-        InsWhile(Exp expr, Bloq bloq) {
-            this.expr = expr;
+        public InsWhile(Exp exp, Bloq bloq) {
+            this.exp = exp;
             this.bloq = bloq;
         }
     }
 
-    enum TInsBuiltin { READ, WRITE, NL, NEW, DELETE };
-    class InsBuiltin extends Ins {
-        Exp expr = null;
-        InsBuiltin(TInsBuiltin t, Exp expr) { this.expr = expr; }
+    public enum TInsBuiltin { READ, WRITE, NL, NEW, DELETE };
+    public class InsBuiltin extends Ins {
+        Exp exp = null;
+        public InsBuiltin(TInsBuiltin t, Exp exp) { this.exp = exp; }
     }
 
-    class InsCall extends Ins {
+    public class InsCall extends Ins {
         String ident;
         LParamR param;
-        InsCall(String ident, LParamR param) {
+        public InsCall(String ident, LParamR param) {
             this.ident = ident;
             this.param = param;
         }
     }
 
-    class LParamR {
-        Exp expr;
-        LParamR rest;
-        LParamR(Exp expr, LParamR rest) {
-            this.expr = expr;
-            this.rest = rest;
+    public class InsBloq extends Ins {
+        Bloq bloq;
+        public InsBloq(Bloq bloq) {
+            this.bloq = bloq;
+        }
+    }
+
+    public class LParamR {
+        LParamR prev;
+        Exp exp;
+        public LParamR(LParamR prev, Exp exp) {
+            this.prev = prev;
+            this.exp = exp;
         }
     }
 
     //
-    // EXPRESIONS
+    // expESIONS
     //
-    class Exp { }
-    enum TExpBin {
+    public class Exp { }
+    public enum TExpBin {
         SUMA, RESTA, MUL, DIV, MOD,
         MENOR, MENOR_IGUAL, MAYOR, MAYOR_IGUAL,
         IGUAL, DISTINTO, ASIG,
         AND, OR;
     };
-    class ExpBin extends Exp {
+    public class ExpBin extends Exp {
         TExpBin tipo;
         Exp op0, op1;
 
-        ExpBin(Exp op0, TExpBin tipo, Exp op1) {
+        public ExpBin(Exp op0, TExpBin tipo, Exp op1) {
             this.op0 = op0;
             this.tipo = tipo;
             this.op1 = op1;
         }
     }
 
-    // unary expressions
-    abstract class ExpUnary extends Exp { }
-    class ExpNeg extends ExpUnary {
-        Exp expr;
-        ExpNeg(Exp expr) {
-            this.expr = expr;
+    // unary expessions
+    abstract public class ExpUnary extends Exp { }
+    public class ExpNeg extends ExpUnary {
+        Exp exp;
+        public ExpNeg(Exp exp) {
+            this.exp = exp;
         }
     }
 
-    class ExpNot extends ExpUnary {
-        Exp expr;
-        ExpNot(Exp expr) {
-            this.expr = expr;
+    public class ExpNot extends ExpUnary {
+        Exp exp;
+        public ExpNot(Exp exp) {
+            this.exp = exp;
         }
     }
 
-    class ExpIndirect extends ExpUnary {
-        abstract class Modo { }
-        class Campo extends Modo {
-            String campo;
-            Campo(String campo) { this.campo = campo; }
-        }
-        class Indice extends Modo {
-            Exp expr;
-            Indice(Exp expr) { this.expr = expr; }
-        }
-        class Deref extends Modo { }
-
-        Exp expr;
-        Modo mode;
-        ExpIndirect(Exp expr, Modo mode) {
-            this.expr = expr;
-            this.mode = mode;
+    public class ExpIndirect extends Exp {
+        Exp exp;
+        public ExpIndirect(Exp exp) {
+            this.exp = exp;
         }
     }
 
-    class ExpBasic extends Exp {}
-    class ExpBasicV<T> extends ExpBasic {
+    public class ExpIndirectCampo extends ExpIndirect {
+        String campo;
+        public ExpIndirectCampo(Exp exp, String campo) {
+            super(exp);
+            this.campo = campo;
+        }
+    }
+
+    public class ExpIndirectArray extends ExpIndirect {
+        Exp index;
+        public ExpIndirectArray(Exp exp, Exp index) {
+            super(exp);
+            this.index = index;
+        }
+    }
+
+    public class ExpIndirectDeref extends ExpIndirect {
+        public ExpIndirectDeref(Exp exp) { super(exp); }
+    }
+
+    public class ExpBasic extends Exp {}
+    public class ExpBasicV<T> extends ExpBasic {
         T v;
-        ExpBasicV(T v) { this.v = v; }
+        public ExpBasicV(T v) { this.v = v; }
     }
-    enum TExpBasicUni { TRUE, FALSE, NULL };
-    class ExpBasicUni extends ExpBasic {
+    public enum TExpBasicUni { TRUE, FALSE, NULL };
+    public class ExpBasicUni extends ExpBasic {
         TExpBasicUni t;
-        ExpBasicUni(TExpBasicUni t) { this.t = t; } 
+        public ExpBasicUni(TExpBasicUni t) { this.t = t; } 
     }
-    class ExpBasicIdent extends ExpBasic {
+    public class ExpBasicIdent extends ExpBasic {
         String ident;
-        ExpBasicIdent(String ident) { this.ident = ident; }
+        public ExpBasicIdent(String ident) { this.ident = ident; }
     }
 }
