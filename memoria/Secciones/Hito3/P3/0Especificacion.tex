@@ -285,9 +285,9 @@
         \phantom{---} resto\_E4.\textbf{a} = resto\_E4.\textbf{ah} \\
     %
     E5  \longrightarrow \; - \; E5 \\
-        \phantom{---} E5_0.\textbf{a} = mkopun("-", E5_1.\textbf{a}) \\   
+        \phantom{---} E5_0.\textbf{a} = exp\_menos(E5_1.\textbf{a}) \\   
     E5 \longrightarrow \; \textbf{not} \; E5 \\
-        \phantom{---} E5_0.\textbf{a} = mkopun("not", E5_1.\textbf{a}) \\
+        \phantom{---} E5_0.\textbf{a} = exp\_not(E5_1.\textbf{a}) \\
     E5 \longrightarrow \; E6 \\
         \phantom{---} E5.\textbf{a} = E6.\textbf{a} \\
     % RECURSION A IZQ
