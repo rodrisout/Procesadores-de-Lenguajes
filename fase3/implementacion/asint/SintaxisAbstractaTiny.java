@@ -24,6 +24,20 @@ public class SintaxisAbstractaTiny {
 	   }
 	   public abstract void imprime();
     }
+
+    public static class Prog extends Nodo {
+        private Bloq bloq;
+        public Prog(Bloq bloq) {
+            super();
+            this.bloq = bloq;
+        }
+        public String toString() {
+            return "prog(+"+bloq+")";
+        }
+        public void imprime() {
+            this.bloq.imprime();
+        }
+    }
     
     public static class Bloq extends Nodo {
     	private SecDecs decs;
@@ -32,7 +46,7 @@ public class SintaxisAbstractaTiny {
  		   super();
  		   this.decs = decs;
  		   this.ins = ins;
-        }   
+        }
         public String toString() {
             return "bloq("+decs+","+ins+")";
         } 
@@ -41,7 +55,10 @@ public class SintaxisAbstractaTiny {
         public SecIs SecIs() {return this.ins;}
         //INTERPRETE
         public void imprime() {
-			// TODO Auto-generated method stub
+            println("{");
+			this.decs.imprime();
+            this.ins.imprime();
+            println("}");
 		}
         //VISITANTE
         // TODO copiar y pegar esto asi tal cual en todas las clases
@@ -60,7 +77,7 @@ public class SintaxisAbstractaTiny {
     }
     
     public static class Si_decs extends SecDecs {
-		private LDecs decs; 
+		private LDecs decs;
 		public Si_decs(LDecs decs) {
 		   super();
 		   this.decs = decs;
@@ -72,7 +89,8 @@ public class SintaxisAbstractaTiny {
         public LDecs LDecs() {return this.decs;}
         //INTERPRETE
         public void imprime() {
-			// TODO Auto-generated method stub
+            decs.imprime();
+            println("&&");
 		}
         //VISITANTE
     }
@@ -112,8 +130,10 @@ public class SintaxisAbstractaTiny {
        public Dec Dec() {return this.dec;}
        //INTERPRETE
        public void imprime() {
-			// TODO Auto-generated method stub
-		}
+            this.decs.imprime();
+            println(";");
+            this.dec.imprime();
+	    }
     }
 
     public static class Una_dec extends LDecs {
@@ -129,7 +149,7 @@ public class SintaxisAbstractaTiny {
        public Dec Dec() {return this.dec;}
        //INTERPRETE
        public void imprime() {
-			// TODO Auto-generated method stub
+        this.dec.imprime();
 		}
        //VISITANTE
        
@@ -158,7 +178,7 @@ public class SintaxisAbstractaTiny {
         public TipoNom TipoNom() {return this.tiponom;}
         //INTERPRETE
         public void imprime() {
-			// TODO Auto-generated method stub
+            this.tiponom.imprime();
 		}
         //VISITANTE
         
@@ -177,7 +197,8 @@ public class SintaxisAbstractaTiny {
         public TipoNom TipoNom() {return this.tiponom;}
         //INTERPRETE
         public void imprime() {
-			// TODO Auto-generated method stub
+            println("type");
+            this.tiponom.imprime();
 		}
         //VISITANTE
         
@@ -202,7 +223,12 @@ public class SintaxisAbstractaTiny {
         public Bloq Bloq() {return this.bloq;}
         //INTERPRETE
         public void imprime() {
-			// TODO Auto-generated method stub
+            println("proc");
+            println(id);
+            println("(");
+            this.paramfs.imprime();
+            println(")");
+            this.bloq.imprime();
 		}
         //VISITANTE
         
@@ -228,7 +254,7 @@ public class SintaxisAbstractaTiny {
         public LParamFs LParamFs() {return this.paramfs;}
         //INTERPRETE
         public void imprime() {
-			// TODO Auto-generated method stub
+            this.paramfs.imprime();
 		}
         //VISITANTE
     }
@@ -268,7 +294,9 @@ public class SintaxisAbstractaTiny {
        public ParamF ParamF() {return this.paramf;}
        //INTERPRETE
        public void imprime() {
-			// TODO Auto-generated method stub
+        this.paramfs.imprime();
+        println(",");
+        this.paramf.imprime();
 		}
        //VISITANTE
     }
@@ -286,7 +314,7 @@ public class SintaxisAbstractaTiny {
         public ParamF ParamF() {return this.paramf;}
         //INTERPRETE
         public void imprime() {
-			// TODO Auto-generated method stub
+            this.paramf.imprime();
 		}
         //VISITANTE
     }
@@ -315,7 +343,9 @@ public class SintaxisAbstractaTiny {
         public String ID() {return this.id;}
         //INTERPRETE
         public void imprime() {
-			// TODO Auto-generated method stub
+            this.tipo.imprime();
+            println("&");
+            println(id);
 		}
         //VISITANTE
     }
@@ -336,7 +366,8 @@ public class SintaxisAbstractaTiny {
         public String ID() {return this.id;}
         //INTERPRETE
         public void imprime() {
-			// TODO Auto-generated method stub
+            this.tipo.imprime();
+            println(id);
 		}
         //VISITANTE
     }
@@ -359,7 +390,8 @@ public class SintaxisAbstractaTiny {
         public String ID() {return this.id;}
         //INTERPRETE
         public void imprime() {
-			// TODO Auto-generated method stub
+            this.tipo.imprime();
+            println(id);
 		}
         //VISITANTE
     }
@@ -390,7 +422,10 @@ public class SintaxisAbstractaTiny {
         public String litEntero() {return this.litEntero;}
         //INTERPRETE
         public void imprime() {
-			// TODO Auto-generated method stub
+            this.tipo.imprime();
+            println("[");
+            println(litEntero);
+            println("]");
 		}
         //VISITANTE
     }
@@ -408,7 +443,8 @@ public class SintaxisAbstractaTiny {
         public Tipo Tipo() {return this.tipo;}
         //INTERPRETE
         public void imprime() {
-			// TODO Auto-generated method stub
+            println("^");
+            this.tipo.imprime();
 		}
         //VISITANTE
     }
@@ -426,7 +462,10 @@ public class SintaxisAbstractaTiny {
         public LCampos LCampos() {return this.campos;}
         //INTERPRETE
         public void imprime() {
-			// TODO Auto-generated method stub
+            println("<struct>");
+            println("{");
+            this.campos.imprime();
+            println("}");
 		}
         //VISITANTE
     }
@@ -439,7 +478,7 @@ public class SintaxisAbstractaTiny {
         	return "tipo_int()";
 	    } 
         //INTERPRETE
-        public void imprime() {}
+        public void imprime() {println("<int>");}
     }
     
     public static class Tipo_real extends Tipo {
@@ -450,7 +489,7 @@ public class SintaxisAbstractaTiny {
         	return "tipo_real()";
 	    } 
         //INTERPRETE
-        public void imprime() {}
+        public void imprime() {println("<real>");}
     }
     
     public static class Tipo_bool extends Tipo {
@@ -461,7 +500,7 @@ public class SintaxisAbstractaTiny {
         	return "tipo_bool()";
 	    } 
         //INTERPRETE
-        public void imprime() {}
+        public void imprime() {println("<bool>");}
     }
     
     public static class Tipo_string extends Tipo {
@@ -472,7 +511,7 @@ public class SintaxisAbstractaTiny {
         	return "tipo_string()";
 	    } 
         //INTERPRETE
-        public void imprime() {}
+        public void imprime() {println("<string>");}
     }
     
     public static class Tipo_type extends Tipo {
@@ -487,9 +526,7 @@ public class SintaxisAbstractaTiny {
         //RECURSIVO
         public String ID() {return this.id;}
         //INTERPRETE
-        public void imprime() {
-			// TODO Auto-generated method stub
-		}
+        public void imprime() {println(this.id);}
         //VISITANTE
     }
     
@@ -517,8 +554,10 @@ public class SintaxisAbstractaTiny {
         public TipoNom TipoNom() {return this.campo;}
         //INTERPRETE
         public void imprime() {
-			// TODO Auto-generated method stub
-		}
+            this.campos.imprime();
+            println(",");
+            this.campo.imprime();
+        }
         //VISITANTE
      }
 
@@ -535,7 +574,7 @@ public class SintaxisAbstractaTiny {
         public TipoNom TipoNom() {return this.campo;}
         //INTERPRETE
         public void imprime() {
-			// TODO Auto-generated method stub
+            this.campo.imprime();
 		}
         //VISITANTE
      }
@@ -562,7 +601,7 @@ public class SintaxisAbstractaTiny {
         public LIs LIs() {return this.ins;}
         //INTERPRETE
         public void imprime() {
-			// TODO Auto-generated method stub
+            this.ins.imprime();
 		}
         //VISITANTE
      }
@@ -602,7 +641,9 @@ public class SintaxisAbstractaTiny {
         public I I() {return this.in;}
         //INTERPRETE
         public void imprime() {
-			// TODO Auto-generated method stub
+            this.ins.imprime();
+            println(";");
+            this.in.imprime();
 		}
         //VISITANTE
      }
@@ -620,7 +661,7 @@ public class SintaxisAbstractaTiny {
         public I I() {return this.in;}
         //INTERPRETE
         public void imprime() {
-			// TODO Auto-generated method stub
+            this.in.imprime();
 		}
         //VISITANTE
      }
@@ -649,7 +690,8 @@ public class SintaxisAbstractaTiny {
          public Exp Exp() {return this.exp;}
          //INTERPRETE
          public void imprime() {
- 			// TODO Auto-generated method stub
+            println("<@>");
+            this.exp.imprime();
  		}
          //VISITANTE
      }
@@ -670,7 +712,9 @@ public class SintaxisAbstractaTiny {
          public Bloq Bloq() {return this.bloq;}
          //INTERPRETE
          public void imprime() {
- 			// TODO Auto-generated method stub
+            println("<if>");
+            this.exp.imprime();
+            this.bloq.imprime();
  		}
          //VISITANTE
      }
@@ -691,7 +735,9 @@ public class SintaxisAbstractaTiny {
          public Bloq Bloq() {return this.bloq;}
          //INTERPRETE
          public void imprime() {
- 			// TODO Auto-generated method stub
+            this.in.imprime();
+            println("<else>");
+            this.bloq.imprime();
  		}
          //VISITANTE
      }
@@ -712,7 +758,9 @@ public class SintaxisAbstractaTiny {
          public Bloq Bloq() {return this.bloq;}
          //INTERPRETE
          public void imprime() {
- 			// TODO Auto-generated method stub
+            println("<while>");
+            this.exp.imprime();
+            this.bloq.imprime();
          }
          //VISITANTE
      }
@@ -730,7 +778,8 @@ public class SintaxisAbstractaTiny {
          public Exp Exp() {return this.exp;}
          //INTERPRETE
          public void imprime() {
- 			// TODO Auto-generated method stub
+            println("<read>");
+            this.exp.imprime();
          }
          //VISITANTE
      }
@@ -748,7 +797,8 @@ public class SintaxisAbstractaTiny {
          public Exp Exp() {return this.exp;}
          //INTERPRETE
          public void imprime() {
- 			// TODO Auto-generated method stub
+            println("<write>");
+            this.exp.imprime();
          }
          //VISITANTE
      }
@@ -761,7 +811,7 @@ public class SintaxisAbstractaTiny {
              return "ins_nl()";
          } 
          //INTERPRETE
-         public void imprime() {}
+         public void imprime() { println("<nl>"); }
      }
      
      public static class Ins_new extends I {
@@ -777,7 +827,8 @@ public class SintaxisAbstractaTiny {
          public Exp Exp() {return this.exp;}
          //INTERPRETE
          public void imprime() {
- 			// TODO Auto-generated method stub
+            println("<new>");
+            this.exp.imprime();
          }
          //VISITANTE
      }
@@ -795,7 +846,8 @@ public class SintaxisAbstractaTiny {
          public Exp Exp() {return this.exp;}
          //INTERPRETE
          public void imprime() {
- 			// TODO Auto-generated method stub
+            println("<delete>");
+            this.exp.imprime();
          }
          //VISITANTE
      }
@@ -816,7 +868,11 @@ public class SintaxisAbstractaTiny {
          public ParamRs ParamRs() {return this.params;}
          //INTERPRETE
          public void imprime() {
- 			// TODO Auto-generated method stub
+            println("<call>");
+            println(this.id);
+            println("(");
+            this.params.imprime();
+            println(")");
          }
          //VISITANTE
      }
@@ -834,7 +890,7 @@ public class SintaxisAbstractaTiny {
          public Bloq Bloq() {return this.bloq;}
          //INTERPRETE
          public void imprime() {
- 			// TODO Auto-generated method stub
+            this.bloq.imprime();
          }
          //VISITANTE
      }
@@ -859,7 +915,7 @@ public class SintaxisAbstractaTiny {
         public LParamRs LParamRs() {return this.paramrs;}
         //INTERPRETE
         public void imprime() {
-			// TODO Auto-generated method stub
+            this.paramrs.imprime();
         }
         //VISITANTE
     }
@@ -899,7 +955,9 @@ public class SintaxisAbstractaTiny {
         public Exp Exp() {return this.exp;}
         //INTERPRETE
         public void imprime() {
-			// TODO Auto-generated method stub
+            this.paramrs.imprime();
+            println(",");
+            this.exp.imprime();
         }
         //VISITANTE
  	}
@@ -917,7 +975,7 @@ public class SintaxisAbstractaTiny {
         public Exp Exp() {return this.exp;}
         //INTERPRETE
         public void imprime() {
-			// TODO Auto-generated method stub
+            this.exp.imprime();
         }
         //VISITANTE
     }
@@ -949,10 +1007,6 @@ public class SintaxisAbstractaTiny {
         //RECURSIVO
         public Exp Opnd0() {return this.opnd0;}
         public Exp Opnd1() {return this.opnd1;}
-        //INTERPRETE
-        public void imprime() {
-			// TODO Auto-generated method stub
-        }
         //VISITANTE
     }
   	
@@ -964,6 +1018,9 @@ public class SintaxisAbstractaTiny {
               return "exp_asig("+opnd0+","+opnd1+")";
          }
          public int prioridad() {return 0;}
+         public void imprime() {
+            imprimeExpBin(opnd0, "=", opnd1, 1, 0);
+         }
     }
   	
   	public static class Exp_menor extends ExpBin {
@@ -974,7 +1031,10 @@ public class SintaxisAbstractaTiny {
              return "exp_menor("+opnd0+","+opnd1+")";
          } 
         public int prioridad() {return 1;}
-    }
+        public void imprime() {
+           imprimeExpBin(opnd0, "<", opnd1, 1, 2);
+        }
+   }
   	
   	public static class Exp_menor_ig extends ExpBin {
         public Exp_menor_ig(Exp opnd0, Exp opnd1) {
@@ -984,7 +1044,10 @@ public class SintaxisAbstractaTiny {
              return "exp_menor_ig("+opnd0+","+opnd1+")";
          } 
         public int prioridad() {return 1;}
-    }
+        public void imprime() {
+           imprimeExpBin(opnd0, "<=", opnd1, 1, 2);
+        }
+   }
   	
   	public static class Exp_mayor extends ExpBin {
         public Exp_mayor(Exp opnd0, Exp opnd1) {
@@ -994,7 +1057,10 @@ public class SintaxisAbstractaTiny {
              return "exp_mayor("+opnd0+","+opnd1+")";
          } 
         public int prioridad() {return 1;}
-    }
+        public void imprime() {
+           imprimeExpBin(opnd0, ">", opnd1, 1, 2);
+        }
+   }
   	
   	public static class Exp_mayor_ig extends ExpBin {
         public Exp_mayor_ig(Exp opnd0, Exp opnd1) {
@@ -1004,7 +1070,10 @@ public class SintaxisAbstractaTiny {
              return "exp_mayor_ig("+opnd0+","+opnd1+")";
          } 
         public int prioridad() {return 1;}
-    }
+        public void imprime() {
+           imprimeExpBin(opnd0, ">=", opnd1, 1, 2);
+        }
+   }
   	
   	public static class Exp_ig extends ExpBin {
         public Exp_ig(Exp opnd0, Exp opnd1) {
@@ -1014,7 +1083,10 @@ public class SintaxisAbstractaTiny {
              return "exp_ig("+opnd0+","+opnd1+")";
          } 
         public int prioridad() {return 1;}
-    }
+        public void imprime() {
+           imprimeExpBin(opnd0, "==", opnd1, 1, 2);
+        }
+   }
   	
   	public static class Exp_dist extends ExpBin {
   		public Exp_dist(Exp opnd0, Exp opnd1) {
@@ -1024,7 +1096,10 @@ public class SintaxisAbstractaTiny {
 	         return "exp_dist("+opnd0+","+opnd1+")";
 	     } 
 	    public int prioridad() {return 1;}
-  	}
+        public void imprime() {
+           imprimeExpBin(opnd0, "!=", opnd1, 1, 2);
+        }
+   }
   	
   	public static class Exp_suma extends ExpBin {
   		public Exp_suma(Exp opnd0, Exp opnd1) {
@@ -1034,7 +1109,10 @@ public class SintaxisAbstractaTiny {
 	         return "exp_suma("+opnd0+","+opnd1+")";
 	     } 
 	    public int prioridad() {return 2;}
-  	}
+        public void imprime() {
+           imprimeExpBin(opnd0, "+", opnd1, 2, 3);
+        }
+   }
   	
   	public static class Exp_resta extends ExpBin {
   		public Exp_resta(Exp opnd0, Exp opnd1) {
@@ -1044,7 +1122,10 @@ public class SintaxisAbstractaTiny {
 	         return "exp_resta("+opnd0+","+opnd1+")";
 	     } 
 	    public int prioridad() {return 2;}
-  	}
+        public void imprime() {
+           imprimeExpBin(opnd0, "-", opnd1, 3, 3);
+        }
+   }
   	
   	public static class Exp_and extends ExpBin {
   		public Exp_and(Exp opnd0, Exp opnd1) {
@@ -1054,7 +1135,10 @@ public class SintaxisAbstractaTiny {
 	         return "exp_and("+opnd0+","+opnd1+")";
 	     } 
 	    public int prioridad() {return 3;}
-  	}
+        public void imprime() {
+           imprimeExpBin(opnd0, "and", opnd1, 4, 3);
+        }
+   }
   	
   	public static class Exp_or extends ExpBin {
   		public Exp_or(Exp opnd0, Exp opnd1) {
@@ -1064,7 +1148,10 @@ public class SintaxisAbstractaTiny {
 	         return "exp_or("+opnd0+","+opnd1+")";
 	     } 
 	    public int prioridad() {return 3;}
-  	}
+        public void imprime() {
+            imprimeExpBin(opnd0, "or", opnd1, 4, 4);
+         }
+    }
   	public static class Exp_mul extends ExpBin {
   		public Exp_mul(Exp opnd0, Exp opnd1) {
 	       super(opnd0, opnd1);
@@ -1073,6 +1160,9 @@ public class SintaxisAbstractaTiny {
 	         return "exp_mul("+opnd0+","+opnd1+")";
 	     } 
 	    public int prioridad() {return 4;}
+        public void imprime() {
+            imprimeExpBin(opnd0, "/", opnd1, 4, 5);
+         }
   	}
   	
   	public static class Exp_div extends ExpBin {
@@ -1083,7 +1173,10 @@ public class SintaxisAbstractaTiny {
 	         return "exp_div("+opnd0+","+opnd1+")";
 	     } 
 	    public int prioridad() {return 4;}
-  	}
+        public void imprime() {
+            imprimeExpBin(opnd0, "/", opnd1, 4, 5);
+         }
+    }
   	
   	public static class Exp_mod extends ExpBin {
   		public Exp_mod(Exp opnd0, Exp opnd1) {
@@ -1093,7 +1186,10 @@ public class SintaxisAbstractaTiny {
 	         return "exp_mod("+opnd0+","+opnd1+")";
 	     } 
 	    public int prioridad() {return 4;}
-  	}
+        public void imprime() {
+            imprimeExpBin(opnd0, "%", opnd1, 4, 5);
+         }
+    }
   	
   	public static class Exp_menos extends Exp {
   		private Exp opnd;
@@ -1109,7 +1205,8 @@ public class SintaxisAbstractaTiny {
         public Exp Opnd() {return this.opnd;}
         //INTERPRETE
         public void imprime() {
-			// TODO Auto-generated method stub
+            println("-");
+            imprimeOpnd(this.opnd, 5);
         }
         //VISITANTE
   	}
@@ -1128,7 +1225,8 @@ public class SintaxisAbstractaTiny {
         public Exp Opnd() {return this.opnd;}
         //INTERPRETE
         public void imprime() {
-			// TODO Auto-generated method stub
+            println("<not>");
+            imprimeOpnd(this.opnd, 5);
         }
         //VISITANTE
   	}
@@ -1150,7 +1248,10 @@ public class SintaxisAbstractaTiny {
         public Exp Opnd1() {return this.opnd1;}
         //INTERPRETE
         public void imprime() {
-			// TODO Auto-generated method stub
+            this.opnd0.imprime();
+            println("[");
+            imprimeOpnd(this.opnd1, 0);
+            println("]");
         }
         //VISITANTE
   	}
@@ -1172,7 +1273,9 @@ public class SintaxisAbstractaTiny {
         public String ID() {return this.id;}
         //INTERPRETE
         public void imprime() {
-			// TODO Auto-generated method stub
+            imprimeOpnd(this.opnd, 6);
+            println(".");
+            println(this.id);
         }
         //VISITANTE
   	}
@@ -1191,7 +1294,8 @@ public class SintaxisAbstractaTiny {
         public Exp Opnd() {return this.opnd;}
         //INTERPRETE
         public void imprime() {
-			// TODO Auto-generated method stub
+            imprimeOpnd(this.opnd, 6);
+            println("^");
         }
         //VISITANTE
   	}
@@ -1210,7 +1314,7 @@ public class SintaxisAbstractaTiny {
         public String litEntero() {return this.litEntero;}
         //INTERPRETE
         public void imprime() {
-			// TODO Auto-generated method stub
+            println(this.litEntero);
         }
         //VISITANTE
   	}
@@ -1229,7 +1333,7 @@ public class SintaxisAbstractaTiny {
         public String litReal() {return this.litReal;}
         //INTERPRETE
         public void imprime() {
-			// TODO Auto-generated method stub
+            println(this.litReal);
         }
         //VISITANTE
   	}
@@ -1243,7 +1347,7 @@ public class SintaxisAbstractaTiny {
 	    } 
 	    public int prioridad() {return 7;}
         //INTERPRETE
-        public void imprime() {}
+        public void imprime() { println("<true>");}
   	}
   	
   	public static class Exp_false extends Exp {
@@ -1255,7 +1359,7 @@ public class SintaxisAbstractaTiny {
 	    } 
 	    public int prioridad() {return 7;}
         //INTERPRETE
-        public void imprime() {}
+        public void imprime() { println("<false>");}
   	}
   	
   	public static class Exp_cadena extends Exp {
@@ -1272,7 +1376,7 @@ public class SintaxisAbstractaTiny {
         public String litCadena() {return this.litCadena;}
         //INTERPRETE
         public void imprime() {
-			// TODO Auto-generated method stub
+            println(this.litCadena);
         }
         //VISITANTE
   	}
@@ -1291,7 +1395,7 @@ public class SintaxisAbstractaTiny {
         public String ID() {return this.id;}
         //INTERPRETE
         public void imprime() {
-			// TODO Auto-generated method stub
+            println(this.id);
         }
         //VISITANTE
   	}
@@ -1305,7 +1409,7 @@ public class SintaxisAbstractaTiny {
 	    } 
 	    public int prioridad() {return 7;}
         //INTERPRETE
-        public void imprime() {}
+        public void imprime() {println("<null>");}
   	}
 
     // Funciones constructoras    
@@ -1315,7 +1419,9 @@ public class SintaxisAbstractaTiny {
     }
     
     // Declaraciones
-    
+    public Prog prog(Bloq bloq) {
+        return new Prog(bloq);
+    }
     public SecDecs si_decs(LDecs decs) {
         return new Si_decs(decs);
     }
@@ -1525,5 +1631,21 @@ public class SintaxisAbstractaTiny {
     }
     public Exp exp_null() {
         return new Exp_null();
+    }
+
+    private static void println(String s) {
+        System.out.println(s);
+    }
+    private static void imprimeExpBin(Exp op0, String op, Exp op1, int np0, int np1) {
+        imprimeOpnd(op0, np0);
+        println(op);
+        imprimeOpnd(op1, np1);
+    }
+    private static void imprimeOpnd(Exp op, int minPrior) {
+        boolean surround = op.prioridad() < minPrior;
+
+        if (surround) println("(");
+        op.imprime();
+        if (surround) println(")");
     }
 }

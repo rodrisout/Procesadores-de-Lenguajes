@@ -1,7 +1,5 @@
 package asint;
 
-
-
 public class ClaseSemanticaTiny extends SintaxisAbstractaTiny {
     public ClaseSemanticaTiny() {
         super();
@@ -23,6 +21,13 @@ public class ClaseSemanticaTiny extends SintaxisAbstractaTiny {
             case "/": return exp_div(opnd1,opnd2);
             case "%": return exp_mod(opnd1,opnd2);
             default: throw new UnsupportedOperationException("Bad op");
+        }
+    }
+    public Exp mkopun(String op, Exp opnd) {
+        switch (op) {
+            case "-": return exp_menos(opnd);
+            case "not": return exp_not(opnd);
+            default: throw new UnsupportedOperationException();
         }
     }
 }

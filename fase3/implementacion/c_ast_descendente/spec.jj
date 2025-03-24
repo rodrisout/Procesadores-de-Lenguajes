@@ -22,6 +22,7 @@ import asint.SintaxisAbstractaTiny.LCampos;
 import asint.SintaxisAbstractaTiny.TipoNom;
 import asint.SintaxisAbstractaTiny.Tipo;
 import asint.SintaxisAbstractaTiny.Exp;
+import asint.SintaxisAbstractaTiny.Prog;
 
 public class AnalizadorSintacticoTiny {
    private ClaseSemanticaTiny sem = new ClaseSemanticaTiny();   
@@ -31,7 +32,7 @@ PARSER_END(AnalizadorSintacticoTiny)
   TOKEN:{<#letra:["A"-"Z","a"-"z"]>}
   TOKEN:{<#digitoPositivo:["1"-"9"]>}
   TOKEN:{<#digito:<digitoPositivo>|"0">} 
-  TOKEN:{<#parteEntera:(["+"|"-"])? <digitoPositivo> (<digito>)* |"0">} 
+  TOKEN:{<#parteEntera:("+"|"-")? <digitoPositivo> (<digito>)* | "0">} 
   TOKEN:{<#parteDecimal: (<digito>)* <digitoPositivo> | "0">}
   TOKEN:{<#parteExponencial: ("e"|"E")<parteEntera>>}
   SKIP:{<["\t"," ","\r","\b","\n"]>}  
@@ -90,229 +91,231 @@ PARSER_END(AnalizadorSintacticoTiny)
   TOKEN:{<corcheteCierre:("]")>}
   
   Prog analiza()   : 
-      {Prog prog;} 
-      {
-         prog = programa() <EOF> 
-            {return prog;} 
+      {Prog prog;} {
+         prog = programa() <EOF> {return prog;} 
       }
   
   Prog programa()  : 
-    {Bloq bloq;} 
-    {
-        bloq = bloque() 
-			{return sem.prog(bloq);}
+    {Bloq bloq;} {
+        bloq = bloque() {return sem.prog(bloq);}
     }
   
   Bloq bloque()  : 
-	{SecDecs secdecs; SecIs secis;} 
-	{
-		<llaveApert> secdecs = seccion_declaraciones_opt() secis = seccion_instrucciones_opt() <llaveCierre>
+	{SecDecs secdecs; SecIs secis;} {
+		<llaveApert>
+		secdecs = seccion_declaraciones_opt()
+		secis = seccion_instrucciones_opt()
+		<llaveCierre>
 		{return sem.bloq(secdecs, secis);}
 	}
   
   SecDecs seccion_declaraciones_opt()  : 
-	{LDecs ldecs;} 
-	{
-		ldecs = seccion_declaraciones() <finalAsig>
-		{return sem.si_decs(ldecs);}
-		| 
-		{return sem.no_decs();}
+	{LDecs ldecs;} {
+		ldecs = seccion_declaraciones() <finalAsig> {return sem.si_decs(ldecs);}
+		| {return sem.no_decs();}
 	}
   LDecs seccion_declaraciones()  : 
-	{Dec dec; LDecs r;} 
-	{
-		dec = declaracion() r = resto_sd(sem.una_dec(dec))
-		{return r;}
+	{Dec dec; LDecs r;} {
+		dec = declaracion() r = resto_sd(sem.una_dec(dec)) {return r;}
 	}
   LDecs resto_sd(LDecs rh)  : 
-	{Dec dec; LDecs r;} 
-	{
-		<puntoComa> dec = declaracion() r = resto_sd(sem.muchas_decs(rh, dec)) 
-		{return r;}
-		| 
-		{return rh;}
+	{Dec dec; LDecs r;} {
+		<puntoComa> dec = declaracion() r = resto_sd(sem.muchas_decs(rh, dec)) {return r;}
+		| {return rh;}
 	}
   Dec declaracion()  : 
-	{TipoNom tiponom; Token id; p ParamFs; Bloq bloq;} 
-	{
-		tiponom = tipo_nombre() 
-		{return (Dec)sem.dec_base(tiponom);}
-		| 
-		<type> tiponom = tipo_nombre()
-		{return (Dec)sem.dec_type(tiponom);}
-		| 
-		<proc> id = <identificador> p = parametros_formales() bloq = bloque()
-		{return (Dec)sem.dec_proc(id.image, p, bloq).ponFila(id.beginLine).ponCol(id.beginColumn);}
+	{TipoNom tiponom; Token id; ParamFs p; Bloq bloq;} {
+		tiponom = tipo_nombre() {return sem.dec_base(tiponom);}
+		| <type> tiponom = tipo_nombre() {return sem.dec_type(tiponom);}
+		| <proc> id = <identificador> p = parametros_formales() bloq = bloque()
+			{return (Dec)sem.dec_proc(id.image, p, bloq).ponFila(id.beginLine).ponCol(id.beginColumn);}
 	}
-  void parametros_formales()  : 
-	{} 
-	{
-		<parenApert> lista_parametros_opt() <parenCierre>
+  ParamFs parametros_formales()  : 
+	{ ParamFs l; } {
+		<parenApert> l = lista_parametros_opt() <parenCierre>
+		{ return l; }
 	}
-  void lista_parametros_opt()  : 
-	{} 
-	{
-		lista_parametros() 
-		| 
-		{}
+  ParamFs lista_parametros_opt()  : 
+	{ LParamFs l; } {
+		l = lista_parametros() { return sem.si_params_f(l); }
+		| { return sem.no_params_f(); }
 	}
-  void lista_parametros()  : 
-	{} 
-	{
-		parametro() resto_lp() 
+  LParamFs lista_parametros()  : 
+	{ ParamF p; LParamFs l; } {
+		p = parametro() l = resto_lp(sem.un_param_f(p)) { return l; }
 	}
-  void resto_lp()  : 
-	{} 
-	{
-		<coma> parametro() resto_lp() 
-		| 
-		{}
+  LParamFs resto_lp(LParamFs lp0)  : 
+	{ ParamF p; LParamFs lp1; } {
+		<coma> p = parametro() lp1 = resto_lp(sem.muchos_params_f(lp0, p)) { return lp1; }
+		| { return lp0; }
 	}
-  void parametro()  : 
-	{} 
-	{
-		tipo() ref_opt() <identificador>
+  ParamF parametro()  : 
+	{ Tipo t; ParamF p; } {
+		t = tipo() p = resto_parametro(t) { return p; }
 	}  
-  void ref_opt()  : 
-	{} 
-	{
-		<paramRef> 
-		|		
-		{}
+  ParamF resto_parametro(Tipo t)  : 
+	{ Token i; } {
+		<paramRef> i = <identificador> { return sem.si_refparam_f(t, i.image); }
+		| i = <identificador> { return sem.no_refparam_f(t, i.image); }
 	}  
   
-  void tipo_nombre()  : 
-	{} 
-	{
-		tipo() <identificador>
+  TipoNom tipo_nombre()  : 
+	{Tipo t; Token i;} {
+		t = tipo() i = <identificador>
+		{return sem.tipo_nombre(t, i.image);}
 	}  
-  void tipo()  : 
-	{} 
-	{
-		tipo0()
+  Tipo tipo()  : 
+	{Tipo t;} {
+		t = tipo0() { return t; }
 	}  
-  void tipo0()  : 
-	{} 
-	{
-		tipo1() resto_tipo0()
+  Tipo tipo0()  : 
+	{ Tipo t0, t1; } {
+		t0 = tipo1() t1 = resto_tipo0(t0) { return t1; }
 	}  
-  void resto_tipo0()  : 
-	{} 
-	{
-		<corcheteApert><literalEntero><corcheteCierre> resto_tipo0() 
-		| 
-		{}
+  Tipo resto_tipo0(Tipo t0)  : 
+	{ Token i; Tipo t1; } {
+		<corcheteApert> i = <literalEntero> <corcheteCierre>
+		t1 = resto_tipo0(sem.tipo_array(t0, i.image))
+		{ return t1; }
+		| { return t0; }
 	}  
-  void tipo1()  : 
-	{} 
-	{
-		<indireccion> tipo1() 
-		| 
-		tipo_base()
+  Tipo tipo1() : 
+	{ Tipo t; } {
+		<indireccion> t = tipo1() { return sem.tipo_indir(t); }
+		| t = tipo_base() { return t; }
 	}  
-  void tipo_base()  : 
-	{} 
-	{
-		<struct> <llaveApert> lista_campos() <llaveCierre> 
-		| 
-		<INT>  
-		| 
-		<real>  
-		| 
-		<bool>  
-		| 
-		<string>  
-		| 
-		<identificador> 
+  Tipo tipo_base()  : 
+	{ LCampos l; Token i; } {
+		<struct> <llaveApert> l = lista_campos() <llaveCierre> { return sem.tipo_struct(l); }
+		| <INT>  { return sem.tipo_int(); }
+		| <real>  { return sem.tipo_real(); }
+		| <bool>  { return sem.tipo_bool(); }
+		| <string>  { return sem.tipo_string(); }
+		| i = <identificador> { return sem.tipo_type(i.image); }
 	}  
-  void lista_campos()  : 
-	{} 
-	{
-		tipo_nombre() resto_lc()
+  LCampos lista_campos()  : 
+	{ TipoNom tn; LCampos l; } {
+		tn = tipo_nombre() l = resto_lc(sem.un_campo(tn))
+		{ return l; }
 	}  
-  void resto_lc()  : 
-	{} 
-	{
-		<coma> tipo_nombre() resto_lc() 
-		| 
-		{}
+  LCampos resto_lc(LCampos lc0)  : 
+	{ TipoNom tn; LCampos lc1; } {
+		<coma> tn = tipo_nombre() lc1 = resto_lc(sem.muchos_campos(lc0, tn)) { return lc1; }
+		| { return lc0; }
 	}  
   
-  void seccion_instrucciones_opt()  : 
-	{} 
-	{
-		seccion_instrucciones() 
-		| 
-		{}
+  SecIs seccion_instrucciones_opt()  : 
+	{ LIs li; } {
+		li = seccion_instrucciones()  { return sem.si_ins(li); }
+		| { return sem.no_ins(); }
 	}  
-  void seccion_instrucciones()  : 
-	{} 
-	{
-		lista_instrucciones()
+  LIs seccion_instrucciones()  : 
+	{ LIs li; } {
+		li = lista_instrucciones() { return li; }
 	}  
-  void lista_instrucciones()  : 
-	{} 
-	{
-		instruccion() resto_li()
+  LIs lista_instrucciones()  : 
+	{ I i; LIs li; } {
+		i = instruccion() li = resto_li(sem.una_ins(i)) { return li; }
 	}  
-  void resto_li()  : 
-	{} 
-	{
-		<puntoComa> instruccion() resto_li() 
-		| 
-		{}
+  LIs resto_li(LIs li0)  : 
+	{ I i; LIs li1; } {
+		<puntoComa> i = instruccion() li1 = resto_li(sem.muchas_ins(li0, i))  { return li1; }
+		| { return li0; }
 	}  
-  void instruccion()  : 
-	{} 
-	{
-		<arroba> expresion() 
-		| 
-		if_ins() resto_ii() 
-		| 
-		<WHILE> exp_bloq() 
-		| 
-		<read> expresion()
-		| 
-		<write> expresion()  
-		| 
-		<nl> 
-		| 
-		<NEW> expresion() 
-		| 
-		<delete> expresion() 
-		| 
-		<call> <identificador> parametros_reales() 
-		| 
-		bloque()
+  I instruccion()  : 
+	{ Exp e; Bloq b; I i, i1; Token tk; ParamRs pr; } {
+		<arroba> e = expresion()  { return sem.ins_eval(e); }
+		| i = if_ins() i1 = resto_ii(i) { return i1; }
+		| <WHILE> e = expresion() b = bloque() { return sem.ins_while(e, b); }
+		| <read> e = expresion() { return sem.ins_read(e); }
+		| <write> e = expresion()  { return sem.ins_write(e); }
+		| <nl> { return sem.ins_nl(); }
+		| <NEW> e = expresion() { return sem.ins_new(e); }
+		| <delete> e = expresion() { return sem.ins_delete(e); }
+		| <call> tk = <identificador> pr = parametros_reales() { return sem.ins_call(tk.image, pr); }
+		| b = bloque() { return sem.ins_bloque(b); }
 	}  
-  void resto_ii()  : {} {else_ins() | {}}    
-  void if_ins()  : {} {<IF> exp_bloq()}  
-  void else_ins()  : {} {<ELSE> bloque()}  
-  void exp_bloq()  : {} {expresion() bloque()}  
-  void parametros_reales()  : {} {<parenApert> lista_expresiones_opt() <parenCierre>}  
-  void lista_expresiones_opt()  : {} {lista_expresiones() | {}}    
-  void lista_expresiones()  : {} {expresion() resto_le()}  
-  void resto_le()  : {} {<coma> expresion() resto_le() | {}}  
+  I resto_ii(I i0)  :
+	{ I i1; } {
+		i1 = else_ins(i0) { return i1; }
+  		| { return i0; }
+	}    
+  I if_ins()  :
+  	{ Exp e; Bloq b; } {
+		<IF> e = expresion() b = bloque() { return sem.ins_if(e, b); }
+	}  
+  I else_ins(I i)  :
+  	{ Bloq b; } {
+		<ELSE> b = bloque() { return sem.ins_if_else(i, b); }
+	}
+  ParamRs parametros_reales()  :
+	{ParamRs l;} {
+		<parenApert> l = lista_expresiones_opt() <parenCierre> { return l; }
+	}  
+  ParamRs lista_expresiones_opt()  :
+	{LParamRs l;} {
+		l = lista_expresiones() {return sem.si_params_r(l); }
+		| { return sem.no_params_r(); }
+	}    
+  LParamRs lista_expresiones()  :
+  	{ Exp e0; LParamRs lp; } {
+		e0 = expresion() lp = resto_le(sem.un_param_r(e0)) { return lp; }
+	}
+  LParamRs resto_le(LParamRs p0)  :
+  	{Exp e0; LParamRs lp; } {
+		<coma> e0 = expresion() lp = resto_le(sem.muchos_params_r(p0, e0)) { return lp; }
+		| { return p0; }
+	}  
   
-  void expresion()  : {} {E0()}  
-  void E0()  : {} {E1() resto_E0()}  
-  void resto_E0()  : {} {<asig> E0() | {}}    
-  void E1()  : {} {E2() resto_E1()}  
-  void resto_E1()  : {} {op_relacional() E2() resto_E1() | {}}  
-  void E2()  : {} {E3() resto_E2_F() resto_E2_R()}   
-  void resto_E2_R()  : {} {<suma> E3() resto_E2_R() | {}}  
-  void resto_E2_F()  : {} {<resta> E3() | {}} 
-  void E3()  : {} {E4() resto_E3()}  
-  void resto_E3()  : {} {<and> E3() | <or> E4() | {}}  
-  void E4()  : {} {E5() resto_E4()}  
-  void resto_E4()  : {} {op_mult() E5() resto_E4() | {}}  
-  void E5()  : {} {<resta> E5() | <not> E5() | E6()}    
-  void E6()  : {} {E7() resto_E6()}  
-  void resto_E6()  : {} {op_dirs() resto_E6() | {}}  
-  void E7()  : {} {expresion_basica() | <parenApert> E0() <parenCierre>}  
-  void expresion_basica()  : {} {<literalEntero> | <literalReal> | <TRUE> | <FALSE>
-							   | <literalCadena> | <identificador> | <NULL>}  
+  Exp expresion()  : { Exp e; } {e = E0() { return e; }}  
+  Exp E0()  : {Exp e0, e1; } {e0 = E1() e1 = resto_E0(e0) { return e1; } }  
+  Exp resto_E0(Exp e0)  : { Exp e1; } {<asig> e1 = E0() { return sem.mkopbin("=", e0, e1); } | { return e0; } }    
+  Exp E1()  : { Exp e0, e1; } {e0 = E2() e1 = resto_E1(e0) {return e1;} }  
+  Exp resto_E1(Exp e0)  : { String op; Exp e1, e2; } {op = op_relacional() e1 = E2() e2 = resto_E1(sem.mkopbin(op, e0, e1)) { return e2; } | { return e0; }}  
+  Exp E2()  : { Exp e0, e1, e2; } { e0 = E3() e1 = resto_E2_F(e0) e2 = resto_E2_R(e1) { return e2; } }   
+  Exp resto_E2_R(Exp e0)  : { Exp e1, e2; } {<suma> e1 = E3() e2 = resto_E2_R(sem.mkopbin("+", e0, e1)) {return e2;} | {return e0;}}  
+  Exp resto_E2_F(Exp e0)  : {Exp e1;} {<resta> e1 = E3() {return sem.mkopbin("-", e0, e1);} | { return e0; }} 
+  Exp E3()  : {Exp e0, e1;} {e0 = E4() e1 = resto_E3(e0) {return e1;}}  
+  Exp resto_E3(Exp e0)  : {Exp e1;} {
+	<and> e1 = E3() {return sem.mkopbin("and", e0, e1);}
+	| <or> e1 = E4() {return sem.mkopbin("or", e0, e1);}
+	| {return e0;}
+	}
+  Exp E4()  : {Exp e0, e1;} {e0 = E5() e1 = resto_E4(e0) {return e1;} }
+  Exp resto_E4(Exp e0)  : {String op; Exp e1, e2;} {op = op_mult() e1 = E5() e2 = resto_E4(e1) {return e2;} | {return e0;}}  
+  Exp E5()  : {Exp e0;} {
+	<resta> e0 = E5() {return sem.mkopun("-", e0);}
+	| <not> e0 = E5() {return sem.mkopun("not", e0);}
+	| e0 = E6() {return e0;}}
+  Exp E6()  : {Exp e0, e1;} { e0 = E7() e1 = resto_E6(e0) {return e1;} }
+  Exp resto_E6(Exp e0)  : { Exp e1, e2; Token i; } {
+	<indireccion> e1 = resto_E6(sem.exp_indir(e0)) { return e1; }
+	| <punto> i = <identificador> e1 = resto_E6(sem.exp_reg(e0, i.image)) { return e1; }
+	| <corcheteApert> e1 = expresion() <corcheteCierre> e2 = resto_E6(sem.exp_index(e0, e1)) { return e2; }
+	| { return e0; } }
+  Exp E7()  : {Exp e0;} {
+	e0 = expresion_basica() { return e0; }
+	| <parenApert> e0 = E0() <parenCierre> { return e0; } }
+  Exp expresion_basica()  :
+  	{ Token i; } {
+		i = <literalEntero> { return sem.exp_entero(i.image); }
+		| i = <literalReal> { return sem.exp_real(i.image); }
+		| <TRUE> { return sem.exp_true(); }
+		| <FALSE> { return sem.exp_false(); }
+		| i = <literalCadena> { return sem.exp_entero(i.image); }
+		| i = <identificador> { return sem.exp_iden(i.image); }
+		| i = <NULL> { return sem.exp_null(); }
+	}  
   
-  void op_relacional()  : {} {<menor> | <menorIgual> | <mayor> | <mayorIgual> | <igual> | <distinto>}    
-  void op_mult()  : {} {<mul> | <div> | <mod>}  
-  void op_dirs()  : {} {<corcheteApert> expresion() <corcheteCierre> | <punto> <identificador> | <indireccion>}  
+  String op_relacional()  : { Token i; } {
+	i = <menor> { return i.image; }
+	| i = <menorIgual> { return i.image; }
+	| i = <mayor> { return i.image; }
+	| i = <mayorIgual> { return i.image; }
+	| i = <igual> { return i.image; }
+	| i = <distinto> { return i.image; }
+	}    
+  String op_mult()  : { Token i; } {
+	i = <mul> { return i.image; }
+	| i = <div> { return i.image; }
+	| i = <mod> { return i.image; } }  
