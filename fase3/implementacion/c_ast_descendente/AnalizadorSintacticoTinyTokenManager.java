@@ -19,6 +19,7 @@ import asint.SintaxisAbstractaTiny.LCampos;
 import asint.SintaxisAbstractaTiny.TipoNom;
 import asint.SintaxisAbstractaTiny.Tipo;
 import asint.SintaxisAbstractaTiny.Exp;
+import c_ast_ascendente.UnidadLexica.StringLocalizado;
 
 /** Token Manager. */
 @SuppressWarnings ("unused")

@@ -19,6 +19,7 @@ import asint.SintaxisAbstractaTiny.LCampos;
 import asint.SintaxisAbstractaTiny.TipoNom;
 import asint.SintaxisAbstractaTiny.Tipo;
 import asint.SintaxisAbstractaTiny.Exp;
+import c_ast_ascendente.UnidadLexica.StringLocalizado;
 
 public class AnalizadorSintacticoTiny implements AnalizadorSintacticoTinyConstants {
    private ClaseSemanticaTiny sem = new ClaseSemanticaTiny();
@@ -581,7 +582,7 @@ Exp e; I i; I r; ParamRs params; Token id; Bloq bloq;
         jj_consume_token(call);
         id = jj_consume_token(identificador);
         params = parametros_reales();
-{if ("" != null) return (I)sem.ins_call(id.image, params);}
+{if ("" != null) return (I)sem.ins_call(id.image, params).ponFila(id.beginLine).ponCol(id.beginColumn);}
         break;
         }
       case llaveApert:{
@@ -785,8 +786,8 @@ Exp e, r; Token op;
       case mayorIgual:{
         op = op_relacional();
         e = E2();
-        r = resto_E1(e);
-{if ("" != null) return (Exp)sem.mkopbin(op.image, eh, e).ponFila(op.beginLine).ponCol(op.beginColumn);}
+        r = resto_E1((Exp)sem.mkopbin(op.image, eh, e).ponFila(op.beginLine).ponCol(op.beginColumn));
+{if ("" != null) return r;}
         break;
         }
       default:
@@ -877,13 +878,13 @@ Exp e, r; Token op;
       case and:{
         op = jj_consume_token(and);
         e = E3();
-{if ("" != null) return (Exp)sem.mkopbin(op.image, eh, e).ponFila(op.beginLine).ponCol(op.beginColumn);}
+{if ("" != null) return (Exp)sem.exp_and(eh, e).ponFila(op.beginLine).ponCol(op.beginColumn);}
         break;
         }
       case or:{
         op = jj_consume_token(or);
         e = E4();
-{if ("" != null) return (Exp)sem.mkopbin(op.image, eh, e).ponFila(op.beginLine).ponCol(op.beginColumn);}
+{if ("" != null) return (Exp)sem.exp_or(eh, e).ponFila(op.beginLine).ponCol(op.beginColumn);}
         break;
         }
       default:
@@ -919,8 +920,8 @@ Exp e, r; Token op;
       case mod:{
         op = op_mult();
         e = E5();
-        r = resto_E4(e);
-{if ("" != null) return (Exp)sem.mkopbin(op.image, eh, e).ponFila(op.beginLine).ponCol(op.beginColumn);}
+        r = resto_E4((Exp)sem.mkopbin(op.image, eh, e).ponFila(op.beginLine).ponCol(op.beginColumn));
+{if ("" != null) return r;}
         break;
         }
       default:

@@ -128,7 +128,7 @@ public class Impresor extends SintaxisAbstractaTiny {
     }
     private void imprime(I in) {
     	if(claseDe(in,Ins_eval.class)) {
-    		System.out.println("<@>");
+    		System.out.println("@");
     		imprime(in.exp());
     	}
     	else if(claseDe(in,Ins_if.class)) {
@@ -218,10 +218,10 @@ public class Impresor extends SintaxisAbstractaTiny {
     		imprimeExpBin(exp.Opnd0(), "-", exp.Opnd1(), 3, 3, exp.leeFila(), exp.leeCol());
     	}
     	else if(claseDe(exp,Exp_and.class)) {
-    		imprimeExpBin(exp.Opnd0(), "and", exp.Opnd1(), 4, 3, exp.leeFila(), exp.leeCol());
+    		imprimeExpBin(exp.Opnd0(), "<and>", exp.Opnd1(), 4, 3, exp.leeFila(), exp.leeCol());
     	}
     	else if(claseDe(exp,Exp_or.class)) {
-    		imprimeExpBin(exp.Opnd0(), "or", exp.Opnd1(), 4, 4, exp.leeFila(), exp.leeCol());
+    		imprimeExpBin(exp.Opnd0(), "<or>", exp.Opnd1(), 4, 4, exp.leeFila(), exp.leeCol());
     	}
     	else if(claseDe(exp,Exp_mul.class)) {
     		imprimeExpBin(exp.Opnd0(), "*", exp.Opnd1(), 4, 5, exp.leeFila(), exp.leeCol());
@@ -262,10 +262,10 @@ public class Impresor extends SintaxisAbstractaTiny {
     		print_info(exp.litReal(), exp.leeFila(), exp.leeCol());
     	}
     	else if(claseDe(exp,Exp_true.class)) {
-    		System.out.println("<true>");
+    		print_info("<true>", exp.leeFila(), exp.leeCol());
     	}
     	else if(claseDe(exp,Exp_false.class)) {
-    		System.out.println("<false>");
+    		print_info("<false>", exp.leeFila(), exp.leeCol());
     	}
     	else if(claseDe(exp,Exp_cadena.class)) {
     		print_info(exp.litCadena(), exp.leeFila(), exp.leeCol());
@@ -274,7 +274,7 @@ public class Impresor extends SintaxisAbstractaTiny {
     		print_info(exp.ID(), exp.leeFila(), exp.leeCol());
     	}
     	else if(claseDe(exp,Exp_null.class)) {
-    		System.out.println("<null>");
+    		print_info("<null>", exp.leeFila(), exp.leeCol());
     	}
     }
     private void imprimeExpBin(Exp Opnd0, String Op, Exp Opnd1, int np0, int np1, int fila, int col) {

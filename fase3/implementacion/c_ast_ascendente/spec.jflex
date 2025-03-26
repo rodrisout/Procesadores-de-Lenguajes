@@ -1,4 +1,4 @@
-package alex;
+package c_ast_ascendente;
 
 import errors.GestionErroresTiny;
 

@@ -98,7 +98,7 @@ public class Impresion extends ProcesamientoDef {
 	}
 	public void procesa(Muchas_decs decs){
 		decs.lDecs().procesa(this);
-		System.out.println("&&");
+		System.out.println(";");
 		decs.dec().procesa(this);
 	}
 	public void procesa(Una_dec dec){
@@ -194,7 +194,7 @@ public class Impresion extends ProcesamientoDef {
 		in.i().procesa(this);
 	}
 	public void procesa(Ins_eval in){
-		System.out.println("<@>");
+		System.out.println("@");
 		in.exp().procesa(this);
 	}
 	public void procesa(Ins_if in){
@@ -280,10 +280,10 @@ public class Impresion extends ProcesamientoDef {
 		imprimeExpBin(exp.Opnd0(), "-", exp.Opnd1(), 3, 3, exp.leeFila(), exp.leeCol());
 	}
 	public void procesa(Exp_and exp){
-		imprimeExpBin(exp.Opnd0(), "and", exp.Opnd1(), 4, 3, exp.leeFila(), exp.leeCol());
+		imprimeExpBin(exp.Opnd0(), "<and>", exp.Opnd1(), 4, 3, exp.leeFila(), exp.leeCol());
 	}
 	public void procesa(Exp_or exp){
-		imprimeExpBin(exp.Opnd0(), "or", exp.Opnd1(), 4, 4, exp.leeFila(), exp.leeCol());
+		imprimeExpBin(exp.Opnd0(), "<or>", exp.Opnd1(), 4, 4, exp.leeFila(), exp.leeCol());
 	}
 	public void procesa(Exp_mul exp){
 		imprimeExpBin(exp.Opnd0(), "*", exp.Opnd1(), 4, 5, exp.leeFila(), exp.leeCol());
@@ -324,10 +324,10 @@ public class Impresion extends ProcesamientoDef {
 		print_info(exp.litReal(), exp.leeFila(), exp.leeCol());
 	}
 	public void procesa(Exp_true exp){
-		System.out.println("<true>");
+		print_info("<true>", exp.leeFila(), exp.leeCol());
 	}
 	public void procesa(Exp_false exp){
-		System.out.println("<false>");
+		print_info("<false>", exp.leeFila(), exp.leeCol());
 	}
 	public void procesa(Exp_cadena exp){
 		print_info(exp.litCadena(), exp.leeFila(), exp.leeCol());
@@ -336,6 +336,6 @@ public class Impresion extends ProcesamientoDef {
 		print_info(exp.ID(), exp.leeFila(), exp.leeCol());
 	}
 	public void procesa(Exp_null exp){
-		System.out.println("<null>");
+		print_info("<null>", exp.leeFila(), exp.leeCol());
 	}
 }
