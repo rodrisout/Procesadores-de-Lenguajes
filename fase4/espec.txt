@@ -1,0 +1,1173 @@
+
+** VINCULACION Y PRETIPADO **
+
+var ts
+
+def vincula(programa(Bloq)):
+	ts = creaTS()
+	vincula(SecDecs)
+def vincula(bloque(SecDecs, SecIs)):
+	abreAmbito(ts)
+	recolectaDecs(SecDecs)
+	vincula(SecDecs)
+	vincula(SecIs)
+	cierraAmbito(ts)
+def vincula(si_decs(LDecs)):
+	vincula(LDecs)
+def vincula(no_decs()):x
+def vincula(muchas_decs(LDecs, Dec)):
+	vincula(LDecs)
+	vincula(Dec)
+def vincula(una_dec(Dec)):
+	vincula(Dec)
+def vincula(dec_base(TipoNom)):
+	vincula(TipoNom)
+def vincula(dec_type(TipoNom)):
+	vincula(TipoNom)
+def vincula(dec_proc(iden, ParamFs, Bloq)):
+	abreAmbito(ts)
+	if contiene(ts, iden):
+		error()
+	else	inserta(ts, iden, $)
+	vincula(ParamFs)
+	vincula(Bloq)
+	cierraAmbito(ts)
+def vincula(si_params_f(LParamFs)):
+	vincula(LParamFs)
+def vincula(no_params_f()):x
+def vincula(muchos_params_f(LParamFs, ParamF)):
+	vincula(LParamFs)
+	vincula(ParamF)
+def vincula(un_param_f(ParamF)):
+	vincula(ParamF)
+def vincula(si_refparam_f(Tipo, iden)):
+	vincula(Tipo)
+	if contiene(ts, iden):
+		error()
+	else	registra(ts, iden, $)
+def vincula(no_refparam_f(Tipo, iden)):
+	vincula(Tipo)
+	if contiene(ts, iden):
+		error()
+	else	registra(ts, iden, $)
+def vincula(tipo_nombre(Tipo, iden)):
+	vincula(Tipo)
+def vincula(tipo_array(Tipo, litEntero)):
+	vincula(Tipo)
+	if litEntero < 0:
+		error()
+def vincula(tipo_indir(Tipo)):
+	vincula(Tipo)
+def vincula(tipo_int()):x
+def vincula(tipo_real()):x
+def vincula(tipo_bool()):x
+def vincula(tipo_string()):x
+def vincula(tipo_type(iden)):
+	$.vinculo = vinculoDe(ts, iden)
+	if (not $.vinculo) or (not $.vinculo == dec_type(TipoNom)):
+		error()
+def vincula(tipo_struct(LCampos)):
+	idens = []
+	vincula(&idens, LCampos)
+def vincula(&idens, muchos_campos(LCampos, TipoNom)):
+	vincula(&idens, LCampos)
+	if contiene(idens, TipoNom.iden):
+		error()
+	else	inserta(idens, TipoNom.iden)
+	vincula(TipoNom)
+def vincula(&idens, un_campo(TipoNom)):
+	vincula(TipoNom)
+	if contiene(idens, TipoNom.iden):
+		error()
+	else	inserta(idens, TipoNom.iden)
+def vincula(si_ins(LIs)):
+	vincula(LIs)
+def vincula(no_ins()):x
+def vincula(muchas_ins(LIs, I)):
+	vincula(LIs)
+	vincula(I)
+def vincula(una_ins(I)):
+	vincula(i)
+def vincula(ins_eval(Exp)):
+	vincula(Exp)
+def vincula(ins_if(Exp, Bloq)):
+	vincula(Exp)
+	vincula(Bloq)
+def vincula(ins_if_else(I, Bloq)):
+	vincula(I)
+	vincula(Bloq)
+def vincula(ins_while(Exp, Bloq)):
+	vincula(Exp)
+	vincula(Bloq)
+def vincula(ins_read(Exp)):
+	vincula(Exp)
+def vincula(ins_write(Exp)):
+	vincula(Exp)
+def vincula(ins_nl()):
+	vincula(Exp)
+def vincula(ins_new(Exp)):
+	vincula(Exp)
+def vincula(ins_delete(Exp)):
+	vincula(Exp)
+def vincula(ins_call(iden, ParamRs)):
+	$.vinculo = vinculoDe(ts, iden)
+	if not $.vinculo:
+		error()
+	vincula(ParamRs)
+def vincula(ins_bloque(Bloq)):
+	vincula(Bloq)
+def vincula(si_params_r(LParamRs)):
+	vincula(LParamRs)
+def vincula(no_params_r()):x
+def vincula(muchos_params_r(LParamRs, Exp)):
+	vincula(LParamRs)
+	vincula(Exp)
+def vincula(un_param_r(Exp)):
+	vincula(Exp)
+def vincula(exp_asig(op0, op1)):
+	vincula(op0)
+	vincula(op1)
+def vincula(exp_menor(op0, op1)):
+	vincula(op0)
+	vincula(op1)
+def vincula(exp_menor_ig(op0, op1)):
+	vincula(op0)
+	vincula(op1)
+def vincula(exp_mayor(op0, op1)):
+	vincula(op0)
+	vincula(op1)
+def vincula(exp_mayor_ig(op0, op1)):
+	vincula(op0)
+	vincula(op1)
+def vincula(exp_ig(op0, op1)):
+	vincula(op0)
+	vincula(op1)
+def vincula(exp_dist(op0, op1)):
+	vincula(op0)
+	vincula(op1)
+def vincula(exp_suma(op0, op1)):
+	vincula(op0)
+	vincula(op1)
+def vincula(exp_resta(op0, op1)):
+	vincula(op0)
+	vincula(op1)
+def vincula(exp_and(op0, op1)):
+	vincula(op0)
+	vincula(op1)
+def vincula(exp_or(op0, op1)):
+	vincula(op0)
+	vincula(op1)
+def vincula(exp_mul(op0, op1)):
+	vincula(op0)
+	vincula(op1)
+def vincula(exp_div(op0, op1)):
+	vincula(op0)
+	vincula(op1)
+def vincula(exp_mod(op0, op1)):
+	vincula(op0)
+	vincula(op1)
+def vincula(exp_menos(op)):
+	vincula(op)
+def vincula(exp_not(op)):
+	vincula(op)
+def vincula(exp_index(op0, op1)):
+	vincula(op0)
+	vincula(op1)
+def vincula(exp_reg(op, iden)):
+	vincula(op)
+def vincula(exp_indir(op)):
+	vincula(op)
+def vincula(exp_entero(litEntero)):x
+def vincula(exp_real(litReal)):x
+def vincula(exp_true()):x
+def vincula(exp_false()):x
+def vincula(exp_cadena(litCadena)):x
+def vincula(exp_iden(iden)):
+	$.vinculo = vinculoDe(ts, iden)
+	if (not $.vinculo) or (not $.vinculo == dec_base(TipoNom)):
+		error()
+def vincula(exp_null()):x
+
+def recolectaDecs(si_decs(LDecs)):
+	recolectaDecs(LDecs)
+def recolectaDecs(no_decs()):x
+def recolectaDecs(muchas_decs(LDecs, Dec)):
+	recolectaDecs(LDecs)
+	recolectaDec(Dec)
+def recolectaDecs(una_dec(Dec)):
+	recolectaDec(Dec)
+def recolectaDec(dec_base(TipoNom)):
+	if contiene(ts, TipoNom.iden):
+		error()
+	else	inserta(ts, TipoNom.iden, $)
+def recolectaDec(dec_type(TipoNom)):
+	if contiene(ts, TipoNom.iden):
+		error()
+	else	inserta(ts, TipoNom.iden, $)
+def recolectaDec(dec_proc(iden, ParamFs, Bloq)):
+	if contiene(ts, iden):
+		error()
+	else	inserta(ts, iden, $)
+
+** TIPADO **
+
+def tipado(progama(Bloq)):
+	$.tipo = Bloq.tipo
+
+def tipado(bloque(SecDecs, SecIs)):
+	tipado(SecDecs)
+	tipado(SecIs)
+	if SecDecs.tipo == ok and SecIs.tipo == ok:
+		$.tipo = ok
+	else	$.tipo = error
+def tipado(si_decs(LDecs)):
+	tipado(LDecs)
+	$.tipo = LDecs.tipo
+def tipado(no_decs()):
+	$.tipo = ok
+def tipado(muchas_decs(LDecs, Dec)):
+	tipado(LDecs, Dec)
+	if LDecs.tipo == ok and Dec.tipo == ok:
+		$.tipo = ok
+	else	$.tipo = error
+def tipado(una_dec(Dec)):
+	tipado(Dec)
+	$.tipo = Dec.tipo
+def tipado(dec_base(TipoNom)):
+	tipado(TipoNom)
+	$.tipo = ok
+def tipado(dec_type(TipoNom)):
+	tipado(TipoNom)
+	$.tipo = ok
+def tipado(dec_proc(iden, ParamFs, Bloq)):
+	tipado(ParamFs)
+	tipado(Bloq)
+	$.tipo = Bloq.tipo
+def tipado(si_params_f(LParamFs)):
+	tipado(LParamFs)
+def tipado(no_params_f()):x
+def tipado(muchos_params_f(LParamFs, ParamF)):
+	tipado(LParamFs)
+	tipado(LParamF)
+def tipado(un_param_f(ParamF)):
+	tipado(ParamF)
+def tipado(si_refparam_f(Tipo, iden)):
+	tipado(Tipo)
+def tipado(no_refparam_f(Tipo, iden)):
+	tipado(Tipo)
+def tipado(tipo_nombre(Tipo, iden)):
+	tipado(Tipo)
+def tipado(tipo_array(Tipo, litEntero)):
+	tipado(Tipo)
+	$.tipo = array(Tipo, litEntero)
+def tipado(tipo_indir(Tipo)):
+	tipado(Tipo)
+	$.tipo = pointer(Tipo)
+def tipado(tipo_struct(LCampos)):
+	tipado(LCampos)
+	$.tipo = struct(LCampos)
+def tipado(tipo_int()):
+	$.tipo = int
+def tipado(tipo_real()):
+	$.tipo = real
+def tipado(tipo_bool()):
+	$.tipo = bool
+def tipado(tipo_string()):
+	$.tipo = string
+def tipado(tipo_type(iden)):
+	$.tipo = ref!($).tipo
+def tipado(muchos_campos(LCampos, TipoNom)):
+	tipado(LCampos)
+	tipado(TipoNom)
+def tipado(un_campo(TipoNom)):
+	tipado(TipoNom)
+def tipado(si_ins(LIs)):
+	tipado(LIs)
+	$.tipo = LIs.tipo
+def tipado(no_ins()):
+	$.tipo = ok
+def tipado(muchas_ins(LIs, I)):
+	tipado(LIs)
+	tipado(I)
+	if LIs.tipo == ok and I.tipo == ok:
+		$.tipo = ok
+	else	$.tipo = error
+def tipado(una_ins(I)):
+	tipado(I)
+	$.tipo = I.tipo
+def tipado(ins_eval(Exp)):
+	tipado(Exp)
+	$.tipo = Exp.tipo
+def tipado(ins_if(Exp, Bloq)):
+	tipado(Exp)
+	tipado(Bloq)
+	if Exp.tipo == bool and Bloq.tipo == ok:
+		$.tipo = ok 
+	else	$.tipo = error
+def tipado(ins_if_else(I, Bloq)):
+	tipado(I)
+	tipado(Bloq)
+	if I.tipo == ok and Bloq.tipo == ok:
+		$.tipo = ok
+	else	$.tipo = error
+def tipado(ins_while(Exp, Bloq)):
+	tipado(Exp)
+	tipado(Bloq)
+	if Exp.tipo == bool and Bloq.tipo == ok:
+		$.tipo = ok
+	else	$.tipo = error
+def tipado(ins_read(Exp)):
+	tipado(Exp)
+	if (Exp.tipo == int or Exp.tipo == real or Exp.tipo == string)
+	    and designador(Exp):
+		$.tipo = ok 
+	else	$.tipo = error
+def tipado(ins_write(Exp)):
+	tipado(Exp)
+	if Exp.tipo == int or Exp.tipo == real or
+	   Exp.tipo == string or Exp.tipo == bool:
+		$.tipo = ok 
+	else	$.tipo = error
+def tipado(ins_nl()):
+	tipado(Exp)
+	$.tipo = ok
+def tipado(ins_new(Exp)):
+	tipado(Exp)
+	if Exp.tipo == pointer(T):
+		$.tipo = ok
+	else	$.tipo = error
+def tipado(ins_delete(Exp)):
+	tipado(Exp)
+	if Exp.tipo == pointer(T):
+		$.tipo = ok
+	else	$.tipo = error
+def tipado(ins_call(iden, ParamRs)):
+	tipado(ParamRs)
+	if $.vinculo == dec_proc(iden, ParamFs):
+		$.tipo = params_compatibles(ParamFs, ParamRs)
+	else	$.tipo = error
+def tipado(ins_bloque(Bloq)):
+	tipado(Bloq)
+	$.tipo = Bloq.tipo
+def tipado(si_params_r(LParamRs)):
+	tipado(LParamRs)
+def tipado(no_params_r()):x
+def tipado(muchos_params_r(LParamRs, Exp)):
+	tipado(LParamRs)
+	tipado(Exp)
+def tipado(un_param_r(Exp)):
+	tipado(Exp)
+def tipado(exp_asig(op0, op1)):
+	tipado(op0)
+	tipado(op1)
+	$.tipo = mk_tipado_bin(op0, '=', op1)
+def tipado(exp_menor(op0, op1)):
+	tipado(op0)
+	tipado(op1)
+	$.tipo = mk_tipado_bin(op0, '<', op1)
+def tipado(exp_menor_ig(op0, op1)):
+	tipado(op0)
+	tipado(op1)
+	$.tipo = mk_tipado_bin(op0, '<=', op1)
+def tipado(exp_mayor(op0, op1)):
+	tipado(op0)
+	tipado(op1)
+	$.tipo = mk_tipado_bin(op0, '>', op1)
+def tipado(exp_mayor_ig(op0, op1)):
+	tipado(op0)
+	tipado(op1)
+	$.tipo = mk_tipado_bin(op0, '>=', op1)
+def tipado(exp_ig(op0, op1)):
+	tipado(op0)
+	tipado(op1)
+	$.tipo = mk_tipado_bin(op0, '==', op1)
+def tipado(exp_dist(op0, op1)):
+	tipado(op0)
+	tipado(op1)
+	$.tipo = mk_tipado_bin(op0, '!=', op1)
+def tipado(exp_suma(op0, op1)):
+	tipado(op0)
+	tipado(op1)
+	$.tipo = mk_tipado_bin(op0, '+', op1)
+def tipado(exp_resta(op0, op1)):
+	tipado(op0)
+	tipado(op1)
+	$.tipo = mk_tipado_bin(op0, '-', op1)
+def tipado(exp_and(op0, op1)):
+	tipado(op0)
+	tipado(op1)
+	$.tipo = mk_tipado_bin(op0, 'and', op1)
+def tipado(exp_or(op0, op1)):
+	tipado(op0)
+	tipado(op1)
+	$.tipo = mk_tipado_bin(op0, 'or', op1)
+def tipado(exp_mul(op0, op1)):
+	tipado(op0)
+	tipado(op1)
+	$.tipo = mk_tipado_bin(op0, '*', op1)
+def tipado(exp_div(op0, op1)):
+	tipado(op0)
+	tipado(op1)
+	$.tipo = mk_tipado_bin(op0, '/', op1)
+def tipado(exp_mod(op0, op1)):
+	tipado(op0)
+	tipado(op1)
+	$.tipo = mk_tipado_bin(op0, '%', op1)
+def tipado(exp_menos(op)):
+	tipado(op)
+	if op.tipo == int
+		$.tipo = int
+	else if op.tipo == real
+		$.tipo = real
+	else	$.tipo = error
+def tipado(exp_not(op)):
+	tipado(op)
+	$.tipo = mk_tipado_bin('not', op)
+	if op.tipo == bool
+		$.tipo = bool
+	else	$.tipo = error
+def tipado(exp_index(op0, op1)):
+	tipado(op0)
+	tipado(op1)
+	if (op0.tipo == array(T,_)) and (op1.tipo == int):
+		$.tipo = T
+	else	$.tipo = error
+def tipado(exp_reg(op, iden)):
+	tipado(op)
+	if op.tipo == struct(L):
+		return tipo_campo(L, iden)
+	else	return error
+def tipado(exp_indir(op)):
+	tipado(op)
+	with op.tipo == pointer(T):
+		$.tipo = T.tipo
+def tipado(exp_entero(litEntero)):
+	$.tipo = int
+def tipado(exp_real(litReal)):
+	$.tipo = real
+def tipado(exp_true()):
+	$.tipo = bool
+def tipado(exp_false()):
+	$.tipo = bool
+def tipado(exp_cadena(litCadena)):
+	$.tipo = string
+def tipado(exp_iden(iden)):
+	$.tipo = ref!($).tipo
+def tipado(exp_null()):
+	$.tipo = null
+
+def mk_tipado_bin(a, op, b):
+	match op:
+		case '=':
+			if designador(a) and compatibles(a, b):
+				return a.tipo
+			else	return error
+		case '+', '-', '*', '/':
+			if (a.tipo == int) and (b.tipo == int)
+				return int
+			else if (a.tipo == real) and
+				((b.tipo == int) or (b.tipo == real))
+				return real
+			else	return error
+		case '%':
+			if (a.tipo == int) and (b.tipo == int)
+				return tipo.int
+			else	return error
+		case 'and', 'or':
+			if (a.tipo == bool) and (b.tipo == bool)
+				return bool
+			else	return error
+		case '==', '!=':
+			if (a.tipo == pointer(T)) and (b.tipo == pointer(T))
+				return bool
+			else if (a.tipo == pointer(T)) and (b.tipo == null)
+				return bool
+			else if (a.tipo == null) and (b.tipo == null)
+				return bool
+			# FALLTHROUGH
+		case '<', '>', '<=', '>=':
+			if	((a.tipo == int) or (a.tipo == real))
+				and
+				((b.tipo == int) or (b.tipo == real))
+				return bool
+			else if (a.tipo == bool) or (b.tipo == bool)
+				return bool
+			else if (a.tipo == string) or (b.tipo == string)
+				return bool
+			else	return false
+
+def tipo_campo(muchos_campos(LCampos, TipoNom), iden):
+	if TipoNom.iden == iden:
+		return TipoNom.Tipo.tipo
+	else	return tipo_campo(LCampos, iden)
+def tipo_campo(un_campo(TipoNom), iden):
+	if TipoNom.iden == iden:
+		return TipoNom.Tipo.tipo
+	else	return error
+
+def compatibles(a, b):
+	if (a.tipo == int) and (b.tipo == int)
+		return true
+	else if (a.tipo == real) and ((b.tipo == int) or (b.tipo == real))
+		return true
+	else if (a.tipo == bool) and (b.tipo == bool)
+		return true
+	else if (a.tipo == string) and (b.tipo == string)
+		return true
+	else if (a.tipo == array(T0,_)) and (b.tipo == array(T1,_))
+		return compatibles(T0, T1)
+	else if (a.tipo == struct(L0)) and (b.tipo == struct(L1))
+		return compatibles(L0, L1)
+	else if (a.tipo == pointer(T)) and (b.tipo == null)
+		return true
+	else if (a.tipo == pointer(T0)) and (b.tipo == pointer(T1))
+		return compatibles(T0, T1)
+	else	return false
+def compatibles(muchos_campos(_,_), un_campo(_)):
+	return false
+def compatibles(muchos_campos(LCampos0, TipoNom0), muchos_campos(LCampos1, TipoNom1)):
+	return compatibles(LCampos0, LCampos1) and
+		compatibles(TipoNom0, TipoNom1)
+def compatibles(un_campo(TipoNom0), un_campo(TipoNom1))
+	return compatibles(TipoNom0, TipoNom1)
+def params_compatibles(si_params_f(LParamFs), si_params_r(LParamRs)):
+	return params_compatibles(LParamFs, LParamRs)
+def params_compatibles(no_params_f(), si_params_r(_)):
+	return error
+def params_compatibles(si_params_f(_), no_params_r()):
+	return error
+def params_compatibles(no_params_f(), no_params_r()):
+	return ok
+def params_compatibles(muchos_params_f(LParamFs, ParamF), un_param_r(ParamR)):
+	return error
+def params_compatibles(un_param_f(ParamF), muchos_params_r(LParamRs, ParamR)):
+	return error
+def params_compatibles(muchos_params_f(LParamFs, ParamF), muchos_params_r(LParamRs, Exp)):
+	if 	(params_compatibles_(ParamF, Exp) == ok) and
+		(params_compatibles(LParamFs, LParamRs) == ok)
+		return ok
+	else	return error
+def params_compatibles(un_param_f(ParamF), un_param_r(Exp)):
+	return params_compatibles_(ParamF, Exp)
+def params_compatibles_(ParamF, Exp):
+	if ParamF == si_refparam_f(T, iden):
+		if designador(Exp):
+			if Exp.tipo == real:
+				if T.tipo == real:
+					return ok
+				else	return error
+			else	return compatibles(T, Exp)
+		else	return error
+	else with ParamF == no_refparam_f(T, iden): 
+		if compatibles(T, Exp):
+			return ok
+		else	return error
+
+** ESPACIO **
+
+var dir, dir_max, nivel
+def asig_espacio(programa(Bloq)):
+	dir = 0
+	dir_max = 0
+	nivel = 0
+	asig_espacio(Bloq)
+def asig_espacio(bloque(SecDecs, SecIs)):
+	dir_ant = dir
+	asig_espacio(SecDecs)
+	asig_espacio(SecIs)
+	dir = dir_ant
+def asig_espacio(si_decs(LDecs)):
+	asig_espacio(LDecs)
+def asig_espacio(no_decs()):x
+def asig_espacio(muchas_decs(LDecs, Dec)):
+	asig_espacio(LDecs)
+	asig_espacio(Dec)
+def asig_espacio(una_dec(Dec)):
+	asig_espacio(Dec)
+def asig_espacio(dec_base(TipoNom)):
+	asig_espacio(TipoNom)
+	inc_dir(TipoNom.Tipo.tam)
+def asig_espacio(dec_type(TipoNom)):
+	asig_espacio(TipoNom)
+def asig_espacio(dec_proc(iden, ParamFs, Bloq)):
+	dir_ant = dir
+	dir_max_ant = dir_max
+	nivel++
+
+	asig_espacio(ParamFs)
+	asig_espacio(Bloq)
+	$.nivel = nivel
+	$.espacio = dir_max
+
+	nivel--
+	dir = dir_ant
+	dir_max = dir_max_ant
+def asig_espacio(si_params_f(LParamFs)):
+	asig_espacio(LParamFs)
+def asig_espacio(no_params_f()):x
+def asig_espacio(muchos_params_f(LParamFs, ParamF)):
+	asig_espacio(LParamFs)
+	asig_espacio(ParamF)
+def asig_espacio(un_param_f(ParamF)):
+	asig_espacio(ParamF)
+def asig_espacio(si_refparam_f(Tipo, iden)):
+	asig_espacio(Tipo)
+	$.dir = dir
+	inc_dir()
+def asig_espacio(no_refparam_f(Tipo, iden)):
+	asig_espacio(Tipo)
+	$.dir = dir
+	inc_dir(Tipo.tam)
+def asig_espacio(tipo_nombre(Tipo, iden)):
+	asig_espacio(Tipo)
+def asig_espacio(tipo_array(Tipo, litEntero)):
+	asig_espacio(Tipo)
+	$.tam = Tipo.tam
+def asig_espacio(tipo_indir(Tipo)):
+	asig_espacio(Tipo)
+	$.tam = 1
+def asig_espacio(tipo_struct(LCampos)):
+	asig_espacio(LCampos)
+	$.tam = LCampos.tam
+def asig_espacio(tipo_int()):
+	$.tam = 1
+def asig_espacio(tipo_real()):
+	$.tam = 1
+def asig_espacio(tipo_bool()):
+	$.tam = 1
+def asig_espacio(tipo_string()):
+	$.tam = 1
+def asig_espacio(tipo_type(iden)):
+	$.tam = ref!($).tam
+def asig_espacio(muchos_campos(LCampos, TipoNom)):
+	asig_espacio(LCampos)
+	asig_espacio(TipoNom)
+	$.tam = LCampos.tam + TipoNom.Tipo.tam
+def asig_espacio(un_campo(TipoNom)):
+	asig_espacio(TipoNom)
+	$.tam = TipoNom.Tipo.tam
+def asig_espacio(si_ins(LIs)):
+	asig_espacio(LIs)
+def asig_espacio(no_ins()):x
+def asig_espacio(muchas_ins(LIs, I)):
+	asig_espacio(LIs)
+	asig_espacio(I)
+def asig_espacio(una_ins(I)):
+	asig_espacio(I)
+def asig_espacio(ins_eval(Exp)):x
+def asig_espacio(ins_if(Exp, Bloq)):x
+def asig_espacio(ins_if_else(I, Bloq)):x
+def asig_espacio(ins_while(Exp, Bloq)):x
+def asig_espacio(ins_read(Exp)):x
+def asig_espacio(ins_write(Exp)):x
+def asig_espacio(ins_nl()):x
+def asig_espacio(ins_new(Exp)):x
+def asig_espacio(ins_delete(Exp)):x
+def asig_espacio(ins_call(iden, ParamRs)):x
+def asig_espacio(ins_bloque(Bloq)):
+	asig_espacio(Bloq)
+def asig_espacio(si_params_r(LParamRs)):x
+def asig_espacio(no_params_r()):x
+def asig_espacio(muchos_params_r(LParamRs, Exp)):x
+def asig_espacio(un_param_r(Exp)):x
+def asig_espacio(exp_asig(op0, op1)):x
+def asig_espacio(exp_menor(op0, op1)):x
+def asig_espacio(exp_menor_ig(op0, op1)):x
+def asig_espacio(exp_mayor(op0, op1)):x
+def asig_espacio(exp_mayor_ig(op0, op1)):x
+def asig_espacio(exp_ig(op0, op1)):x
+def asig_espacio(exp_dist(op0, op1)):x
+def asig_espacio(exp_suma(op0, op1)):x
+def asig_espacio(exp_resta(op0, op1)):x
+def asig_espacio(exp_and(op0, op1)):x
+def asig_espacio(exp_or(op0, op1)):x
+def asig_espacio(exp_mul(op0, op1)):x
+def asig_espacio(exp_div(op0, op1)):x
+def asig_espacio(exp_mod(op0, op1)):x
+def asig_espacio(exp_menos(op)):x
+def asig_espacio(exp_not(op)):x
+def asig_espacio(exp_index(op0, op1)):x
+def asig_espacio(exp_reg(op, iden)):x
+def asig_espacio(exp_indir(op)):x
+def asig_espacio(exp_entero(litEntero)):x
+def asig_espacio(exp_real(litReal)):x
+def asig_espacio(exp_true()):x
+def asig_espacio(exp_false()):x
+def asig_espacio(exp_cadena(litCadena)):x
+def asig_espacio(exp_iden(iden)):x
+def asig_espacio(exp_null()):x
+
+def inc_dir():
+	++dir
+	if dir > dir_max:
+		dir_max = dir
+
+def inc_dir(n):
+	dir += n
+	if dir > dir_max:
+		dir_max = dir
+
+** ETIQUETADO **
+
+var etq
+def etiquetado(programa(Bloq)):
+	etq = 0
+	etiquetado(Bloq)
+def etiquetado(bloque(SecDecs, SecIs)):
+	etq++
+	etiquetado(SecDecs)
+	$.cod_ins = etq
+	etiquetado(SecIs)
+def etiquetado(si_decs(LDecs)):
+	etiquetado(LDecs)
+def etiquetado(no_decs()):x
+def etiquetado(muchas_decs(LDecs, Dec)):
+	etiquetado(LDecs)
+	etiquetado(Dec)
+def etiquetado(una_dec(Dec)):
+	etiquetado(Dec)
+def etiquetado(dec_base(TipoNom)):x
+def etiquetado(dec_type(TipoNom)):x
+def etiquetado(dec_proc(iden, ParamFs, Bloq)):
+	$.prim = etq
+	etiquetado(Bloq)
+def etiquetado(si_params_f(LParamFs)):x
+def etiquetado(no_params_f()):x
+def etiquetado(muchos_params_f(LParamFs, ParamF)):x
+def etiquetado(un_param_f(ParamF)):
+def etiquetado(si_refparam_f(Tipo, iden)):x
+def etiquetado(no_refparam_f(Tipo, iden)):x
+def etiquetado(tipo_nombre(Tipo, iden)):x
+def etiquetado(tipo_array(Tipo, litEntero)):x
+def etiquetado(tipo_indir(Tipo)):x
+def etiquetado(tipo_struct(LCampos)):x
+def etiquetado(tipo_int()):x
+def etiquetado(tipo_real()):x
+def etiquetado(tipo_bool()):x
+def etiquetado(tipo_string()):x
+def etiquetado(tipo_type(iden)):x
+def etiquetado(muchos_campos(LCampos, TipoNom)):x
+def etiquetado(un_campo(TipoNom)):x
+def etiquetado(si_ins(LIs)):
+	etiquetado(LIs)
+def etiquetado(no_ins()):x
+def etiquetado(muchas_ins(LIs, I)):
+	etiquetado(LIs)
+	etiquetado(I)
+def etiquetado(una_ins(I)):
+	etiquetado(I)
+def etiquetado(ins_eval(Exp)):
+	etiquetado(Exp)
+	etq++
+def etiquetado(ins_if(Exp, Bloq)):
+	etiquetado(Exp)
+	etiquetado(Bloq)
+	$.sig = etq
+def etiquetado(ins_if_else(I, Bloq)):
+	etiquetado(I.Exp)
+	etq++
+	etiquetado(I.Bloq)
+	$.cod_false = etq
+	etq++
+	etiquetado(Bloq)
+def etiquetado(ins_while(Exp, Bloq)):
+	$.prim = etq
+	etiquetado(Exp)
+	etq++
+	etiquetado(Bloq)
+	etq++
+	$.sig = etq
+def etiquetado(ins_read(Exp)):
+	etiquetado(Exp)
+	etq += 2
+def etiquetado(ins_write(Exp)):
+	etiquetado(Exp)
+	etq++
+def etiquetado(ins_nl()):
+	etq++
+def etiquetado(ins_new(Exp)):
+	etiquetado(Exp)
+	etq += 2
+def etiquetado(ins_delete(Exp)):
+	etiquetado(Exp)
+	etq++
+def etiquetado(ins_call(iden, ParamRs)):
+	etq++
+	etiquetado(ParamRs)
+	etq++
+def etiquetado(ins_bloque(Bloq)):
+	etiquetado(Bloq)
+def etiquetado(si_params_f(LParamFs), si_params_r(LParamRs)):
+	etiquetado(LParamFs, LParamRs)
+def etiquetado(no_params_f(LParamFs), no_params_r(LParamRs)):x
+def etiquetado(muchos_params_f(LParamFs, ParamF), muchos_params_r(LParamRs, Exp)):
+	etiquetado(LParamFs, LParamRs)
+	$.referencia = ParamF == si_refparam_f(_)
+	if $.referencia
+		etiquetado(Exp)
+	else	etq_acc(Exp)
+def etiquetado(un_param_f(ParamF), un_param_r(Exp)):
+	$.referencia = ParamF == si_refparam_f(_)
+	if $.referencia
+		etiquetado(Exp)
+	else	etq_acc(Exp)
+def etiquetado(exp_asig(op0, op1)):
+	etiquetado(op0)
+	etiquetado(op1)
+	etq++ # copy / desapila_ind
+	etiquetado(op1)
+def etiquetado(exp_menor(op0, op1)):
+	etq_op_bin(op0, op1)
+	etq++
+def etiquetado(exp_menor_ig(op0, op1)):
+	etq_op_bin(op0, op1)
+	etq++
+def etiquetado(exp_mayor(op0, op1)):
+	etq_op_bin(op0, op1)
+	etq++
+def etiquetado(exp_mayor_ig(op0, op1)):
+	etq_op_bin(op0, op1)
+	etq++
+def etiquetado(exp_ig(op0, op1)):
+	etq_op_bin(op0, op1)
+	etq++
+def etiquetado(exp_dist(op0, op1)):
+	etq_op_bin(op0, op1)
+	etq++
+def etiquetado(exp_suma(op0, op1)):
+	etq_op_bin(op0, op1)
+	etq++
+def etiquetado(exp_resta(op0, op1)):
+	etq_op_bin(op0, op1)
+	etq++
+def etiquetado(exp_and(op0, op1)):
+	etq_op_bin(op0, op1)
+	etq++
+def etiquetado(exp_or(op0, op1)):
+	etq_op_bin(op0, op1)
+	etq++
+def etiquetado(exp_mul(op0, op1)):
+	etq_op_bin(op0, op1)
+	etq++
+def etiquetado(exp_div(op0, op1)):
+	etq_op_bin(op0, op1)
+	etq++
+def etiquetado(exp_mod(op0, op1)):
+	etq_op_bin(op0, op1)
+	etq++
+def etiquetado(exp_menos(op)):
+	etq_acc(op)
+	etq++
+def etiquetado(exp_not(op)):
+	etq_acc(op)
+	etq++
+def etiquetado(exp_index(op0, op1)):
+	etiquetado(op0)
+	etiquetado(op1)
+	etq += 3
+def etiquetado(exp_reg(op, iden)):
+	etiquetado(op)
+	etq += 2
+def etiquetado(exp_indir(op)):
+	etiquetado(op)
+def etiquetado(exp_entero(litEntero)):
+	etq++
+def etiquetado(exp_real(litReal)):
+	etq++
+def etiquetado(exp_true()):
+	etq++
+def etiquetado(exp_false()):
+	etq++
+def etiquetado(exp_cadena(litCadena)):
+	etq++
+def etiquetado(exp_iden(iden)):x
+def etiquetado(exp_null()):
+	etq++
+
+** GEN-CODIGO ** 
+
+def gen_cod(programa(Bloq)):
+	gen_cod(Bloq)
+	emit stop
+def gen_cod(bloque(SecDecs, SecIs)):
+	emit ir($.cod_ins)
+	gen_cod(SecDecs)
+	gen_cod(SecIs)
+def gen_cod(si_decs(LDecs)):
+	gen_cod(LDecs)
+def gen_cod(no_decs()):x
+def gen_cod(muchas_decs(LDecs, Dec)):
+	gen_cod(LDecs)
+	gen_cod(Dec)
+def gen_cod(una_dec(Dec)):
+	gen_cod(Dec)
+def gen_cod(dec_base(TipoNom)):x
+def gen_cod(dec_type(TipoNom)):x
+def gen_cod(dec_proc(iden, ParamFs, Bloq)):
+	gen_cod(ParamFs)
+	gen_cod(Bloq)
+	emit desactiva($.nivel)
+def gen_cod(si_params_f(LParamFs)):x
+def gen_cod(no_params_f()):x
+def gen_cod(muchos_params_f(LParamFs, ParamF)):x
+def gen_cod(un_param_f(ParamF)):x
+def gen_cod(si_refparam_f(Tipo, iden)):x
+def gen_cod(no_refparam_f(Tipo, iden)):x
+def gen_cod(tipo_nombre(Tipo, iden)):x
+def gen_cod(tipo_array(Tipo, litEntero)):x
+def gen_cod(tipo_indir(Tipo)):x
+def gen_cod(tipo_struct(LCampos)):x
+def gen_cod(tipo_int()):x
+def gen_cod(tipo_real()):x
+def gen_cod(tipo_bool()):x
+def gen_cod(tipo_string()):x
+def gen_cod(tipo_type(iden)):x
+def gen_cod(muchos_campos(LCampos, TipoNom)):x
+def gen_cod(un_campo(TipoNom)):x
+def gen_cod(si_ins(LIs)):
+	gen_cod(LIs)
+def gen_cod(no_ins()):x
+def gen_cod(muchas_ins(LIs, I)):
+	gen_cod(LIs)
+	gen_cod(I)
+def gen_cod(una_ins(I)):
+	gen_cod(I)
+def gen_cod(ins_eval(Exp)):
+	gen_cod(Exp)
+	emit desapila(1)
+def gen_cod(ins_if(Exp, Bloq)):
+	gen_acc(Exp)
+	emit ir-f($.sig)
+	gen_cod(Bloq)
+def gen_cod(ins_if_else(I, Bloq)):
+	gen_acc(I.Exp)
+	emit ir-f($.cod_false)
+	gen_cod(I.Bloq)
+	emit ir($.sig)
+	gen_cod(Bloq)
+def gen_cod(ins_while(Exp, Bloq)):
+	gen_acc(Exp)
+	emit ir-f($.sig)
+	gen_cod(Bloq)
+	emit ir($.prim)
+def gen_cod(ins_read(Exp)):
+	gen_cod(Exp)
+	emit read
+	emit store
+def gen_cod(ins_write(Exp)):
+	gen_acc(Exp)
+	emit write
+def gen_cod(ins_nl()):
+	emit nl
+def gen_cod(ins_new(Exp)):
+	gen_cod(Exp)
+	emit alloc(Exp.tipo)
+	emit store
+def gen_cod(ins_delete(Exp)):
+	gen_cod(Exp)
+	emit dealloc
+def gen_cod(ins_call(iden, ParamRs)):
+	emit activa($.vinculo.nivel, $.vinculo.espacio, $.sig)
+	gen_cod(ParamRs)
+	emit ir-a($.vinculo.prim)
+def gen_cod(ins_bloque(Bloq)):
+	gen_cod(Bloq)
+def gen_cod(si_params_r(LParamRs)):
+	gen_cod(LParamRs)
+def gen_cod(no_params_r()):x
+def gen_cod(muchos_params_r(LParamRs, Exp)):
+	gen_cod(LParamRs)
+	if $.referencia:
+		gen_cod(Exp)
+	else	gen_acc(Exp)
+def gen_cod(un_param_r(Exp)):
+	if $.referencia:
+		gen_cod(Exp)
+	else	gen_acc(Exp)
+def gen_cod(exp_asig(op0, op1)):
+	gen_cod(op0)
+	gen_cod(op1)
+	if designador(op1):
+		emit copy(tam(op1))
+	else	emit desapila_ind
+	gen_cod(op1)
+def gen_cod(exp_menor(op0, op1)):
+	gen_op_bin(op0, op1)
+	emit menor
+def gen_cod(exp_menor_ig(op0, op1)):
+	gen_op_bin(op0, op1)
+	emit menor_ig
+def gen_cod(exp_mayor(op0, op1)):
+	gen_op_bin(op0, op1)
+	emit mayor
+def gen_cod(exp_mayor_ig(op0, op1)):
+	gen_op_bin(op0, op1)
+	emit mayor_ig
+def gen_cod(exp_ig(op0, op1)):
+	gen_op_bin(op0, op1)
+	emit ig
+def gen_cod(exp_dist(op0, op1)):
+	gen_op_bin(op0, op1)
+	emit dist
+def gen_cod(exp_suma(op0, op1)):
+	gen_op_bin(op0, op1)
+	emit suma
+def gen_cod(exp_resta(op0, op1)):
+	gen_op_bin(op0, op1)
+	emit resta
+def gen_cod(exp_and(op0, op1)):
+	gen_op_bin(op0, op1)
+	emit and
+def gen_cod(exp_or(op0, op1)):
+	gen_op_bin(op0, op1)
+	emit or
+def gen_cod(exp_mul(op0, op1)):
+	gen_op_bin(op0, op1)
+	emit mul
+def gen_cod(exp_div(op0, op1)):
+	gen_op_bin(op0, op1)
+	emit div
+def gen_cod(exp_mod(op0, op1)):
+	gen_op_bin(op0, op1)
+	emit mod
+def gen_cod(exp_menos(op)):
+	emit apila_int(0)
+	gen_acc(op)
+	emit resta
+def gen_cod(exp_not(op)):
+	gen_acc(op)
+	emit 1
+	emit resta
+def gen_cod(exp_index(op0, op1)):
+	gen_cod(op0)
+	gen_acc(op1)
+	emit apila_int(tam(op0))
+	emit mul 
+	emit suma
+def gen_cod(exp_reg(op, iden)):
+	gen_cod(op)
+	emit apila_int($.offset)
+	emit suma
+def gen_cod(exp_indir(op)):
+	gen_cod(op)
+def gen_cod(exp_entero(litEntero)):
+	emit apila_int(litEntero)
+def gen_cod(exp_real(litReal)):
+	emit apila_real(litReal)
+def gen_cod(exp_true()):
+	emit apila_int(1)
+def gen_cod(exp_false()):
+	emit apila_int(0)
+def gen_cod(exp_cadena(litCadena)):
+	emit apila_cadena(litCadena)
+def gen_cod(exp_iden(iden)):
+	emit apila_int($.vinculo.dir)
+def gen_cod(exp_null()):
+	emit apila_int(-1)
+
+** AUXILIAR **
+def ref!(tau):
+	if tau == tipo_type(iden):
+		return ref!(tau.vinculo.TipoNom.Tipo)
+	else	return tau
+
+def designador(E):
+	if E == exp_indir(_) or E == exp_index(_,_)
+	   or E == exp_reg(_,_) or E == exp_iden(_):
+		return true
+	else if E == exp_asig(op0,op1):
+		if designador(op1):
+			return true
+		else	return false
+	else	return false
+
+def gen_acc(E):
+	gen_cod(E)
+	if designador(E):
+		emit apila_ind()
+def gen_op_bin(op0, op1):
+	gen_acc(op0)
+	gen_acc(op1)
+
+def etq_acc(op):
+	etiquetado(op)
+	if designador(op):
+		etq++ # apila_ind
+
+def etq_op_bin(op0, op1)
+	etq_acc(op0)
+	etq_acc(op1)
+
+** TEMPLATE **
+
+def template(programa(Bloq)):
+def template(bloque(SecDecs, SecIs)):
+def template(si_decs(LDecs)):
+def template(no_decs()):
+def template(muchas_decs(LDecs, Dec)):
+def template(una_dec(Dec)):
+def template(dec_base(TipoNom)):
+def template(dec_type(TipoNom)):
+def template(dec_proc(iden, ParamFs, Bloq)):
+def template(si_params_f(LParamFs)):
+def template(no_params_f()):
+def template(muchos_params_f(LParamFs, ParamF)):
+def template(un_param_f(ParamF)):
+def template(si_refparam_f(Tipo, iden)):
+def template(no_refparam_f(Tipo, iden)):
+def template(tipo_nombre(Tipo, iden)):
+def template(tipo_array(Tipo, litEntero)):
+def template(tipo_indir(Tipo)):
+def template(tipo_struct(LCampos)):
+def template(tipo_int()):
+def template(tipo_real()):
+def template(tipo_bool()):
+def template(tipo_string()):
+def template(tipo_type(iden)):
+def template(muchos_campos(LCampos, TipoNom)):
+def template(un_campo(TipoNom)):
+def template(si_ins(LIs)):
+def template(no_ins()):
+def template(muchas_ins(LIs, I)):
+def template(una_ins(I)):
+def template(ins_eval(Exp)):
+def template(ins_if(Exp, Bloq)):
+def template(ins_if_else(I, Bloq)):
+def template(ins_while(Exp, Bloq)):
+def template(ins_read(Exp)):
+def template(ins_write(Exp)):
+def template(ins_nl()):
+def template(ins_new(Exp)):
+def template(ins_delete(Exp)):
+def template(ins_call(iden, ParamRs)):
+def template(ins_bloque(Bloq)):
+def template(si_params_r(LParamRs)):
+def template(no_params_r()):
+def template(muchos_params_r(LParamRs, Exp)):
+def template(un_param_r(Exp)):
+def template(exp_asig(op0, op1)):
+def template(exp_menor(op0, op1)):
+def template(exp_menor_ig(op0, op1)):
+def template(exp_mayor(op0, op1)):
+def template(exp_mayor_ig(op0, op1)):
+def template(exp_ig(op0, op1)):
+def template(exp_dist(op0, op1)):
+def template(exp_suma(op0, op1)):
+def template(exp_resta(op0, op1)):
+def template(exp_and(op0, op1)):
+def template(exp_or(op0, op1)):
+def template(exp_mul(op0, op1)):
+def template(exp_div(op0, op1)):
+def template(exp_mod(op0, op1)):
+def template(exp_menos(op)):
+def template(exp_not(op)):
+def template(exp_index(op0, op1)):
+def template(exp_reg(op, iden)):
+def template(exp_indir(op)):
+def template(exp_entero(litEntero)):
+def template(exp_real(litReal)):
+def template(exp_true()):
+def template(exp_false()):
+def template(exp_cadena(litCadena)):
+def template(exp_iden(iden)):
+def template(exp_null()):
