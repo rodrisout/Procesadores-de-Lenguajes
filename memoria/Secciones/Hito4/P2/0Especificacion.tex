@@ -1,0 +1,220 @@
+\section{Funciones para el conjunto de campos}
+
+\begin{itemize}
+    \item \texttt{nuevoConjunto()}: Crea un conjunto vacío para almacenar los campos de un registro
+    \item \texttt{contiene(set,id)}: Comprueba si el conjunto \texttt{set} contiene ya una entrada para el identificador \texttt{id}.
+    \item \texttt{inserta(set,id)}: Inserta el identificador \texttt{id} en el conjunto \texttt{set}.
+\end{itemize}
+
+\section{Funciones de procesamiento}
+
+var set
+
+\begin{math}
+    \textbf{pretipado}(\textbf{bloque}(SecDecs, \; SecIs)): \\
+        \phantom{---} \textbf{pretipado}(SecDecs) \\
+        \phantom{---} \textbf{pretipado}(SecIs)
+\end{math}
+
+\subsection{Declaraciones}
+
+\begin{math}
+    \textbf{pretipado}(\textbf{si\_decs}(LDecs)): \\
+        \phantom{---} \textbf{pretipado}(LDecs) \\
+    \\
+    \textbf{pretipado}(\textbf{no\_decs()}): \textbf{noop} \\
+    \\
+    \textbf{pretipado}(\textbf{muchas\_decs}(LDecs, \; Dec)): \\
+        \phantom{---} \textbf{pretipado}(LDecs) \\
+        \phantom{---} \textbf{pretipado}(Dec) \\
+    \\
+    \textbf{pretipado}(\textbf{una\_dec}(Dec)): \\
+        \phantom{---} \textbf{pretipado}(Dec) \\
+    \\
+    \textbf{pretipado}(\textbf{dec\_base}(TipoNom)): \\
+        \phantom{---} \textbf{pretipado}(TipoNom) \\
+    \\
+    \textbf{pretipado}(\textbf{dec\_type}(TipoNom)): \\
+        \phantom{---} \textbf{pretipado}(TipoNom) \\
+    \\
+    \textbf{pretipado}(\textbf{dec\_proc}(iden, \; ParamFs, \; Bloq)): \\
+        \phantom{---} \textbf{pretipado}(ParamFs) \\
+        \phantom{---} \textbf{pretipado}(Bloq) \\
+    \\
+    \textbf{pretipado}(\textbf{si\_params\_f}(LParamFs)): \\
+        \phantom{---} \textbf{pretipado}(LParamFs) \\
+    \\
+    \textbf{pretipado}(\textbf{no\_params\_f()}): \textbf{noop} \\
+    \\
+    \textbf{pretipado}(\textbf{muchos\_params\_f}(LParamFs, \; ParamF)): \\
+        \phantom{---} \textbf{pretipado}(LParamFs) \\
+        \phantom{---} \textbf{pretipado}(ParamF) \\
+    \\
+    \textbf{pretipado}(\textbf{un\_param\_f}(ParamF)): \\
+        \phantom{---} \textbf{pretipado}(ParamF) \\
+    \\
+    \textbf{pretipado}(\textbf{si\_refparam\_f}(Tipo, \; iden)): \\
+        \phantom{---} \textbf{pretipado}(Tipo) \\
+    \\
+    \textbf{pretipado}(\textbf{no\_refparam\_f}(Tipo, \; iden)): \\
+        \phantom{---} \textbf{pretipado}(Tipo)
+\end{math}
+
+\subsection{Tipos}
+
+\begin{math}
+    \textbf{pretipado}(\textbf{tipo\_nombre}(Tipo, \; iden)): \\
+        \phantom{---} \textbf{pretipado}(Tipo) \\
+    \\
+    \textbf{pretipado}(\textbf{tipo\_array}(Tipo, \; litEntero)): \\
+        \phantom{---} if \; litEntero \; < \; 0 \; then \\
+            \phantom{------} \textbf{error} \\
+        \phantom{---} endif \\
+        \phantom{---} \textbf{pretipado}(Tipo) \\
+    \\
+    \textbf{pretipado}(\textbf{tipo\_indir}(Tipo)): \\
+        \phantom{---} \textbf{pretipado}(Tipo) \\
+    \\
+    \textbf{pretipado}(\textbf{tipo\_struct}(LCampos)): \\
+        \phantom{---} var \; tmp = set \\
+        \phantom{---} set = nuevoConjunto() \\
+        \phantom{---} \textbf{pretipado}(LCampos) \\
+        \phantom{---} set = tmp \\
+    \\
+    \textbf{pretipado}(\textbf{tipo\_int}()): \textbf{noop} \\
+    \\
+    \textbf{pretipado}(\textbf{tipo\_real}()): \textbf{noop} \\
+    \\
+    \textbf{pretipado}(\textbf{tipo\_bool}()): \textbf{noop} \\
+    \\
+    \textbf{pretipado}(\textbf{tipo\_string}()): \textbf{noop} \\
+    \\
+    \textbf{pretipado}(\textbf{tipo\_type}(iden)): \\  
+        \phantom{---} if \; \$.vinculo \; != \; dec\_type(\_) \; then \\
+            \phantom{------} \textbf{error} \\
+        \phantom{---} endif \\ 
+    \\
+    \textbf{pretipado}(\textbf{muchos\_campos}(LCampos, \; TipoNom(Tipo, \; iden))): \\
+        \phantom{---} \textbf{pretipado}(LCampos) \\
+        \phantom{---} \textbf{pretipado}(TipoNom) \\
+        \phantom{---} if \; contiene(set, iden) \; then \\
+            \phantom{------} \textbf{error} \\
+        \phantom{---} else \\
+            \phantom{------} inserta(set, iden) \\
+        \phantom{---} endif \\
+    \\
+    \textbf{pretipado}(\textbf{un\_campo}(TipoNom(Tipo, \; iden))): \\
+        \phantom{---} \textbf{pretipado}(TipoNom) \\
+        \phantom{---} if \; contiene(set, iden) \; then \\
+            \phantom{------} \textbf{error} \\
+        \phantom{---} else \\
+            \phantom{------} inserta(set, iden) \\
+        \phantom{---} endif
+\end{math}
+
+\subsection{Instrucciones}
+
+\begin{math}
+    \textbf{pretipado}(\textbf{si\_ins}(LIs)): \\
+        \phantom{---} \textbf{pretipado}(LIs) \\
+    \\
+    \textbf{pretipado}(\textbf{no\_ins()}): \textbf{noop} \\
+    \\
+    \textbf{pretipado}(\textbf{muchas\_ins}(LIs, \; I)): \\
+        \phantom{---} \textbf{pretipado}(LIs) \\
+        \phantom{---} \textbf{pretipado}(I) \\
+    \\
+    \textbf{pretipado}(\textbf{una\_ins}(I)): \\
+        \phantom{---} \textbf{pretipado}(I) \\
+    \\
+    \textbf{pretipado}(\textbf{ins\_eval}(Exp)): \textbf{noop} \\
+    \\
+    \textbf{pretipado}(\textbf{ins\_if}(Exp, \; Bloq)): \\
+        \phantom{---} \textbf{pretipado}(Bloq) \\
+    \\
+    \textbf{pretipado}(\textbf{ins\_if\_else}(I, \; Bloq)): \\
+        \phantom{---} \textbf{pretipado}(I) \\
+        \phantom{---} \textbf{pretipado}(Bloq) \\
+    \\
+    \textbf{pretipado}(\textbf{ins\_while}(Exp, \; Bloq)): \\
+        \phantom{---} \textbf{pretipado}(Bloq) \\
+    \\
+    \textbf{pretipado}(\textbf{ins\_read}(Exp)): \textbf{noop} \\
+    \\
+    \textbf{pretipado}(\textbf{ins\_write}(Exp)): \textbf{noop} \\
+    \\
+    \textbf{pretipado}(\textbf{ins\_nl}()): \textbf{noop} \\
+    \\
+    \textbf{pretipado}(\textbf{ins\_new}(Exp)): \textbf{noop} \\
+    \\
+    \textbf{pretipado}(\textbf{ins\_delete}(Exp)): \textbf{noop} \\
+    \\
+    \textbf{pretipado}(\textbf{ins\_call}(iden, \; ParamRs)): \textbf{noop} \\
+    \\
+    \textbf{pretipado}(\textbf{ins\_bloque}(Bloq)): \\
+        \phantom{---} \textbf{pretipado}(Bloq) \\
+    \\
+    \textbf{pretipado}(\textbf{si\_params\_r}(LParamRs)): \textbf{noop} \\
+    \\
+    \textbf{pretipado}(\textbf{no\_params\_r()}): \textbf{noop} \\
+    \\
+    \textbf{pretipado}(\textbf{muchos\_params\_r}(LParamRs, \; Exp)): \textbf{noop} \\
+    \\
+    \textbf{pretipado}(\textbf{un\_param\_r}(Exp)): \textbf{noop}
+\end{math}
+
+\subsection{Expresiones}
+
+\begin{math}
+    \textbf{pretipado}(\textbf{exp\_asig}(Opnd0, \; Opnd1)): \textbf{noop} \\
+    \\
+    \textbf{pretipado}(\textbf{exp\_menor}(Opnd0, \; Opnd1)): \textbf{noop} \\
+    \\
+    \textbf{pretipado}(\textbf{exp\_menor\_ig}(Opnd0, \; Opnd1)): \textbf{noop} \\
+    \\
+    \textbf{pretipado}(\textbf{exp\_mayor}(Opnd0, \; Opnd1)): \textbf{noop} \\
+    \\
+    \textbf{pretipado}(\textbf{exp\_mayor\_ig}(Opnd0, \; Opnd1)): \textbf{noop} \\
+    \\
+    \textbf{pretipado}(\textbf{exp\_ig}(Opnd0, \; Opnd1)): \textbf{noop} \\
+    \\
+    \textbf{pretipado}(\textbf{exp\_dist}(Opnd0, \; Opnd1)): \textbf{noop} \\
+    \\
+    \textbf{pretipado}(\textbf{exp\_suma}(Opnd0, \; Opnd1)): \textbf{noop} \\
+    \\
+    \textbf{pretipado}(\textbf{exp\_resta}(Opnd0, \; Opnd1)): \textbf{noop} \\
+    \\
+    \textbf{pretipado}(\textbf{exp\_and}(Opnd0, \; Opnd1)): \textbf{noop} \\
+    \\
+    \textbf{pretipado}(\textbf{exp\_or}(Opnd0, \; Opnd1)): \textbf{noop} \\
+    \\
+    \textbf{pretipado}(\textbf{exp\_mul}(Opnd0, \; Opnd1)): \textbf{noop} \\
+    \\
+    \textbf{pretipado}(\textbf{exp\_div}(Opnd0, \; Opnd1)): \textbf{noop} \\
+    \\
+    \textbf{pretipado}(\textbf{exp\_mod}(Opnd0, \; Opnd1)): \textbf{noop} \\
+    \\
+    \textbf{pretipado}(\textbf{exp\_menos}(Opnd)): \textbf{noop} \\
+    \\
+    \textbf{pretipado}(\textbf{exp\_not}(Opnd)): \textbf{noop} \\
+    \\
+    \textbf{pretipado}(\textbf{exp\_index}(Opnd0, \; Opnd1)): \textbf{noop} \\
+    \\
+    \textbf{pretipado}(\textbf{exp\_reg}(Opnd, iden)): \textbf{noop} \\
+    \\
+    \textbf{pretipado}(\textbf{exp\_indir}(Opnd)): \textbf{noop} \\
+    \\
+    \textbf{pretipado}(\textbf{exp\_entero}(litEntero)): \textbf{noop} \\
+    \\
+    \textbf{pretipado}(\textbf{exp\_real}(litReal)): \textbf{noop} \\
+    \\
+    \textbf{pretipado}(\textbf{exp\_true}()): \textbf{noop} \\
+    \\
+    \textbf{pretipado}(\textbf{exp\_false}()): \textbf{noop} \\
+    \\
+    \textbf{pretipado}(\textbf{exp\_cadena}(litCadena)): \textbf{noop} \\
+    \\
+    \textbf{pretipado}(\textbf{exp\_iden}(iden)): \textbf{noop} \\
+    \\
+    \textbf{pretipado}(\textbf{exp\_null}()): \textbf{noop}
+\end{math}

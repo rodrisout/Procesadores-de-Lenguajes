@@ -1,0 +1,364 @@
+\section{Funciones para la tabla de símbolos}
+
+\begin{itemize}
+    \item \texttt{creaTS()}: Crea una tabla de símbolos que no tiene aún ningún ámbito abierto.
+    \item \texttt{abreAmbito(ts)}: Añade a la tabla de símbolos \texttt{ts} un nuevo ámbito, que tendrá como padre el ámbito más reciente (o $\bot$, si aún no se ha creado ningún ámbito).
+    \item \texttt{contiene(ts,id)}: Comprueba si el ámbito actual de la tabla de símbolos \texttt{ts} contiene ya una entrada para el identificador \texttt{id}.
+    \item \texttt{inserta(ts,id,dec)}: Inserta el identificador \texttt{id} en el ámbito actual de la tabla de símbolos \texttt{ts}, con la referencia al nodo \texttt{dec} como valor.
+    \item \texttt{vinculoDe(ts,id)}: Recupera la referencia asociada a \texttt{id} en la tabla de símbolos \texttt{ts}. Para ello busca sucesivamente en la cadena de ámbitos, hasta que lo encuentra (si no está, devuelve $\bot$).
+    \item \texttt{cierraAmbito(ts)}: Fija en \texttt{ts} el ámbito actual al ámbito padre del ámbito más reciente.
+\end{itemize}
+
+\section{Funciones de procesamiento}
+
+var ts = \textbf{crearTS}()
+
+\begin{math}
+    \textbf{vincula}(\textbf{bloque}(SecDecs, \; SecIs)): \\
+        \phantom{---} \textbf{abreAmbito}(ts) \\
+        \phantom{---} \textbf{vincula}(SecDecs) \\
+        \phantom{---} \textbf{vincula}(SecIs) \\
+        \phantom{---} \textbf{cierraAmbito}(ts)
+\end{math}
+
+\subsection{Declaraciones}
+
+\begin{math}
+    \textbf{vincula}(\textbf{si\_decs}(LDecs)): \\
+        \phantom{---} \textbf{vincula1}(LDecs) \\
+        \phantom{---} \textbf{vincula2}(LDecs) \\
+    \\
+    \textbf{vincula}(\textbf{no\_decs()}): \textbf{noop} \\
+    \\
+    \textbf{vincula1}(\textbf{muchas\_decs}(LDecs, \; Dec)): \\
+        \phantom{---} \textbf{vincula1}(LDecs) \\
+        \phantom{---} \textbf{vincula1}(Dec) \\
+    \\
+    \textbf{vincula2}(\textbf{muchas\_decs}(LDecs, \; Dec)): \\
+        \phantom{---} \textbf{vincula2}(LDecs) \\
+        \phantom{---} \textbf{vincula2}(Dec) \\
+    \\
+    \textbf{vincula1}(\textbf{una\_dec}(Dec)): \\
+        \phantom{---} \textbf{vincula1}(Dec) \\
+    \\
+    \textbf{vincula2}(\textbf{una\_dec}(Dec)): \\
+        \phantom{---} \textbf{vincula2}(Dec) \\
+    \\
+    \textbf{vincula1}(\textbf{dec\_base}(TipoNom)): \\
+        \phantom{---} let \; TipoNom \; = \; TipoNom(Tipo, \; iden) \; in \\
+        \phantom{------} if \; \textbf{contiene}(ts, \; iden) \; then \\
+            \phantom{---------} \textbf{error} \\
+        \phantom{------} else \\
+            \phantom{---------} \textbf{inserta}(ts, \; iden, \; \$) \\
+        \phantom{------} endif \\
+        \phantom{---} end \; let \\
+        \phantom{---} \textbf{vincula1}(TipoNom) \\
+    \\
+    \textbf{vincula2}(\textbf{dec\_base}(TipoNom)): \\
+        \phantom{---} \textbf{vincula2}(TipoNom) \\
+    \\
+    \textbf{vincula1}(\textbf{dec\_type}(TipoNom)): \\
+        \phantom{---} let \; TipoNom \; = \; TipoNom(Tipo, \; iden) \; in \\
+        \phantom{------} if \; \textbf{contiene}(ts, \; iden) \; then \\
+            \phantom{---------} \textbf{error} \\
+        \phantom{------} else \\
+            \phantom{---------} \textbf{inserta}(ts, \; iden, \; \$) \\
+        \phantom{------} endif \\
+        \phantom{---} end \; let \\
+        \phantom{---} \textbf{vincula1}(TipoNom) \\
+    \\
+    \textbf{vincula2}(\textbf{dec\_type}(TipoNom)): \\
+        \phantom{---} \textbf{vincula2}(TipoNom) \\
+    \\
+    \textbf{vincula1}(\textbf{dec\_proc}(iden, \; ParamFs, \; Bloq)): \\
+        \phantom{---} if \; \textbf{contiene}(ts, \; iden) \; then \\
+            \phantom{------} \textbf{error} \\
+        \phantom{---} else \\
+            \phantom{------} \textbf{inserta}(ts, \; iden, \; \$) \\
+        \phantom{---} endif \\
+    \\
+    \textbf{vincula2}(\textbf{dec\_proc}(iden, \; ParamFs, \; Bloq)): \\
+        \phantom{---} \textbf{abreAmbito}(ts) \\
+        \phantom{---} \textbf{vincula1}(ParamFs) \\
+        \phantom{---} \textbf{vincula2}(ParamFs) \\
+        \phantom{---} \textbf{vincula}(Bloq) \\
+        \phantom{---} \textbf{cierraAmbito}(ts) \\
+    \\
+    \textbf{vincula1}(\textbf{si\_params\_f}(LParamFs)): \\
+        \phantom{---} \textbf{vincula1}(LParamFs) \\
+    \\
+    \textbf{vincula2}(\textbf{si\_params\_f}(LParamFs)): \\
+        \phantom{---} \textbf{vincula2}(LParamFs) \\
+    \\
+    \textbf{vincula1}(\textbf{no\_params\_f()}): \textbf{noop} \\
+    \\
+    \textbf{vincula2}(\textbf{no\_params\_f()}): \textbf{noop} \\
+    \\
+    \textbf{vincula1}(\textbf{muchos\_params\_f}(LParamFs, \; ParamF)): \\
+        \phantom{---} \textbf{vincula1}(LParamFs) \\
+        \phantom{---} \textbf{vincula1}(ParamF) \\
+    \\
+    \textbf{vincula2}(\textbf{muchos\_params\_f}(LParamFs, \; ParamF)): \\
+        \phantom{---} \textbf{vincula2}(LParamFs) \\
+        \phantom{---} \textbf{vincula2}(ParamF) \\
+    \\
+    \textbf{vincula1}(\textbf{un\_param\_f}(ParamF)): \\
+        \phantom{---} \textbf{vincula1}(ParamF) \\
+    \\
+    \textbf{vincula2}(\textbf{un\_param\_f}(ParamF)): \\
+        \phantom{---} \textbf{vincula2}(ParamF) \\
+    \\
+    \textbf{vincula1}(\textbf{si\_refparam\_f}(Tipo, \; iden)): \\
+        \phantom{---} if \; \textbf{contiene}(ts, \; iden) \; then \\
+            \phantom{------} \textbf{error} \\
+        \phantom{---} else \\
+            \phantom{------} \textbf{inserta}(ts, \; iden, \; \$) \\
+        \phantom{---} endif \\
+        \phantom{---} \textbf{vincula1}(Tipo) \\
+    \\
+    \textbf{vincula2}(\textbf{si\_refparam\_f}(Tipo, \; iden)): \\
+        \phantom{---} \textbf{vincula2}(Tipo) \\
+    \\
+    \textbf{vincula1}(\textbf{no\_refparam\_f}(Tipo, \; iden)): \\
+        \phantom{---} if \; \textbf{contiene}(ts, \; iden) \; then \\
+            \phantom{------} \textbf{error} \\
+        \phantom{---} else \\
+            \phantom{------} \textbf{inserta}(ts, \; iden, \; \$) \\
+        \phantom{---} endif \\
+        \phantom{---} \textbf{vincula1}(Tipo) \\
+    \\
+    \textbf{vincula2}(\textbf{no\_refparam\_f}(Tipo, \; iden)): \\
+        \phantom{---} \textbf{vincula2}(Tipo)
+\end{math}
+
+\subsection{Tipos}
+
+\begin{math}
+    \textbf{vincula1}(\textbf{tipo\_nombre}(Tipo, \; iden)): \\
+        \phantom{---} \textbf{vincula1}(Tipo) \\
+    \\
+    \textbf{vincula2}(\textbf{tipo\_nombre}(Tipo, \; iden)): \\
+        \phantom{---} \textbf{vincula2}(Tipo) \\
+    \\
+    \textbf{vincula1}(\textbf{tipo\_array}(Tipo, \; litEntero)): \\
+        \phantom{---} if \; Tipo \; != \; tipo\_type(\_) \; then \\
+            \phantom{------} \textbf{vincula1}(Tipo) \\
+        \phantom{---} endif \\
+    \\
+    \textbf{vincula2}(\textbf{tipo\_array}(Tipo, \; litEntero)): \\
+        \phantom{---} if \; Tipo \; == \; tipo\_type(iden) \; then \\
+            \phantom{------} Tipo.vinculo = \textbf{vinculoDe}(ts, \; iden) \\
+            \phantom{------} if \; Tipo.vinculo \; != \; dec\_type(\_) \; then \\
+                \phantom{---------} \textbf{error} \\ 
+            \phantom{------} endif \\
+        \phantom{---} else \\
+            \phantom{------} \textbf{vincula2}(Tipo) \\
+        \phantom{---} endif \\
+    \\
+    \textbf{vincula1}(\textbf{tipo\_indir}(Tipo)): \\
+        \phantom{---} if \; Tipo \; != \; tipo\_type(\_) \; then \\
+            \phantom{------} \textbf{vincula1}(Tipo) \\
+        \phantom{---} endif \\
+    \\
+    \textbf{vincula2}(\textbf{tipo\_indir}(Tipo)): \\
+        \phantom{---} if \; Tipo \; == \; tipo\_type(iden) \; then \\
+            \phantom{------} Tipo.vinculo = \textbf{vinculoDe}(ts, \; iden) \\
+            \phantom{------} if \; Tipo.vinculo \; != \; dec\_type(\_) \; then \\
+                \phantom{---------} \textbf{error} \\ 
+            \phantom{------} endif \\
+        \phantom{---} else \\
+            \phantom{------} \textbf{vincula2}(Tipo) \\
+        \phantom{---} endif \\
+    \\
+    \textbf{vincula1}(\textbf{tipo\_struct}(LCampos)): \\
+        \phantom{---} \textbf{vincula1}(LCampos) \\
+    \\
+    \textbf{vincula2}(\textbf{tipo\_struct}(LCampos)): \\
+        \phantom{---} \textbf{vincula2}(LCampos) \\
+    \\
+    \textbf{vincula1}(\textbf{tipo\_int}()): \textbf{noop} \\
+    \\
+    \textbf{vincula2}(\textbf{tipo\_int}()): \textbf{noop} \\
+    \\
+    \textbf{vincula1}(\textbf{tipo\_real}()): \textbf{noop} \\
+    \\
+    \textbf{vincula2}(\textbf{tipo\_real}()): \textbf{noop} \\
+    \\
+    \textbf{vincula1}(\textbf{tipo\_bool}()): \textbf{noop} \\
+    \\
+    \textbf{vincula2}(\textbf{tipo\_bool}()): \textbf{noop} \\
+    \\
+    \textbf{vincula1}(\textbf{tipo\_string}()): \textbf{noop} \\
+    \\
+    \textbf{vincula2}(\textbf{tipo\_string}()): \textbf{noop} \\
+    \\
+    \textbf{vincula1}(\textbf{tipo\_type}(iden)): \textbf{noop} \\
+    \\
+    \textbf{vincula2}(\textbf{tipo\_type}(iden)): \\
+         \phantom{---} \$.vinculo = vinculoDe(ts, iden) \\
+    \\
+    \textbf{vincula1}(\textbf{muchos\_campos}(LCampos, \; TipoNom)): \\
+        \phantom{---} \textbf{vincula1}(LCampos) \\
+        \phantom{---} \textbf{vincula1}(TipoNom) \\
+    \\
+    \textbf{vincula2}(\textbf{muchos\_campos}(LCampos, \; TipoNom)): \\
+        \phantom{---} \textbf{vincula2}(LCampos) \\
+        \phantom{---} \textbf{vincula2}(TipoNom) \\
+    \\
+    \textbf{vincula1}(\textbf{un\_campo}(TipoNom)): \\
+        \phantom{---} \textbf{vincula1}(TipoNom) \\
+    \\
+    \textbf{vincula2}(\textbf{un\_campo}(TipoNom)): \\
+        \phantom{---} \textbf{vincula2}(TipoNom)
+\end{math}
+
+\subsection{Instrucciones}
+
+\begin{math}
+    \textbf{vincula}(\textbf{si\_ins}(LIs)): \\
+        \phantom{---} \textbf{vincula}(LIs) \\
+    \\
+    \textbf{vincula}(\textbf{no\_ins()}): \textbf{noop} \\
+    \\
+    \textbf{vincula}(\textbf{muchas\_ins}(LIs, \; I)): \\
+        \phantom{---} \textbf{vincula}(LIs) \\
+        \phantom{---} \textbf{vincula}(I) \\
+    \\
+    \textbf{vincula}(\textbf{una\_ins}(I)): \\
+        \phantom{---} \textbf{vincula}(I) \\
+    \\
+    \textbf{vincula}(\textbf{ins\_eval}(Exp)): \\
+        \phantom{---} \textbf{vincula}(Exp) \\
+    \\
+    \textbf{vincula}(\textbf{ins\_if}(Exp, \; Bloq)): \\
+        \phantom{---} \textbf{vincula}(Exp) \\
+        \phantom{---} \textbf{vincula}(Bloq) \\
+    \\
+    \textbf{vincula}(\textbf{ins\_if\_else}(I, \; Bloq)): \\
+        \phantom{---} \textbf{vincula}(I) \\
+        \phantom{---} \textbf{vincula}(Bloq) \\
+    \\
+    \textbf{vincula}(\textbf{ins\_while}(Exp, \; Bloq)): \\
+        \phantom{---} \textbf{vincula}(Exp) \\
+        \phantom{---} \textbf{vincula}(Bloq) \\
+    \\
+    \textbf{vincula}(\textbf{ins\_read}(Exp)): \\
+        \phantom{---} \textbf{vincula}(Exp) \\
+    \\
+    \textbf{vincula}(\textbf{ins\_write}(Exp)): \\
+        \phantom{---} \textbf{vincula}(Exp) \\
+    \\
+    \textbf{vincula}(\textbf{ins\_nl}()): \textbf{noop} \\
+    \\
+    \textbf{vincula}(\textbf{ins\_new}(Exp)): \\
+        \phantom{---} \textbf{vincula}(Exp) \\
+    \\
+    \textbf{vincula}(\textbf{ins\_delete}(Exp)): \\
+        \phantom{---} \textbf{vincula}(Exp) \\
+    \\
+    \textbf{vincula}(\textbf{ins\_call}(iden, \; ParamRs)): \\
+        \phantom{---} \$.vinculo \; = \; \textbf{vinculoDe}(ts, \; iden) \\
+        \phantom{---} if \; \$.vinculo \; == \; \bot \; then \\
+            \phantom{------} \textbf{error} \\    
+        \phantom{---} endif \\
+        \phantom{---} \textbf{vincula}(ParamRs) \\
+    \\
+    \textbf{vincula}(\textbf{ins\_bloque}(Bloq)): \\
+        \phantom{---} \textbf{vincula}(Bloq) \\
+    \\
+    \textbf{vincula}(\textbf{si\_params\_r}(LParamRs)): \\
+        \phantom{---} \textbf{vincula}(LParamRs) \\
+    \\
+    \textbf{vincula}(\textbf{no\_params\_r()}): \textbf{noop} \\
+    \\
+    \textbf{vincula}(\textbf{muchos\_params\_r}(LParamRs, \; Exp)): \\
+        \phantom{---} \textbf{vincula}(LParamRs) \\
+        \phantom{---} \textbf{vincula}(Exp) \\
+    \\
+    \textbf{vincula}(\textbf{un\_param\_r}(Exp)): \\
+        \phantom{---} \textbf{vincula}(Exp)
+\end{math}
+
+\subsection{Expresiones}
+
+\begin{math}
+    \textbf{vincula}(\textbf{exp\_asig}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \textbf{vinculaExpBin}(Opnd0, \; Opnd1) \\
+    \\
+    \textbf{vincula}(\textbf{exp\_menor}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \textbf{vinculaExpBin}(Opnd0, \; Opnd1) \\
+    \\
+    \textbf{vincula}(\textbf{exp\_menor\_ig}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \textbf{vinculaExpBin}(Opnd0, \; Opnd1) \\
+    \\
+    \textbf{vincula}(\textbf{exp\_mayor}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \textbf{vinculaExpBin}(Opnd0, \; Opnd1) \\
+    \\
+    \textbf{vincula}(\textbf{exp\_mayor\_ig}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \textbf{vinculaExpBin}(Opnd0, \; Opnd1) \\
+    \\
+    \textbf{vincula}(\textbf{exp\_ig}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \textbf{vinculaExpBin}(Opnd0, \; Opnd1) \\
+    \\
+    \textbf{vincula}(\textbf{exp\_dist}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \textbf{vinculaExpBin}(Opnd0, \; Opnd1) \\
+    \\
+    \textbf{vincula}(\textbf{exp\_suma}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \textbf{vinculaExpBin}(Opnd0, \; Opnd1) \\
+    \\
+    \textbf{vincula}(\textbf{exp\_resta}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \textbf{vinculaExpBin}(Opnd0, \; Opnd1) \\
+    \\
+    \textbf{vincula}(\textbf{exp\_and}(Opnd0, \; Opnd1)): \\
+    \phantom{---} \textbf{vinculaExpBin}(Opnd0, \; Opnd1) \\
+    \\
+    \textbf{vincula}(\textbf{exp\_or}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \textbf{vinculaExpBin}(Opnd0, \; Opnd1) \\
+    \\
+    \textbf{vincula}(\textbf{exp\_mul}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \textbf{vinculaExpBin}(Opnd0, \; Opnd1) \\
+    \\
+    \textbf{vincula}(\textbf{exp\_div}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \textbf{vinculaExpBin}(Opnd0, \; Opnd1) \\
+    \\
+    \textbf{vincula}(\textbf{exp\_mod}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \textbf{vinculaExpBin}(Opnd0, \; Opnd1) \\
+    \\
+    \textbf{vincula}(\textbf{exp\_menos}(Opnd)): \\
+        \phantom{---} \textbf{vincula}(Opnd) \\
+    \\
+    \textbf{vincula}(\textbf{exp\_not}(Opnd)): \\
+        \phantom{---} \textbf{vincula}(Opnd) \\
+    \\
+    \textbf{vincula}(\textbf{exp\_index}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \textbf{vincula}(Opnd0) \\
+        \phantom{---} \textbf{vincula}(Opnd1) \\
+    \\
+    \textbf{vincula}(\textbf{exp\_reg}(Opnd, iden)): \\
+        \phantom{---} \textbf{vincula}(Opnd) \\
+    \\
+    \textbf{vincula}(\textbf{exp\_indir}(Opnd)): \\
+        \phantom{---} \textbf{vincula}(Opnd) \\
+    \\
+    \textbf{vincula}(\textbf{exp\_entero}(litEntero)): \textbf{noop} \\
+    \\
+    \textbf{vincula}(\textbf{exp\_real}(litReal)): \textbf{noop} \\
+    \\
+    \textbf{vincula}(\textbf{exp\_true}()): \textbf{noop} \\
+    \\
+    \textbf{vincula}(\textbf{exp\_false}()): \textbf{noop} \\
+    \\
+    \textbf{vincula}(\textbf{exp\_cadena}(litCadena)): \textbf{noop} \\
+    \\
+    \textbf{vincula}(\textbf{exp\_iden}(iden)): \\
+        \phantom{---} \$.vinculo \; = \; \textbf{vinculoDe}(ts, \; iden) \\
+        \phantom{---} if \; \$.vinculo \; == \; \bot \; then \\
+            \phantom{------} \textbf{error} \\
+        \phantom{---} endif \\  
+    \\
+    \textbf{vincula}(\textbf{exp\_null}()): \textbf{noop} \\
+    \\
+    \textbf{vinculaExpBin}(Opnd0, \; Opnd1): \\
+        \phantom{---} \textbf{vincula}(Opnd0) \\
+        \phantom{---} \textbf{vincula}(Opnd1)
+\end{math}

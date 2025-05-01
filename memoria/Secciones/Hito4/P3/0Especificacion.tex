@@ -1,0 +1,603 @@
+\section{Funciones para el conjunto de pares de tipos}
+
+\begin{itemize}
+    \item \texttt{nuevoConjunto()}: Crea un conjunto vacío para almacenar los pares de tipos
+    \item \texttt{contiene(set,tipo0,tipo1)}: Comprueba si el conjunto \texttt{set} contiene ya una entrada para el par (\texttt{tipo0}, \texttt{tipo1}).
+    \item \texttt{inserta(set,tipo0,tipo1)}: Inserta el par (\texttt{tipo0}, \texttt{tipo1}) en el conjunto \texttt{set}.
+\end{itemize}
+
+\section{Funciones de procesamiento}
+
+var set
+
+\begin{math}
+    \textbf{tipado}(\textbf{bloque}(SecDecs, \; SecIs)): \\
+        \phantom{---} \textbf{tipado}(SecDecs) \\
+        \phantom{---} \textbf{tipado}(SecIs) \\
+        \phantom{---} \$.tipo \; = \; \textbf{ambos\_ok}(SecDecs.tipo, \; SecIs.tipo)
+\end{math}
+
+\subsection{Declaraciones}
+
+\begin{math}
+    \textbf{tipado}(\textbf{si\_decs}(LDecs)): \\
+        \phantom{---} \textbf{tipado}(LDecs) \\
+        \phantom{---} \$.tipo \; = \; LDecs.tipo \\
+    \\
+    \textbf{tipado}(\textbf{no\_decs()}): \\
+        \phantom{---} \$.tipo \; = \; ok \\
+    \\
+    \textbf{tipado}(\textbf{muchas\_decs}(LDecs, \; Dec)): \\
+        \phantom{---} \textbf{tipado}(LDecs) \\
+        \phantom{---} \textbf{tipado}(Dec) \\
+        \phantom{---} \$.tipo \; = \; \textbf{ambos\_ok}(LDecs.tipo, \; Dec.tipo) \\
+    \\
+    \textbf{tipado}(\textbf{una\_dec}(Dec)): \\
+        \phantom{---} \textbf{tipado}(Dec) \\
+        \phantom{---} \$.tipo \; = \; Dec.tipo \\
+    \\
+    \textbf{tipado}(\textbf{dec\_base}(TipoNom)): \\
+        \phantom{---} \$.tipo \; = \; ok \\
+    \\
+    \textbf{tipado}(\textbf{dec\_type}(TipoNom)): \\
+        \phantom{---} \$.tipo \; = \; ok \\
+    \\
+    \textbf{tipado}(\textbf{dec\_proc}(iden, \; ParamFs, \; Bloq)): \\
+        \phantom{---} \textbf{tipado}(Bloq) \\
+        \phantom{---} \$.tipo \; = \; Bloq.tipo \\
+    \\
+    \textbf{tipado}(\textbf{si\_params\_f}(LParamFs)): \textbf{noop} \\
+    \\
+    \textbf{tipado}(\textbf{no\_params\_f()}): \textbf{noop} \\
+    \\
+    \textbf{tipado}(\textbf{muchos\_params\_f}(LParamFs, \; ParamF)): \textbf{noop} \\
+    \\
+    \textbf{tipado}(\textbf{un\_param\_f}(ParamF)): \textbf{noop} \\
+    \\
+    \textbf{tipado}(\textbf{si\_refparam\_f}(Tipo, \; iden)): \textbf{noop} \\
+    \\
+    \textbf{tipado}(\textbf{no\_refparam\_f}(Tipo, \; iden)): \textbf{noop}
+\end{math}
+
+\subsection{Tipos}
+
+\begin{math}
+    \textbf{tipado}(\textbf{tipo\_nombre}(Tipo, \; iden)): \textbf{noop} \\
+    \\
+    \textbf{tipado}(\textbf{tipo\_array}(Tipo, \; litEntero)): \textbf{noop} \\
+    \\
+    \textbf{tipado}(\textbf{tipo\_indir}(Tipo)): \textbf{noop} \\
+    \\
+    \textbf{tipado}(\textbf{tipo\_struct}(LCampos)): \textbf{noop} \\
+    \\
+    \textbf{tipado}(\textbf{tipo\_int}()): \textbf{noop} \\
+    \\
+    \textbf{tipado}(\textbf{tipo\_real}()): \textbf{noop} \\
+    \\
+    \textbf{tipado}(\textbf{tipo\_bool}()): \textbf{noop} \\
+    \\
+    \textbf{tipado}(\textbf{tipo\_string}()): \textbf{noop} \\
+    \\
+    \textbf{tipado}(\textbf{tipo\_type}(iden)): \textbf{noop} \\
+    \\
+    \textbf{tipado}(\textbf{muchos\_campos}(LCampos, \; TipoNom)): \textbf{noop} \\
+    \\
+    \textbf{tipado}(\textbf{un\_campo}(TipoNom)): \textbf{noop}
+\end{math}
+
+\subsection{Instrucciones}
+
+\begin{math}
+    \textbf{tipado}(\textbf{si\_ins}(LIs)): \\
+        \phantom{---} \textbf{tipado}(LIs) \\
+        \phantom{---} \$.tipo \; = \; LIs.tipo \\
+    \\
+    \textbf{tipado}(\textbf{no\_ins()}): \\
+        \phantom{---} \$.tipo \; = \; ok \\
+    \\
+    \textbf{tipado}(\textbf{muchas\_ins}(LIs, \; I)): \\
+        \phantom{---} \textbf{tipado}(LIs) \\
+        \phantom{---} \textbf{tipado}(I) \\
+        \phantom{---} \$.tipo \; = \; \textbf{ambos\_ok}(LIs.tipo, \; I.tipo) \\
+    \\
+    \textbf{tipado}(\textbf{una\_ins}(I)): \\
+        \phantom{---} \textbf{tipado}(I) \\
+        \phantom{---} \$.tipo \; = \; I.tipo \\
+    \\
+    \textbf{tipado}(\textbf{ins\_eval}(Exp)): \\
+        \phantom{---} \textbf{tipado}(Exp) \\
+        \phantom{---} if \; Exp.tipo \; != \; error \; then \\
+            \phantom{------} \$.tipo \; = \; ok \\
+        \phantom{---} else \\
+            \phantom{------} \$.tipo \; = \; error \\
+        \phantom{---} endif \\
+    \\
+    \textbf{tipado}(\textbf{ins\_if}(Exp, \; Bloq)): \\
+        \phantom{---} \textbf{tipado}(Exp) \\
+        \phantom{---} \textbf{tipado}(Bloq) \\
+        \phantom{---} if \; \textbf{ref!}(Exp.tipo) \; == \; tipo\_bool() \; \land \; Bloq.tipo \; == \; ok \; then \\
+            \phantom{------} \$.tipo \; = \; ok \\
+        \phantom{---} else \\
+            \phantom{------} \$.tipo \; = \; error \\
+            \phantom{------} \textbf{error} \\
+        \phantom{---} endif \\
+    \\
+    \textbf{tipado}(\textbf{ins\_if\_else}(I, \; Bloq)): \\
+        \phantom{---} \textbf{tipado}(I) \\
+        \phantom{---} \textbf{tipado}(Bloq) \\
+        \phantom{---} \$.tipo \; = \; \textbf{ambos\_ok}(I.tipo, \; Bloq.tipo) \\
+    \\
+    \textbf{tipado}(\textbf{ins\_while}(Exp, \; Bloq)): \\
+        \phantom{---} \textbf{tipado}(Exp) \\
+        \phantom{---} \textbf{tipado}(Bloq) \\
+        \phantom{---} if \; \textbf{ref!}(Exp.tipo) \; == \; tipo\_bool() \; \land \; Bloq.tipo \; == \; ok \; then \\
+            \phantom{------} \$.tipo \; = \; ok \\
+        \phantom{---} else \\
+            \phantom{------} \$.tipo \; = \; error \\
+            \phantom{------} \textbf{error} \\
+        \phantom{---} endif \\
+    \\
+    \textbf{tipado}(\textbf{ins\_read}(Exp)): \\
+        \phantom{---} \textbf{tipado}(Exp) \\
+        \phantom{---} let \; T \; = \; \textbf{ref!}(Exp.tipo) \; in \\
+        \phantom{------} if \; T \; == \; tipo\_int() \; \lor \\
+        \phantom{--------} T \; == \; tipo\_real() \; \lor \\
+        \phantom{--------} T \; == \; tipo\_string() \; then \\
+            \phantom{---------} if \; \textbf{es\_designador}(Exp) \; then \\
+                \phantom{------------} \$.tipo \; = \; ok \\
+            \phantom{---------} else \\
+                \phantom{------------} \$.tipo \; = \; error \\
+                \phantom{------------} \textbf{error} \\
+            \phantom{---------} endif \\
+        \phantom{------} else \\
+            \phantom{---------} \$.tipo \; = \; error \\
+            \phantom{---------} \textbf{error} \\
+        \phantom{------} endif \\
+        \phantom{---} end \; let \\
+    \\
+    \textbf{tipado}(\textbf{ins\_write}(Exp)): \\
+        \phantom{---} \textbf{tipado}(Exp) \\
+        \phantom{---} let \; T \; = \; \textbf{ref!}(Exp.tipo) \; in \\
+        \phantom{------} if \; (T \; == \; tipo\_int() \; \lor \\
+        \phantom{--------} T \; == \; tipo\_real() \; \lor \\
+        \phantom{--------} T \; == \; tipo\_bool() \; \lor \\
+        \phantom{--------}  T \; == \; tipo\_string()) \; then \\
+            \phantom{---------} \$.tipo \; = \; ok \\
+        \phantom{------} else \\
+            \phantom{---------} \$.tipo \; = \; error \\
+            \phantom{---------} \textbf{error} \\
+        \phantom{------} endif \\
+        \phantom{---} end \; let \\
+    \\
+    \textbf{tipado}(\textbf{ins\_nl}()): \\
+        \phantom{---} \$.tipo \; = \; ok \\
+    \\
+    \textbf{tipado}(\textbf{ins\_new}(Exp)): \\
+        \phantom{---} \textbf{tipado}(Exp) \\
+        \phantom{---} if \; \textbf{ref!}(Exp.tipo) \; == \; tipo\_indir(\_) \; then \\
+            \phantom{------} \$.tipo \; = \; ok \\
+        \phantom{---} else \\
+            \phantom{------} \$.tipo \; = \; error \\
+            \phantom{------} \textbf{error} \\
+        \phantom{---} endif \\
+    \\
+    \textbf{tipado}(\textbf{ins\_delete}(Exp)): \\
+        \phantom{---} \textbf{tipado}(Exp) \\
+        \phantom{---} if \; \textbf{ref!}(Exp.tipo) \; == \; tipo\_indir(\_) \; then \\
+            \phantom{------} \$.tipo \; = \; ok \\
+        \phantom{---} else \\
+            \phantom{------} \$.tipo \; = \; error \\
+            \phantom{------} \textbf{error} \\
+        \phantom{---} endif \\
+    \\
+    \textbf{tipado}(\textbf{ins\_call}(iden, \; ParamRs)): \\
+        \phantom{---} \textbf{tipado}(ParamRs) \\
+        \phantom{---} if \; \$.vinculo \; != \; dec\_proc(\_, \; ParamFs, \; \_) \; then \\
+            \phantom{------} if \; ParamRs \; == \; no\_params\_r() \; \land \; ParamFs \; == \; no\_params\_f() \; then \\
+                \phantom{---------} \$.tipo = ok \\
+            \phantom{------} else \; if \; ParamRs \; == \; si\_params\_r(LParamRs) \; \land \; ParamFs \; == \; si\_params\_f(LParamsFs) \; then \\
+                \phantom{---------} if \; \textbf{num\_params}(LParamRs, \; LParamFs) \; then \\
+                    \phantom{------------} if \; \textbf{compatibles\_params}(LParamRs, \; LParamFs) \; then \\
+                        \phantom{---------------} \$.tipo = ok \\
+                    \phantom{------------} else \\
+                        \phantom{---------------} \$.tipo \; = \; error \\
+                    \phantom{------------} endif \\
+                \phantom{---------} else \\
+                    \phantom{------------} \$.tipo \; = \; error \\
+                    \phantom{------------} \textbf{error} \\
+                \phantom{---------} endif \\
+            \phantom{------} else \\
+                \phantom{---------} \$.tipo \; = \; error \\
+                \phantom{---------} \textbf{error} \\
+            \phantom{------} endif \\
+        \phantom{---} else \\
+            \phantom{------} \$.tipo \; = \; error \\
+            \phantom{------} \textbf{error} \\
+        \phantom{---} endif \\
+    \\
+    \textbf{tipado}(\textbf{ins\_bloque}(Bloq)): \\
+        \phantom{---} \textbf{tipado}(Bloq) \\
+        \phantom{---} \$.tipo \; = \; Bloq.tipo \\
+    \\
+    \textbf{tipado}(\textbf{si\_params\_r}(LParamRs)): \\
+        \phantom{---} \textbf{tipado}(LParamRs) \\
+    \\
+    \textbf{tipado}(\textbf{no\_params\_r()}): \textbf{noop} \\
+    \\
+    \textbf{tipado}(\textbf{muchos\_params\_r}(LParamRs, \; Exp)): \\
+        \phantom{---} \textbf{tipado}(LParamRs) \\
+        \phantom{---} \textbf{tipado}(Exp) \\
+    \\
+    \textbf{tipado}(\textbf{un\_param\_r}(Exp)): \\
+        \phantom{---} \textbf{tipado}(Exp)
+\end{math}
+
+\subsection{Expresiones}
+
+\begin{math}
+    \textbf{tipado}(\textbf{exp\_asig}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \textbf{tipado}(Opnd0) \\
+        \phantom{---} \textbf{tipado}(Opnd1) \\
+        \phantom{---} if \; \textbf{es\_designador}(Opnd0) \; then \\
+            \phantom{------} if \; \textbf{compatibles}(Opnd0.tipo, \; Opnd1.tipo) \; then \\
+                \phantom{---------} \$.tipo \; = \; ok \\
+            \phantom{------} else \\
+                \phantom{---------} \$.tipo \; = \; error \\
+                \phantom{---------} \textbf{error} \\
+            \phantom{------} endif \\
+        \phantom{---} else \\
+            \phantom{------} \$.tipo \; = \; error \\
+            \phantom{------} \textbf{error} \\
+        \phantom{---} endif \\
+    \\
+    \textbf{tipado}(\textbf{exp\_menor}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \textbf{tipado\_rel}(Opnd0, \; Opnd1, \; \$) \\
+    \\
+    \textbf{tipado}(\textbf{exp\_menor\_ig}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \textbf{tipado\_rel}(Opnd0, \; Opnd1, \; \$) \\
+    \\
+    \textbf{tipado}(\textbf{exp\_mayor}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \textbf{tipado\_rel}(Opnd0, \; Opnd1, \; \$) \\
+    \\
+    \textbf{tipado}(\textbf{exp\_mayor\_ig}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \textbf{tipado\_rel}(Opnd0, \; Opnd1, \; \$) \\
+    \\
+    \textbf{tipado}(\textbf{exp\_ig}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \textbf{tipado\_rel}(Opnd0, \; Opnd1, \; \$) \\
+    \\
+    \textbf{tipado}(\textbf{exp\_dist}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \textbf{tipado\_rel}(Opnd0, \; Opnd1, \; \$) \\
+    \\
+    \textbf{tipado}(\textbf{exp\_suma}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \textbf{tipado\_arit}(Opnd0, \; Opnd1, \; \$) \\
+    \\
+    \textbf{tipado}(\textbf{exp\_resta}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \textbf{tipado\_arit}(Opnd0, \; Opnd1, \; \$) \\
+    \\
+    \textbf{tipado}(\textbf{exp\_and}(Opnd0, \; Opnd1)): \\
+    \phantom{---} \textbf{tipado\_logic}(Opnd0, \; Opnd1, \; \$) \\
+    \\
+    \textbf{tipado}(\textbf{exp\_or}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \textbf{tipado\_logic}(Opnd0, \; Opnd1, \; \$) \\
+    \\
+    \textbf{tipado}(\textbf{exp\_mul}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \textbf{tipado\_arit}(Opnd0, \; Opnd1, \; \$) \\
+    \\
+    \textbf{tipado}(\textbf{exp\_div}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \textbf{tipado\_arit}(Opnd0, \; Opnd1, \; \$) \\  
+    \\
+    \textbf{tipado}(\textbf{exp\_mod}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \textbf{tipado}(Opnd0) \\
+        \phantom{---} \textbf{tipado}(Opnd1) \\
+        \phantom{---} if \; \textbf{ref!}(Opnd0.tipo) \; == \; tipo\_int() \; \land \\
+        \phantom{-----} \textbf{ref!}(Opnd1.tipo) \; == \; tipo\_int() \; then \\
+            \phantom{------} \$.tipo \; = \; tipo\_int() \\
+        \phantom{---} else \\
+            \phantom{------} \$.tipo \; = \; error \\
+            \phantom{------} \textbf{aviso\_error\_bin}(T0, \; T1) \\
+        \phantom{---} endif \\
+    \\
+    \textbf{tipado}(\textbf{exp\_menos}(Opnd)): \\
+        \phantom{---} \textbf{tipado}(Opnd) \\
+        \phantom{---} let \; T \; = \; \textbf{ref!}(Opnd.tipo) \; in \\
+        \phantom{------} if \; T \; == \; tipo\_int() \; then \\
+            \phantom{---------} \$.tipo \; = \; tipo\_int() \\
+        \phantom{------} else \; if \; T \; == \; tipo\_real() \; then \\
+            \phantom{---------} \$.tipo \; = \; tipo\_real() \\
+        \phantom{------} else \\
+            \phantom{---------} \$.tipo \; = \; error \\
+            \phantom{---------} \textbf{aviso\_error\_un}(T) \\
+        \phantom{------} endif \\
+        \phantom{---} end \; let \\
+    \\
+    \textbf{tipado}(\textbf{exp\_not}(Opnd)): \\
+        \phantom{---} \textbf{tipado}(Opnd) \\
+        \phantom{---} if \; \textbf{ref!}(Opnd.tipo) \; == \; tipo\_bool() \; then \\
+            \phantom{------} \$.tipo \; = \; tipo\_bool() \\
+        \phantom{---} else \\
+            \phantom{------} \$.tipo \; = \; error \\
+            \phantom{------} \textbf{aviso\_error\_un}(T) \\
+        \phantom{---} endif \\
+    \\
+    \textbf{tipado}(\textbf{exp\_index}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \textbf{tipado}(Opnd0) \\
+        \phantom{---} \textbf{tipado}(Opnd1) \\
+        \phantom{---} if \; \textbf{ref!}(Opnd0.tipo) \; == \; tipo\_array(Tipo, \; \_) \; \land \\
+        \phantom{-----} \textbf{ref!}(Opnd1.tipo) \; == \; tipo\_int() \; then \\
+            \phantom{------} \$.tipo \; = \; tipo\_array(Tipo, \; \_) \\
+        \phantom{---} else \\
+            \phantom{------} \$.tipo \; = \; error \\
+            \phantom{------} \textbf{error} \\
+        \phantom{---} endif \\
+    \\
+    \textbf{tipado}(\textbf{exp\_reg}(Opnd, iden)): \\
+        \phantom{---} \textbf{tipado}(Opnd) \\
+        \phantom{---} if \; \textbf{ref!}(Opnd.tipo) \; == \; tipo\_struct(LCampos) \; then \\
+            \phantom{------} let \; C \; = \; \textbf{campo\_struct}(LCampos, \; iden) \; in \\
+                \phantom{---------} if \; C \; == \; error \; then \\
+                    \phantom{------------} \textbf{error} \\
+                \phantom{---------} endif \\
+                \phantom{---------} \$.tipo \; = \; C \\
+            \phantom{------} end \; let \\
+        \phantom{---} else \\
+            \phantom{------} \$.tipo \; = \; error \\
+            \phantom{------} \textbf{error} \\
+        \phantom{---} endif \\
+    \\
+    \textbf{tipado}(\textbf{exp\_indir}(Opnd)): \\
+        \phantom{---} \textbf{tipado}(Opnd) \\
+        \phantom{---} if \; \textbf{ref!}(Opnd.tipo) \; == \; tipo\_indir(Tipo) \; then \\
+            \phantom{------} \$.tipo \; = \; tipo\_indir(Tipo) \\
+        \phantom{---} else \\
+            \phantom{------} \$.tipo \; = \; error \\
+            \phantom{------} \textbf{error} \\
+        \phantom{---} endif \\
+    \\
+    \textbf{tipado}(\textbf{exp\_entero}(litEntero)): \\
+        \phantom{---} \$.tipo \; = \; tipo\_int() \\
+    \\
+    \textbf{tipado}(\textbf{exp\_real}(litReal)): \\
+        \phantom{---} \$.tipo \; = \; tipo\_real() \\
+    \\
+    \textbf{tipado}(\textbf{exp\_true}()): \\
+        \phantom{---} \$.tipo \; = \; tipo\_bool() \\
+    \\
+    \textbf{tipado}(\textbf{exp\_false}()): \\
+        \phantom{---} \$.tipo \; = \; tipo\_bool() \\
+    \\
+    \textbf{tipado}(\textbf{exp\_cadena}(litCadena)): \\
+        \phantom{---} \$.tipo \; = \; tipo\_string() \\
+    \\
+    \textbf{tipado}(\textbf{exp\_iden}(iden)): \\
+        \phantom{---} if \; \$.vinculo \; = dec\_base(TipoNom) \; then \\
+            \phantom{------} let \; TipoNom \; = \; TipoNom(Tipo, \; iden) in \\
+                \phantom{---------} \$.tipo \; = \; Tipo \\
+            \phantom{------} end \; let \\
+        \phantom{---} else \; if \; \$.vinculo \; = si\_refparam\_f(Tipo,\; \_) \; \lor \; \$.vinculo \; = no\_refparam\_f(Tipo,\; \_) \; then \\
+            \phantom{------} \$.tipo \; = \; Tipo \\
+        \phantom{---} else \\
+            \phantom{------} \$.tipo \; = \; error \\
+            \phantom{------} \textbf{error} \\
+        \phantom{---} endif \\
+    \\
+    \textbf{tipado}(\textbf{exp\_null}()): \\
+        \phantom{---} \$.tipo \; = \; null \\
+    \\
+    \textbf{tipado\_arit}(Opnd0, \; Opnd1, \; Exp): \\
+        \phantom{---} \textbf{tipado}(Opnd0) \\
+        \phantom{---} \textbf{tipado}(Opnd1) \\
+        \phantom{---} let \; T0 \; = \; \textbf{ref!}(Opnd0.tipo) \; \land \; T1 \; = \; \textbf{ref!}(Opnd1.tipo) \; in \\
+        \phantom{------} if \; T0 \; == \; tipo\_int() \; \land \\
+        \phantom{--------} T1 \; == \; tipo\_int() \; then \\
+            \phantom{---------} Exp.tipo \; = \; tipo\_int() \\
+        \phantom{------} else \; if \; (T0 \; == \; tipo\_real() \; \lor \\
+        \phantom{---------} T0 \; == \; tipo\_int()) \; \land \\
+        \phantom{---------} (T1 \; == \; tipo\_real() \lor \\
+        \phantom{---------} T1 \; == \; tipo\_int()) \; then \\
+            \phantom{---------} Exp.tipo \; = \; tipo\_real() \\
+        \phantom{------} else \\
+            \phantom{---------} Exp.tipo \; = \; error \\
+            \phantom{---------} \textbf{aviso\_error\_bin}(T0, \; T1) \\
+        \phantom{------} endif \\
+        \phantom{---} end \; let \\
+    \\
+    \textbf{tipado\_logic}(Opnd0, \; Opnd1, \; Exp): \\
+        \phantom{---} \textbf{tipado}(Opnd0) \\
+        \phantom{---} \textbf{tipado}(Opnd1) \\
+        \phantom{---} let \; T0 \; = \; \textbf{ref!}(Opnd0.tipo) \; \land \; T1 \; = \; \textbf{ref!}(Opnd1.tipo) \; in \\
+        \phantom{------} if \; T0 \; == \; tipo\_bool() \; \land \\
+        \phantom{--------} T1 \; == \; tipo\_bool() \; then \\
+            \phantom{---------} Exp.tipo \; = \; tipo\_bool() \\
+        \phantom{------} else \\
+            \phantom{---------} Exp.tipo \; = \; error \\
+            \phantom{---------} \textbf{aviso\_error\_bin}(T0, \; T1) \\
+        \phantom{------} endif \\
+        \phantom{---} end \; let \\
+    \\
+    \textbf{tipado\_rel}(Opnd0, \; Opnd1, \; Exp): \\
+        \phantom{---} \textbf{tipado}(Opnd0) \\
+        \phantom{---} \textbf{tipado}(Opnd1) \\
+        \phantom{---} let \; T0 \; = \; \textbf{ref!}(Opnd0.tipo) \; \land \; T1 \; = \; \textbf{ref!}(Opnd1.tipo) \; in \\
+        \phantom{------} if \; (T0 \; == \; tipo\_int() \; \lor \\
+        \phantom{--------} T0 \; == \; tipo\_real()) \; \land \\
+        \phantom{-------} (T1 \; == \; tipo\_int() \; \lor \\
+        \phantom{--------} T1 \; == \; tipo\_real()) \; then \\
+            \phantom{---------} Exp.tipo \; = \; tipo\_bool() \\
+        \phantom{------} else \; if \; T0 \; == \; tipo\_bool() \; \land \\
+        \phantom{--------} T1 \; == \; tipo\_bool() \; then \\
+            \phantom{---------} Exp.tipo \; = \; tipo\_bool() \\
+        \phantom{------} else \; if \; T0 \; == \; tipo\_string() \; \land \\
+        \phantom{--------} T1 \; == \; tipo\_string() \; then \\
+            \phantom{---------} Exp.tipo \; = \; tipo\_string() \\
+        \phantom{------} else \\
+            \phantom{--------} if \; Exp \; == \; exp\_ig(\_, \; \_) \; \lor \\
+            \phantom{---------} Exp \; == \; exp\_dist(\_, \; \_) \; then \\
+            \phantom{-----------} \textbf{tipado\_rel\_indir}(Opnd0, \; Opnd1, \; Exp) \\
+            \phantom{--------} else \\
+            \phantom{-----------} Exp.tipo \; = \; error \\
+            \phantom{-----------} \textbf{aviso\_error\_bin}(T0, \; T1) \\
+            \phantom{--------} endif \\
+        \phantom{------} endif \\
+        \phantom{---} end \; let \\
+    \\
+    \textbf{tipado\_rel\_indir}(T0, \; T1, \; Exp): \\
+        \phantom{---} if \; (T0 \; == \; tipo\_indir() \; \lor \\
+        \phantom{-----} T0 \; == \; null) \; \land \\
+        \phantom{-----} (T1 \; == \; tipo\_indir() \; \land \\
+        \phantom{-----} T1 \; == \; null) \; then \\
+            \phantom{------} Exp.tipo \; = \; tipo\_bool() \\
+        \phantom{----} else \\
+            \phantom{------} Exp.tipo \; = \; error \\
+            \phantom{------} \textbf{aviso\_error\_bin}(T0, \; T1) \\
+        \phantom{---} endif
+\end{math}
+
+\section{Funciones auxiliares}
+
+\begin{math}
+    \textbf{aviso\_error\_bin}(T0, \; T1): \\
+        \phantom{---} if \; T0 \; != \; error \; \land \; T1 \; != \; error \; then \\
+            \phantom{------} \textbf{error} \\
+        \phantom{---} endif \\
+    \\
+    \textbf{aviso\_error\_un}(T): \\
+        \phantom{---} if \; T \; != \; error \; then \\
+            \phantom{------} \textbf{error} \\
+        \phantom{---} endif \\
+    \\
+    \textbf{ambos\_ok}(T0, \; T1): \\
+        \phantom{---} if \; T0 \; == \; ok \; \land \; T1 \; == \; ok \; then \\
+            \phantom{------} \textbf{return} \; ok \\
+        \phantom{---} else \\
+            \phantom{------} \textbf{return} \; error \\
+        \phantom{---} endif \\
+    \\
+    \textbf{ref!}(T): \\
+        \phantom{---} if \; T \; == \; tipo\_type(\_) \; then \\
+            \phantom{------} let \; T.vinculo = dec\_type(Tipo, \; iden) \; in \\
+                \phantom{---------} \textbf{return ref!}(Tipo) \\
+            \phantom{------} end \; let \\
+        \phantom{---} else \\
+            \phantom{------} \textbf{return} \; T \\
+        \phantom{---} endif \\
+    \\
+    \textbf{es\_designador}(E): \\
+        \phantom{---} \textbf{return} \; E \; == \; exp\_iden(\_) \; \lor \\
+        \phantom{-------} E \; == \; exp\_index(\_, \; \_) \; \lor \\
+        \phantom{-------} E \; == \; exp\_reg(\_, \; \_) \; \lor \\
+        \phantom{-------} E \; == \; exp\_indir(\_) \\
+    \\
+    \textbf{compatibles}(T0, \; T1): \\
+        \phantom{---} set \; = \; \textbf{nuevoConjunto}() \\
+        \phantom{---} \textbf{inserta}(set, \; T0, \; T1) \\
+        \phantom{---} \textbf{return unificables}(T0, \; T1) \\
+    \\
+    \textbf{unificables}(T0, \; T1): \\
+        \phantom{---} let \; T0' \; = \; \textbf{ref!}(T0) \; \land \; T1' \; = \; \textbf{ref!}(T1) \; in \\
+        \phantom{------} if \; T0' \; == \; tipo\_array(Tipo_0, \; \_) \; \land \; T1' \; == \; tipo\_array(Tipo_1, \; \_) \; then \\
+            \phantom{---------} \textbf{return son\_unificables}(Tipo_0, \; Tipo_1) \\
+        \phantom{------} else \; if \; T0' \; == \; tipo\_struct(LCampos_0) \; \land \; T1' \; == \; tipo\_struct(LCampos_1) \; then \\
+            \phantom{---------} \textbf{return son\_unificables\_struct}(LCampos_0, \; LCampos_1) \\
+        \phantom{------} else \; if \; T0' \; == \; tipo\_indir(\_) \; \land \; T1' \; == \; null \; then \\
+            \phantom{---------} \textbf{return} \; true \\
+        \phantom{------} else \; if \; T0' \; == \; tipo\_indir(Tipo_0) \; \land \; T1' \; == \; tipo\_indir(Tipo_1) \; then \\
+            \phantom{---------} \textbf{return son\_unificables}(Tipo_0, \; Tipo_1) \\
+        \phantom{------} else \; if \; T0' \; == \; T1' \; \lor \; (T0' \; == \; tipo\_real() \; \land \; T1' \; == \; tipo\_int()) \; then \\
+            \phantom{---------} \textbf{return} \; true \\
+        \phantom{------} else \\
+            \phantom{---------} \textbf{return} \; false \\
+        \phantom{-----} endif \\
+        \phantom{---} end \; let \\
+    \\
+    \textbf{son\_unificables\_struct}(LCampos0, \; LCampos1): \\
+        \phantom{---} if \; LCampos0 \; == \; un\_campo(TipoNom_0) \; \land \; LCampos1 \; == \; un\_campo(TipoNom_1) \; then \\
+            \phantom{------} let \; TipoNom_0 \; = \; TipoNom(Tipo_0, \; \_) \; \land \; TipoNom_1 \; = \; TipoNom(Tipo_1, \; \_) \\
+            \phantom{---------} \textbf{return son\_unificables}(Tipo_0, \; Tipo_1) \\
+            \phantom{------} end \; let \\
+        \phantom{---} else \; if \; LCampos0 \; == \; muchos\_campos(LCampos_0, \; TipoNom_0) \; \land \\
+        \phantom{-----}\; LCampos1 \; == \; muchos\_campos(LCampos_1, \;TipoNom_1) \; then \\
+            \phantom{------} let \; TipoNom_0 \; = \; TipoNom(Tipo_0, \; \_) \; \land \; TipoNom_1 \; = \; TipoNom(Tipo_1, \; \_) \\
+            \phantom{---------} \textbf{return son\_unificables}(Tipo_0, \; Tipo_1) \; \land \\
+            \phantom{------------} \textbf{son\_unificables\_struct}(LCampos_0, \; LCampos_1) \\
+            \phantom{------} end \; let \\
+        \phantom{---} else \\
+        \phantom{------} \textbf{return} \; false \\
+        \phantom{---} endif \\
+    \\
+    \textbf{son\_unificables}(T0, \; T1): \\
+        \phantom{---} if \; \textbf{contiene}(set, \; T0, \; T1) \; then \\
+            \phantom{------} \textbf{return} \; true \\
+        \phantom{---} else \\
+            \phantom{------} \textbf{inserta}(set, \; T0, \; T1)\\
+            \phantom{------} \textbf{return unificables}(T0, \; T1) \\
+        \phantom{---} endif \\
+    \\
+    \textbf{campo\_struct}(LCampos, \; iden): \\
+        \phantom{---} if \; LCampos \; == \; un\_campo(TipoNom_0) \; then \\
+            \phantom{------} let \; TipoNom_0 \; = \; TipoNom(Tipo_0, \; iden_0) \\
+                \phantom{--------} if \; iden \; == \; iden_0 \; then \\
+                    \phantom{-----------} \textbf{return} \; Tipo_0 \\
+                \phantom{--------} else \\
+                    \phantom{-----------} \textbf{return} \; error \\
+                \phantom{--------} endif \\
+            \phantom{------} end \; let \\
+        \phantom{---} else \; if \; LCampos \; == \; muchos\_campos(LCampos_0, \; TipoNom_0) \; then \\
+            \phantom{------} let \; TipoNom_0 \; = \; TipoNom(Tipo_0, \; iden_0) \\
+                \phantom{--------} if \; iden \; == \; iden_0 \; then \\
+                    \phantom{-----------} \textbf{return} \; Tipo_0 \\
+                \phantom{--------} else \\
+                    \phantom{-----------} \textbf{return campo\_struct}(LCampos_0, iden) \\
+                \phantom{--------} endif \\
+            \phantom{------} end \; let \\
+        \phantom{---} endif \\
+    \\
+    \textbf{num\_params}(LParamRs, \; LParamFs): \\
+        \phantom{---} if \; LParamRs \; == \; un\_param\_r(\_) \; \land \; LParamFs \; == \; un\_param\_f(\_) \; then \\
+            \phantom{------} \textbf{return} \; true \\
+        \phantom{---} else \; if \; LParamRs \; == \; muchos\_params\_r(LParamRs_0, \; \_) \; \land \\
+        \phantom{-----} LParamFs \; == \; muchos\_params\_f(LParamFs_0, \; \_) \; then \\
+            \phantom{------} \textbf{return num\_params}(LParamRs_0 \; LParamFs_0) \\
+        \phantom{---} else \\
+            \phantom{------} \textbf{return} \; false \\
+        \phantom{---} endif \\
+    \\
+    \textbf{compatibles\_params}(LParamRs, \; LParamFs): \\
+        \phantom{---} if \; LParamRs \; == \; un\_param\_r(Exp) \; \land \; LParamFs \; == \; un\_param\_f(ParamF) \; then \\
+            \phantom{------} \textbf{return param\_r\_f}(Exp, \; ParamF) \\
+        \phantom{---} else \; if \; LParamRs \; == \; muchos\_params\_r(LParamRs_0, \; Exp) \; \land \\
+        \phantom{-----} LParamFs \; == \; muchos\_params\_f(LParamFs_0, \; Tipo) \; then \\
+            \phantom{------} \textbf{return param\_r\_f}(Exp, \; ParamF) \; \land \\
+            \phantom{---------} \textbf{compatibles\_params}(LParamRs_0 \; LParamFs_0) \\
+        \phantom{---} endif \\
+    \\
+    \textbf{param\_r\_f}(Exp, \; ParamF): \\
+        \phantom{---} if \; ParamF \; == \; si\_refparam\_f(Tipo, \_) \; then \\
+            \phantom{------} if \; \textbf{es\_designador}(Exp) \; then \\
+                \phantom{---------} if \; ParamF \; == \; tipo\_real() \; then \\
+                    \phantom{-----------} if \; Exp.tipo \; == \; tipo\_real() \; then \\
+                        \phantom{---------------} \textbf{return} \; true \\
+                    \phantom{-----------} else \\
+                        \phantom{---------------} \textbf{error} \\
+                        \phantom{---------------} \textbf{return} \; false \\
+                    \phantom{-----------} endif \\
+                \phantom{---------} else \\
+                    \phantom{-----------} if \; \textbf{compatibles}(Tipo, \; Exp.tipo) \; then \\
+                        \phantom{---------------} \textbf{return} \; true \\
+                    \phantom{-----------} else \\
+                        \phantom{---------------} \textbf{error} \\
+                        \phantom{---------------} \textbf{return} \; false \\
+                    \phantom{-----------} endif \\
+                \phantom{---------} endif \\
+            \phantom{------} else \\
+                \phantom{---------} \textbf{error} \\
+                \phantom{---------} \textbf{return} \; false \\
+            \phantom{------} endif \\
+        \phantom{---} else \\
+            \phantom{-----} if \; \textbf{compatibles}(Tipo, \; Exp.tipo) \; then \\
+                \phantom{---------} \textbf{return} \; true \\
+            \phantom{-----} else \\
+                \phantom{---------} \textbf{error} \\
+                \phantom{---------} \textbf{return} \; false \\
+            \phantom{-----} endif \\
+        \phantom{---} endif
+\end{math}

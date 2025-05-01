@@ -1,0 +1,324 @@
+\section{Funciones de procesamiento}
+
+var dir = 0 \\
+var max\_dir = 0 \\
+var nivel = 0 \\
+var campos
+
+\begin{math}
+    \textbf{asig\_espacio}(\textbf{bloque}(SecDecs, \; SecIs)): \\
+        \phantom{---} var \; dir\_ant \; = \; dir \\
+        \phantom{---} \textbf{asig\_espacio}(SecDecs) \\
+        \phantom{---} \textbf{asig\_espacio}(SecIs) \\
+        \phantom{---} dir \; = \; dir\_ant
+\end{math}
+
+\subsection{Declaraciones}
+
+\begin{math}
+    \textbf{asig\_espacio}(\textbf{si\_decs}(LDecs)): \\
+        \phantom{---} \textbf{asig\_espacio1}(LDecs) \\
+        \phantom{---} \textbf{asig\_espacio2}(LDecs) \\
+    \\
+    \textbf{asig\_espacio}(\textbf{no\_decs()}): \textbf{noop} \\
+    \\
+    \textbf{asig\_espacio1}(\textbf{muchas\_decs}(LDecs, \; Dec)): \\
+        \phantom{---} \textbf{asig\_espacio1}(LDecs) \\
+        \phantom{---} \textbf{asig\_espacio1}(Dec) \\
+    \\
+    \textbf{asig\_espacio2}(\textbf{muchas\_decs}(LDecs, \; Dec)): \\
+        \phantom{---} \textbf{asig\_espacio2}(LDecs) \\
+        \phantom{---} \textbf{asig\_espacio2}(Dec) \\
+    \\
+    \textbf{asig\_espacio1}(\textbf{una\_dec}(Dec)): \\
+        \phantom{---} \textbf{asig\_espacio1}(Dec) \\
+    \\
+    \textbf{asig\_espacio2}(\textbf{una\_dec}(Dec)): \\
+        \phantom{---} \textbf{asig\_espacio2}(Dec) \\
+    \\
+    \textbf{asig\_espacio1}(\textbf{dec\_base}(TipoNom)): \\
+        \phantom{---} let \; TipoNom \; = \; TipoNom(Tipo, \; iden) \; in \\
+            \phantom{------} \textbf{asig\_tam1}(Tipo) \\
+            \phantom{------} \$.dir = dir \\
+            \phantom{------} \$.nivel = nivel \\
+            \phantom{------} inc_dir(Tipo.tam) \\
+        \phantom{---} end \; let \\
+    \\
+    \textbf{asig\_espacio2}(\textbf{dec\_base}(TipoNom)): \\
+        \phantom{---} let \; TipoNom \; = \; TipoNom(Tipo, \; iden) \; in \\
+            \phantom{------} \textbf{asig\_tam1}(TipoNom) \\
+        \phantom{---} end \; let \\
+    \\
+    \textbf{asig\_espacio1}(\textbf{dec\_type}(TipoNom)): \\
+        \phantom{---} let \; TipoNom \; = \; TipoNom(Tipo, \; iden) \; in \\
+            \phantom{------} \textbf{asig\_tam1}(Tipo) \\
+            \phantom{------} \$.dir = dir \\
+            \phantom{------} \$.nivel = nivel \\
+            \phantom{------} inc\_dir(Tipo.tam) \\
+        \phantom{---} end \; let \\
+    \\
+    \textbf{asig\_espacio2}(\textbf{dec\_type}(TipoNom)): \\
+        \phantom{---} let \; TipoNom \; = \; TipoNom(Tipo, \; iden) \; in \\
+            \phantom{------} \textbf{asig\_tam1}(TipoNom) \\
+        \phantom{---} end \; let \\
+    \\
+    \textbf{asig\_espacio1}(\textbf{dec\_proc}(iden, \; ParamFs, \; Bloq)): \\
+        \phantom{---} var \; dir\_ant \; = \; dir \\
+        \phantom{---} var \; max\_dir\_ant \; = \; max\_dir \\
+        \phantom{---} nivel++ \\
+        \phantom{---} \$.nivel = nivel \\
+        \phantom{---} dir \; = \; 0 \\
+        \phantom{---} max\_dir \; = \; 0 \\
+        \phantom{---} \textbf{asig\_espacio1}(ParamFs) \\
+        \phantom{---} \textbf{asig\_espacio2}(ParamFs) \\
+        \phantom{---} \textbf{asig\_espacio}(Bloq) \\
+        \phantom{---} \$.tam \; = \; max\_dir \\
+        \phantom{---} dir \; = \; dir\_ant \\
+        \phantom{---} max\_dir \; = \; max\_dir\_ant \\
+        \phantom{---} nivel-- \\
+    \\
+    \textbf{asig\_espacio2}(\textbf{dec\_proc}(iden, \; ParamFs, \; Bloq)): \textbf{noop} \\
+    \\
+    \textbf{asig\_espacio1}(\textbf{si\_params\_f}(LParamFs)): \\
+        \phantom{---} \textbf{asig\_espacio1}(LParamFs) \\
+    \\
+    \textbf{asig\_espacio2}(\textbf{si\_params\_f}(LParamFs)): \\
+        \phantom{---} \textbf{asig\_espacio2}(LParamFs) \\
+    \\
+    \textbf{asig\_espacio1}(\textbf{no\_params\_f()}): \textbf{noop} \\
+    \\
+    \textbf{asig\_espacio2}(\textbf{no\_params\_f()}): \textbf{noop} \\
+    \\
+    \textbf{asig\_espacio1}(\textbf{muchos\_params\_f}(LParamFs, \; ParamF)): \\
+        \phantom{---} \textbf{asig\_espacio1}(LParamFs) \\
+        \phantom{---} \textbf{asig\_espacio1}(ParamF) \\
+    \\
+    \textbf{asig\_espacio2}(\textbf{muchos\_params\_f}(LParamFs, \; ParamF)): \\
+        \phantom{---} \textbf{asig\_espacio2}(LParamFs) \\
+        \phantom{---} \textbf{asig\_espacio2}(ParamF) \\
+    \\
+    \textbf{asig\_espacio1}(\textbf{un\_param\_f}(ParamF)): \\
+        \phantom{---} \textbf{asig\_espacio1}(ParamF) \\
+    \\
+    \textbf{asig\_espacio2}(\textbf{un\_param\_f}(ParamF)): \\
+        \phantom{---} \textbf{asig\_espacio2}(ParamF) \\
+    \\
+    \textbf{asig\_espacio1}(\textbf{si\_refparam\_f}(Tipo, \; iden)): \\
+        \phantom{---} \textbf{asig\_tam1}(Tipo) \\
+        \phantom{---} \$.dir = dir \\
+        \phantom{---} \$.nivel = nivel \\
+        \phantom{---} inc\_dir(1) \\
+    \\
+    \textbf{asig\_espacio2}(\textbf{si\_refparam\_f}(Tipo, \; iden)): \\
+        \phantom{---} \textbf{asig\_espacio2}(Tipo) \\
+    \\
+    \textbf{asig\_espacio1}(\textbf{no\_refparam\_f}(Tipo, \; iden)): \\
+        \phantom{---} \textbf{asig\_tam1}(Tipo) \\
+        \phantom{---} \$.dir = dir \\
+        \phantom{---} \$.nivel = nivel \\
+        \phantom{---} inc\_dir(Tipo.tam) \\
+    \\
+    \textbf{asig\_espacio2}(\textbf{no\_refparam\_f}(Tipo, \; iden)): \\
+        \phantom{---} \textbf{asig\_espacio2}(Tipo)
+\end{math}
+
+\subsection{Tipos}
+
+\begin{math}
+    \textbf{asig\_tam1}(\textbf{tipo\_array}(Tipo, \; litEntero)): \\
+        \phantom{---} \textbf{asig\_tam1}(Tipo) \\
+        \phantom{---} \$.tam = Tipo.tam * litEntero \\
+    \\
+    \textbf{asig\_tam2}(\textbf{tipo\_array}(Tipo, \; litEntero)): \textbf{noop} \\
+    \\
+    \textbf{asig\_tam1}(\textbf{tipo\_indir}(Tipo)): \\
+        \phantom{---} if \; Tipo \; != \; tipo\_type(\_) \; then \\
+            \phantom{------} \textbf{asig\_tam1}(Tipo) \\
+        \phantom{---} endif \\
+        \phantom{---} \$.tam = 1 \\
+    \\
+    \textbf{asig\_tam2}(\textbf{tipo\_indir}(Tipo)): \\
+        \phantom{---} if \; Tipo \; == \; tipo\_type(iden) \; then \\
+            \phantom{------} let \; Tipo.vinculo \; = \; dec\_type(TipoNom) \; \land \; TipoNom \; = \; TipoNom(T, \; iden) \; in \\
+                \phantom{---------} Tipo.tam \; = \; T.tam \\
+            \phantom{------} end \; let \\
+        \phantom{---} else \\
+            \phantom{------}  \textbf{asig\_tam2}(Tipo) \\
+        \phantom{---} endif \\
+    \\
+    \textbf{asig\_tam1}(\textbf{tipo\_struct}(LCampos)): \\
+        \phantom{---} campos \; = \; 0 \\
+        \phantom{---} \textbf{asig\_tam1}(LCampos) \\
+        \phantom{---} \$.tam = campos \\
+    \\
+    \textbf{asig\_tam2}(\textbf{tipo\_struct}(LCampos)): \\
+        \phantom{---} \textbf{asig\_tam2}(LCampos) \\
+    \\
+    \textbf{asig\_tam1}(\textbf{tipo\_int}()): \\
+        \phantom{---} \$.tam = 1 \\
+    \\
+    \textbf{asig\_tam2}(\textbf{tipo\_int}()): \textbf{noop} \\
+    \\
+    \textbf{asig\_tam1}(\textbf{tipo\_real}()): \\
+        \phantom{---} \$.tam = 1 \\
+    \\
+    \textbf{asig\_tam2}(\textbf{tipo\_real}()): \textbf{noop} \\
+    \\
+    \textbf{asig\_tam1}(\textbf{tipo\_bool}()): \\
+        \phantom{---} \$.tam = 1 \\
+    \\
+    \textbf{asig\_tam2}(\textbf{tipo\_bool}()): \textbf{noop} \\
+    \\
+    \textbf{asig\_tam1}(\textbf{tipo\_string}()): \\
+        \phantom{---} \$.tam = 1 \\
+    \\
+    \textbf{asig\_tam2}(\textbf{tipo\_string}()): \textbf{noop} \\
+    \\
+    \textbf{asig\_tam1}(\textbf{tipo\_type}(iden)): \\
+        \phantom{---} let \; \$.vinculo \; = \; dec\_type(TipoNom) \; \land \; TipoNom \; = \; TipoNom(T, \; iden) \; in \\
+            \phantom{------} \$.tam \; = \; T.tam \\
+        \phantom{---} end \; let \\
+    \\
+    \textbf{asig\_tam2}(\textbf{tipo\_type}(iden)): \textbf{noop} \\
+    \\
+    \textbf{asig\_tam1}(\textbf{muchos\_campos}(LCampos, \; TipoNom)): \\
+        \phantom{---} \textbf{asig\_tam1}(LCampos) \\
+        \phantom{---} let \; TipoNom \; = \; TipoNom(T, \; iden) \; in \\
+            \phantom{------} \textbf{asig\_tam1}(T) \\
+            \phantom{------} campos \; += \; T.tam \\
+        \phantom{---} end \; let \\
+    \\
+    \textbf{asig\_tam2}(\textbf{muchos\_campos}(LCampos, \; TipoNom)): \\
+        \phantom{---} \textbf{asig\_tam2}(LCampos) \\
+        \phantom{---} let \; TipoNom \; = \; TipoNom(T, \; iden) \; in \\
+            \phantom{------} \textbf{asig\_tam2}(T) \\
+        \phantom{---} end \; let \\
+    \\
+    \textbf{asig\_tam1}(\textbf{un\_campo}(TipoNom)): \\
+        \phantom{---} let \; TipoNom \; = \; TipoNom(T, \; iden) \; in \\
+            \phantom{------} \textbf{asig\_tam1}(T) \\
+            \phantom{------} campos \; += \; T.tam \\
+        \phantom{---} end \; let \\
+    \\
+    \textbf{asig\_tam2}(\textbf{un\_campo}(TipoNom)): \\
+        \phantom{---} let \; TipoNom \; = \; TipoNom(T, \; iden) \; in \\
+            \phantom{------} \textbf{asig\_tam2}(T) \\
+        \phantom{---} end \; let
+\end{math}
+
+\subsection{Instrucciones}
+
+\begin{math}
+    \textbf{asig\_espacio}(\textbf{si\_ins}(LIs)): \\
+        \phantom{---} \textbf{asig\_espacio}(LIs) \\
+    \\
+    \textbf{asig\_espacio}(\textbf{no\_ins()}): \textbf{noop} \\
+    \\
+    \textbf{asig\_espacio}(\textbf{muchas\_ins}(LIs, \; I)): \\
+        \phantom{---} \textbf{asig\_espacio}(LIs) \\
+        \phantom{---} \textbf{asig\_espacio}(I) \\
+    \\
+    \textbf{asig\_espacio}(\textbf{una\_ins}(I)): \\
+        \phantom{---} \textbf{asig\_espacio}(I) \\
+    \\
+    \textbf{asig\_espacio}(\textbf{ins\_eval}(Exp)): \textbf{noop} \\
+    \\
+    \textbf{asig\_espacio}(\textbf{ins\_if}(Exp, \; Bloq)): \\
+        \phantom{---} \textbf{asig\_espacio}(Bloq) \\
+    \\
+    \textbf{asig\_espacio}(\textbf{ins\_if\_else}(I, \; Bloq)): \\
+        \phantom{---} \textbf{asig\_espacio}(I) \\
+        \phantom{---} \textbf{asig\_espacio}(Bloq) \\
+    \\
+    \textbf{asig\_espacio}(\textbf{ins\_while}(Exp, \; Bloq)): \\
+        \phantom{---} \textbf{asig\_espacio}(Bloq) \\
+    \\
+    \textbf{asig\_espacio}(\textbf{ins\_read}(Exp)): \textbf{noop} \\
+    \\
+    \textbf{asig\_espacio}(\textbf{ins\_write}(Exp)): \textbf{noop} \\
+    \\
+    \textbf{asig\_espacio}(\textbf{ins\_nl}()): \textbf{noop} \\
+    \\
+    \textbf{asig\_espacio}(\textbf{ins\_new}(Exp)): \textbf{noop} \\
+    \\
+    \textbf{asig\_espacio}(\textbf{ins\_delete}(Exp)): \textbf{noop} \\
+    \\
+    \textbf{asig\_espacio}(\textbf{ins\_call}(iden, \; ParamRs)): \textbf{noop} \\
+    \\
+    \textbf{asig\_espacio}(\textbf{ins\_bloque}(Bloq)): \\
+        \phantom{---} \textbf{asig\_espacio}(Bloq) \\
+    \\
+    \textbf{asig\_espacio}(\textbf{si\_params\_r}(LParamRs)): \textbf{noop} \\
+    \\
+    \textbf{asig\_espacio}(\textbf{no\_params\_r()}): \textbf{noop} \\
+    \\
+    \textbf{asig\_espacio}(\textbf{muchos\_params\_r}(LParamRs, \; Exp)): \textbf{noop} \\
+    \\
+    \textbf{asig\_espacio}(\textbf{un\_param\_r}(Exp)): \textbf{noop} \\
+\end{math}
+
+\subsection{Expresiones}
+
+\begin{math}
+    \textbf{asig\_espacio}(\textbf{exp\_asig}(Opnd0, \; Opnd1)): \textbf{noop} \\
+    \\
+    \textbf{asig\_espacio}(\textbf{exp\_menor}(Opnd0, \; Opnd1)): \textbf{noop} \\
+    \\
+    \textbf{asig\_espacio}(\textbf{exp\_menor\_ig}(Opnd0, \; Opnd1)): \textbf{noop} \\
+    \\
+    \textbf{asig\_espacio}(\textbf{exp\_mayor}(Opnd0, \; Opnd1)): \textbf{noop} \\
+    \\
+    \textbf{asig\_espacio}(\textbf{exp\_mayor\_ig}(Opnd0, \; Opnd1)): \textbf{noop} \\
+    \\
+    \textbf{asig\_espacio}(\textbf{exp\_ig}(Opnd0, \; Opnd1)): \textbf{noop} \\
+    \\
+    \textbf{asig\_espacio}(\textbf{exp\_dist}(Opnd0, \; Opnd1)): \textbf{noop} \\
+    \\
+    \textbf{asig\_espacio}(\textbf{exp\_suma}(Opnd0, \; Opnd1)): \textbf{noop} \\
+    \\
+    \textbf{asig\_espacio}(\textbf{exp\_resta}(Opnd0, \; Opnd1)): \textbf{noop} \\
+    \\
+    \textbf{asig\_espacio}(\textbf{exp\_and}(Opnd0, \; Opnd1)): \textbf{noop} \\
+    \\
+    \textbf{asig\_espacio}(\textbf{exp\_or}(Opnd0, \; Opnd1)): \textbf{noop} \\
+    \\
+    \textbf{asig\_espacio}(\textbf{exp\_mul}(Opnd0, \; Opnd1)): \textbf{noop} \\
+    \\
+    \textbf{asig\_espacio}(\textbf{exp\_div}(Opnd0, \; Opnd1)): \textbf{noop} \\
+    \\
+    \textbf{asig\_espacio}(\textbf{exp\_mod}(Opnd0, \; Opnd1)): \textbf{noop} \\
+    \\
+    \textbf{asig\_espacio}(\textbf{exp\_menos}(Opnd)): \textbf{noop} \\
+    \\
+    \textbf{asig\_espacio}(\textbf{exp\_not}(Opnd)): \textbf{noop} \\
+    \\
+    \textbf{asig\_espacio}(\textbf{exp\_index}(Opnd0, \; Opnd1)): \textbf{noop} \\
+    \\
+    \textbf{asig\_espacio}(\textbf{exp\_reg}(Opnd, iden)): \textbf{noop} \\
+    \\
+    \textbf{asig\_espacio}(\textbf{exp\_indir}(Opnd)): \textbf{noop} \\
+    \\
+    \textbf{asig\_espacio}(\textbf{exp\_entero}(litEntero)): \textbf{noop} \\
+    \\
+    \textbf{asig\_espacio}(\textbf{exp\_real}(litReal)): \textbf{noop} \\
+    \\
+    \textbf{asig\_espacio}(\textbf{exp\_true}()): \textbf{noop} \\
+    \\
+    \textbf{asig\_espacio}(\textbf{exp\_false}()): \textbf{noop} \\
+    \\
+    \textbf{asig\_espacio}(\textbf{exp\_cadena}(litCadena)): \textbf{noop} \\
+    \\
+    \textbf{asig\_espacio}(\textbf{exp\_iden}(iden)): \textbf{noop} \\
+    \\
+    \textbf{asig\_espacio}(\textbf{exp\_null}()): \textbf{noop}
+\end{math}
+
+\section{Funciones auxiliares}
+
+\begin{math}
+    \textbf{inc\_dir}(inc): \\
+        \phantom{---} dir \; += \; inc \\
+        \phantom{---} if \; dir \; > \; max\_dir \; then \\
+            \phantom{------} max\_dir \; = \; dir \\
+        \phantom{---} endif
+\end{math}
