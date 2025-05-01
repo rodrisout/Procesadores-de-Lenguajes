@@ -1,7 +1,7 @@
 
 ** VINCULACION Y PRETIPADO **
 
-var ts
+var ts, idens
 
 def vincula(programa(Bloq)):
 	ts = creaTS()
@@ -44,12 +44,12 @@ def vincula(si_refparam_f(Tipo, iden)):
 	vincula(Tipo)
 	if contiene(ts, iden):
 		error()
-	else	registra(ts, iden, $)
+	else	inserta(ts, iden, $)
 def vincula(no_refparam_f(Tipo, iden)):
 	vincula(Tipo)
 	if contiene(ts, iden):
 		error()
-	else	registra(ts, iden, $)
+	else	inserta(ts, iden, $)
 def vincula(tipo_nombre(Tipo, iden)):
 	vincula(Tipo)
 def vincula(tipo_array(Tipo, litEntero)):
@@ -68,14 +68,14 @@ def vincula(tipo_type(iden)):
 		error()
 def vincula(tipo_struct(LCampos)):
 	idens = []
-	vincula(&idens, LCampos)
-def vincula(&idens, muchos_campos(LCampos, TipoNom)):
-	vincula(&idens, LCampos)
+	vincula(LCampos)
+def vincula(muchos_campos(LCampos, TipoNom)):
+	vincula(LCampos)
 	if contiene(idens, TipoNom.iden):
 		error()
 	else	inserta(idens, TipoNom.iden)
 	vincula(TipoNom)
-def vincula(&idens, un_campo(TipoNom)):
+def vincula(un_campo(TipoNom)):
 	vincula(TipoNom)
 	if contiene(idens, TipoNom.iden):
 		error()
@@ -104,7 +104,7 @@ def vincula(ins_read(Exp)):
 def vincula(ins_write(Exp)):
 	vincula(Exp)
 def vincula(ins_nl()):
-	vincula(Exp)
+	vincula()
 def vincula(ins_new(Exp)):
 	vincula(Exp)
 def vincula(ins_delete(Exp)):
@@ -712,7 +712,10 @@ def inc_dir(n):
 var etq
 def etiquetado(programa(Bloq)):
 	etq = 0
+	etq++
 	etiquetado(Bloq)
+	$.last = etq
+	etq++
 def etiquetado(bloque(SecDecs, SecIs)):
 	etq++
 	etiquetado(SecDecs)
@@ -887,6 +890,7 @@ def etiquetado(exp_null()):
 ** GEN-CODIGO ** 
 
 def gen_cod(programa(Bloq)):
+	emit activa(0, 0, $.last)
 	gen_cod(Bloq)
 	emit stop
 def gen_cod(bloque(SecDecs, SecIs)):
