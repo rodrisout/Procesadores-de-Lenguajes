@@ -44,45 +44,7 @@ var set
     \\
     \textbf{tipado}(\textbf{dec\_proc}(iden, \; ParamFs, \; Bloq)): \\
         \phantom{---} \textbf{tipado}(Bloq) \\
-        \phantom{---} \$.tipo \; = \; Bloq.tipo \\
-    \\
-    \textbf{tipado}(\textbf{si\_params\_f}(LParamFs)): \textbf{noop} \\
-    \\
-    \textbf{tipado}(\textbf{no\_params\_f()}): \textbf{noop} \\
-    \\
-    \textbf{tipado}(\textbf{muchos\_params\_f}(LParamFs, \; ParamF)): \textbf{noop} \\
-    \\
-    \textbf{tipado}(\textbf{un\_param\_f}(ParamF)): \textbf{noop} \\
-    \\
-    \textbf{tipado}(\textbf{si\_refparam\_f}(Tipo, \; iden)): \textbf{noop} \\
-    \\
-    \textbf{tipado}(\textbf{no\_refparam\_f}(Tipo, \; iden)): \textbf{noop}
-\end{math}
-
-\subsection{Tipos}
-
-\begin{math}
-    \textbf{tipado}(\textbf{tipo\_nombre}(Tipo, \; iden)): \textbf{noop} \\
-    \\
-    \textbf{tipado}(\textbf{tipo\_array}(Tipo, \; litEntero)): \textbf{noop} \\
-    \\
-    \textbf{tipado}(\textbf{tipo\_indir}(Tipo)): \textbf{noop} \\
-    \\
-    \textbf{tipado}(\textbf{tipo\_struct}(LCampos)): \textbf{noop} \\
-    \\
-    \textbf{tipado}(\textbf{tipo\_int}()): \textbf{noop} \\
-    \\
-    \textbf{tipado}(\textbf{tipo\_real}()): \textbf{noop} \\
-    \\
-    \textbf{tipado}(\textbf{tipo\_bool}()): \textbf{noop} \\
-    \\
-    \textbf{tipado}(\textbf{tipo\_string}()): \textbf{noop} \\
-    \\
-    \textbf{tipado}(\textbf{tipo\_type}(iden)): \textbf{noop} \\
-    \\
-    \textbf{tipado}(\textbf{muchos\_campos}(LCampos, \; TipoNom)): \textbf{noop} \\
-    \\
-    \textbf{tipado}(\textbf{un\_campo}(TipoNom)): \textbf{noop}
+        \phantom{---} \$.tipo \; = \; Bloq.tipo
 \end{math}
 
 \subsection{Instrucciones}

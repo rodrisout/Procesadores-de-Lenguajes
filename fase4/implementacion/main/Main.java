@@ -9,6 +9,10 @@ import c_ast_descendente.TokenMgrError;
 import errors.Errores;
 import errors.GestionErroresTiny.ErrorLexico;
 import errors.GestionErroresTiny.ErrorSintactico;
+import maquinap.MaquinaP;
+import procesa.AsignadorEspacio;
+import procesa.Etiquetado;
+import procesa.GeneracionCodigo;
 import procesa.Pretipado;
 import procesa.Tipado;
 import procesa.Vinculador;
@@ -18,9 +22,8 @@ public class Main {
 	public static void main(String[] args) throws Exception {
 		char constructor = (char)System.in.read();
 		Reader r = new BISReader(System.in);
-//		char constructor = (char)new FileInputStream("./pruebas/casos_errores/01_errores_vinculacion_a.in").read();
-//		Reader r = new BISReader(new FileInputStream("./pruebas/casos_errores/01_errores_vinculacion_a.in"));
 		Bloq prog = construye_ast(r,constructor);
+		prog.setPrograma(true);
 		if(prog != null) {
 			procesa(prog, r);
 		} 
@@ -70,11 +73,11 @@ public class Main {
 			if(!errores.hayError()) {
 				prog.procesa(new Tipado(errores));
 				if(!errores.hayError()) {
-//					prog.procesa(new AsignacionEspacio());
-//					new Etiquetado().procesa(p);
-//					MaquinaP m = new MaquinaP(datos,500,5000,5000,10);
-//					new GeneracionCodigo(m).procesa(p);
-//					m.ejecuta();
+					new AsignadorEspacio().asig_espacio(prog);
+					new Etiquetado().procesa(prog);
+					MaquinaP m = new MaquinaP(datos,500,5000,5000,10);
+					new GeneracionCodigo(m).procesa(prog);
+					m.ejecuta();
 				}
 			}
 		}

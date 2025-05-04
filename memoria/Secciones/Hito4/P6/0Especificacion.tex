@@ -1,0 +1,357 @@
+\section{Funciones para la pila de procedimientos}
+
+\begin{itemize}
+    \item \texttt{nuevaPila()}: Crea una pila vacía para almacenar los procedimientos
+    \item \texttt{pilaVacia(stack)}: Comprueba si la pila \texttt{stack} contiene algún elemento.
+    \item \texttt{cima(stack)}: Devuelve el procedimiento en la cima de la pila \texttt{stack}.
+    \item \texttt{desapila(stack)}: Desapila el procedimiento en la cima de la pila \texttt{stack}.
+    \item \texttt{apila(stack, proc)}: Apila el procedimiento \texttt{proc} en la cima de la pila \texttt{stack}.
+\end{itemize}
+
+\section{Funciones de procesamiento}
+
+var sub\_pendientes = \textbf{nuevaPila()} \\
+var etq = 0
+
+\begin{math}
+    \textbf{etiquetado}(\textbf{bloque}(SecDecs, \; SecIs)): \\
+        \phantom{---} \$.prim \; = \; etq \\
+        \phantom{---} \textbf{recolecta\_subs}(SecDecs) \\
+        \phantom{---} \textbf{etiquetado}(SecIs) \\
+        \phantom{---} if \; bloque.programa \; then \\
+            \phantom{------} etq++ \\
+            \phantom{------} while \; !\textbf{pilaVacia}(sub\_pendientes) \\
+                \phantom{---------} sub \; = \; \textbf{cima}(sub\_pendientes) \\
+                \phantom{---------} \textbf{desapila}(sub\_pendientes) \\
+                \phantom{---------} let \; sub \; = \; dec\_proc(iden, \; ParamFs, \; Bloq) \; in \\
+                    \phantom{------------} sub.prim \; = \; etq \\
+                    \phantom{------------} etq++ \\
+                    \phantom{------------} \textbf{etiq}(Bloq)  \\
+                    \phantom{------------} etq \; += \; 2 \\
+                    \phantom{------------} sub.sig = etq \\
+                \phantom{---------} end \; let \\
+            \phantom{------} end \; while \\
+        \phantom{---} endif \\
+        \phantom{---} \$.sig \; = \; etq
+\end{math}
+
+\subsection{Declaraciones}
+
+\begin{math}
+    \textbf{recolecta\_subs}(\textbf{si\_decs}(LDecs)): \\
+        \phantom{---} \textbf{recolecta\_subs}(LDecs) \\
+    \\
+    \textbf{recolecta\_subs}(\textbf{no\_decs()}): \textbf{noop} \\
+    \\
+    \textbf{recolecta\_subs}(\textbf{muchas\_decs}(LDecs, \; Dec)): \\
+        \phantom{---} \textbf{recolecta\_subs}(LDecs) \\
+        \phantom{---} \textbf{recolecta\_subs}(Dec) \\
+    \\
+    \textbf{recolecta\_subs}(\textbf{una\_dec}(Dec)): \\
+        \phantom{---} \textbf{recolecta\_subs}(Dec) \\
+    \\
+    \textbf{recolecta\_subs}(\textbf{dec\_base}(TipoNom)): \textbf{noop} \\
+    \\
+    \textbf{recolecta\_subs}(\textbf{dec\_type}(TipoNom)): \textbf{noop} \\
+    \\
+    \textbf{recolecta\_subs}(\textbf{dec\_proc}(iden, \; ParamFs, \; Bloq)): \\
+        \phantom{---} \textbf{apila}(sub\_pendientes, \; \$)
+\end{math}
+
+\subsection{Instrucciones}
+
+\begin{math}
+    \textbf{etiquetado}(\textbf{si\_ins}(LIs)): \\
+        \phantom{---} \$.prim \; = \; etq \\
+        \phantom{---} \textbf{etiquetado}(LIs) \\
+        \phantom{---} \$.sig \; = \; etq \\
+    \\
+    \textbf{etiquetado}(\textbf{no\_ins()}): \textbf{noop} \\
+    \\
+    \textbf{etiquetado}(\textbf{muchas\_ins}(LIs, \; I)): \\
+        \phantom{---} \$.prim \; = \; etq \\
+        \phantom{---} \textbf{etiquetado}(LIs) \\
+        \phantom{---} \textbf{etiquetado}(I) \\
+        \phantom{---} \$.sig \; = \; etq \\
+    \\
+    \textbf{etiquetado}(\textbf{una\_ins}(I)): \\
+        \phantom{---} \$.prim \; = \; etq \\
+        \phantom{---} \textbf{etiquetado}(I) \\
+        \phantom{---} \$.sig \; = \; etq \\
+    \\
+    \textbf{etiquetado}(\textbf{ins\_eval}(Exp)): \\
+        \phantom{---} \$.prim \; = \; etq \\
+        \phantom{---} \textbf{etiquetado}(Exp) \\
+        \phantom{---} \$.sig \; = \; etq \\
+    \\
+    \textbf{etiquetado}(\textbf{ins\_if}(Exp, \; Bloq)): \\
+        \phantom{---} \$.prim \; = \; etq \\
+        \phantom{---} \textbf{etiquetado}(Exp) \\
+        \phantom{---} \textbf{etiquetado\_acc\_val}(Exp) \\
+        \phantom{---} etq++ \\
+        \phantom{---} \textbf{etiquetado}(Bloq) \\
+        \phantom{---} \$.sig \; = \; etq \\
+    \\
+    \textbf{etiquetado}(\textbf{ins\_if\_else}(I, \; Bloq)): \\
+        \phantom{---} \$.prim \; = \; etq \\
+        \phantom{---} \textbf{etiquetado}(I) \\
+        \phantom{---} etq++ \\
+        \phantom{---} \textbf{etiquetado}(Bloq) \\
+        \phantom{---} \$.sig \; = \; etq \\
+    \\
+    \textbf{etiquetado}(\textbf{ins\_while}(Exp, \; Bloq)): \\
+        \phantom{---} \$.prim \; = \; etq \\
+        \phantom{---} \textbf{etiquetado}(Exp) \\
+        \phantom{---} \textbf{etiquetado\_acc\_val}(Exp) \\
+        \phantom{---} etq++ \\
+        \phantom{---} \textbf{etiquetado}(Bloq) \\
+        \phantom{---} etq++ \\
+        \phantom{---} \$.sig \; = \; etq \\
+    \\
+    \textbf{etiquetado}(\textbf{ins\_read}(Exp)): \\
+        \phantom{---} \$.prim \; = \; etq \\
+        \phantom{---} \textbf{etiquetado}(Exp) \\
+        \phantom{---} etq \; += \; 2 \\
+        \phantom{---} \$.sig \; = \; etq \\
+    \\
+    \textbf{etiquetado}(\textbf{ins\_write}(Exp)): \\
+        \phantom{---} \$.prim \; = \; etq \\
+        \phantom{---} \textbf{etiquetado}(Exp) \\
+        \phantom{---} \textbf{etiquetado\_acc\_val}(Exp) \\
+        \phantom{---} etq++ \\
+        \phantom{---} \$.sig \; = \; etq \\
+    \\
+    \textbf{etiquetado}(\textbf{ins\_nl}()): \\
+        \phantom{---} \$.prim \; = \; etq \\
+        \phantom{---} etq++ \\
+        \phantom{---} \$.sig \; = \; etq \\
+    \\
+    \textbf{etiquetado}(\textbf{ins\_new}(Exp)): \\
+        \phantom{---} \$.prim \; = \; etq \\
+        \phantom{---} \textbf{etiquetado}(Exp) \\
+        \phantom{---} etq \; += \; 2 \\
+        \phantom{---} \$.sig \; = \; etq \\
+    \\
+    \textbf{etiquetado}(\textbf{ins\_delete}(Exp)): \\
+        \phantom{---} \$.prim \; = \; etq \\
+        \phantom{---} \textbf{etiquetado}(Exp) \\
+        \phantom{---} etq \; += \; 2 \\
+        \phantom{---} \$.sig \; = \; etq \\
+    \\
+    \textbf{etiquetado}(\textbf{ins\_call}(iden, \; ParamRs)): \\
+        \phantom{---} \$.prim \; = \; etq \\
+        \phantom{---} let \; \$.vinculo \; = \; dec\_proc(iden, \; ParamFs, \; Bloq) \; in \\
+            \phantom{------} etq++ \\
+            \phantom{------} if \; ParamRs \; = \; si\_params\_r(LParamRs) \; \land \; ParamFs \; = \; si\_params\_f(LParamFs) \; then \\
+                \phantom{---------} \textbf{etiquetado\_paso\_params}(LParamRs, \; LParamFs) \\
+            \phantom{------} endif \\
+            \phantom{------} etq++ \\
+        \phantom{---} end \; let \\
+        \phantom{---} \$.sig \; = \; etq \\
+    \\
+    \textbf{etiquetado}(\textbf{ins\_bloque}(Bloq)): \\
+        \phantom{---} \$.prim \; = \; etq \\
+        \phantom{---} \textbf{etiquetado}(Bloq) \\
+        \phantom{---} \$.sig \; = \; etq
+\end{math}
+
+\subsection{Expresiones}
+
+\begin{math}
+    \textbf{etiquetado}(\textbf{exp\_asig}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \$.prim \; = \; etq \\
+        \phantom{---} \textbf{etiquetado}(Opnd0) \\
+        \phantom{---} \textbf{etiquetado}(Opnd1) \\
+        \phantom{---} \textbf{etiquetado\_acc\_val}(Opnd1) \\
+        \phantom{---} etq++ \\
+        \phantom{---} \$.sig \; = \; etq \\
+    \\
+    \textbf{etiquetado}(\textbf{exp\_menor}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \$.prim \; = \; etq \\
+        \phantom{---} \textbf{etiquetado\_opnds}(Opnd0, \; Opnd1) \\
+        \phantom{---} etq++ \\
+        \phantom{---} \$.sig \; = \; etq \\
+    \\
+    \textbf{etiquetado}(\textbf{exp\_menor\_ig}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \$.prim \; = \; etq \\
+        \phantom{---} \textbf{etiquetado\_opnds}(Opnd0, \; Opnd1) \\
+        \phantom{---} etq++ \\
+        \phantom{---} \$.sig \; = \; etq \\
+    \\
+    \textbf{etiquetado}(\textbf{exp\_mayor}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \$.prim \; = \; etq \\
+        \phantom{---} \textbf{etiquetado\_opnds}(Opnd0, \; Opnd1) \\
+        \phantom{---} etq++ \\
+        \phantom{---} \$.sig \; = \; etq \\
+    \\
+    \textbf{etiquetado}(\textbf{exp\_mayor\_ig}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \$.prim \; = \; etq \\
+        \phantom{---} \textbf{etiquetado\_opnds}(Opnd0, \; Opnd1) \\
+        \phantom{---} etq++ \\
+        \phantom{---} \$.sig \; = \; etq \\
+    \\
+    \textbf{etiquetado}(\textbf{exp\_ig}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \$.prim \; = \; etq \\
+        \phantom{---} \textbf{etiquetado\_opnds}(Opnd0, \; Opnd1) \\
+        \phantom{---} etq++ \\
+        \phantom{---} \$.sig \; = \; etq \\
+    \\
+    \textbf{etiquetado}(\textbf{exp\_dist}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \$.prim \; = \; etq \\
+        \phantom{---} \textbf{etiquetado\_opnds}(Opnd0, \; Opnd1) \\
+        \phantom{---} etq++ \\
+        \phantom{---} \$.sig \; = \; etq \\
+    \\
+    \textbf{etiquetado}(\textbf{exp\_suma}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \$.prim \; = \; etq \\
+        \phantom{---} \textbf{etiquetado\_opnds}(Opnd0, \; Opnd1) \\
+        \phantom{---} etq++ \\
+        \phantom{---} \$.sig \; = \; etq \\
+    \\
+    \textbf{etiquetado}(\textbf{exp\_resta}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \$.prim \; = \; etq \\
+        \phantom{---} \textbf{etiquetado\_opnds}(Opnd0, \; Opnd1) \\
+        \phantom{---} etq++ \\
+        \phantom{---} \$.sig \; = \; etq \\
+    \\
+    \textbf{etiquetado}(\textbf{exp\_and}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \$.prim \; = \; etq \\
+        \phantom{---} \textbf{etiquetado\_opnds}(Opnd0, \; Opnd1) \\
+        \phantom{---} etq++ \\
+        \phantom{---} \$.sig \; = \; etq \\
+    \\
+    \textbf{etiquetado}(\textbf{exp\_or}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \$.prim \; = \; etq \\
+        \phantom{---} \textbf{etiquetado\_opnds}(Opnd0, \; Opnd1) \\
+        \phantom{---} etq++ \\
+        \phantom{---} \$.sig \; = \; etq \\
+    \\
+    \textbf{etiquetado}(\textbf{exp\_mul}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \$.prim \; = \; etq \\
+        \phantom{---} \textbf{etiquetado\_opnds}(Opnd0, \; Opnd1) \\
+        \phantom{---} etq++ \\
+        \phantom{---} \$.sig \; = \; etq \\
+    \\
+    \textbf{etiquetado}(\textbf{exp\_div}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \$.prim \; = \; etq \\
+        \phantom{---} \textbf{etiquetado\_opnds}(Opnd0, \; Opnd1) \\
+        \phantom{---} etq++ \\ 
+        \phantom{---} \$.sig \; = \; etq \\
+    \\
+    \textbf{etiquetado}(\textbf{exp\_mod}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \$.prim \; = \; etq \\
+        \phantom{---} \textbf{etiquetado\_opnds}(Opnd0, \; Opnd1) \\
+        \phantom{---} etq++ \\
+        \phantom{---} \$.sig \; = \; etq \\
+    \\
+    \textbf{etiquetado}(\textbf{exp\_menos}(Opnd)): \\
+        \phantom{---} \$.prim \; = \; etq \\
+        \phantom{---} \textbf{etiquetado}(Opnd) \\
+        \phantom{---} \textbf{etiquetado\_acc\_val}(Opnd) \\
+        \phantom{---} etq++ \\
+        \phantom{---} \$.sig \; = \; etq \\
+    \\
+    \textbf{etiquetado}(\textbf{exp\_not}(Opnd)): \\
+        \phantom{---} \$.prim \; = \; etq \\
+        \phantom{---} \textbf{etiquetado}(Opnd) \\
+        \phantom{---} \textbf{etiquetado\_acc\_val}(Opnd) \\
+        \phantom{---} etq++ \\
+        \phantom{---} \$.sig \; = \; etq \\
+    \\
+    \textbf{etiquetado}(\textbf{exp\_index}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \$.prim \; = \; etq \\
+        \phantom{---} \textbf{etiquetado}(Opnd0) \\
+        \phantom{---} \textbf{etiquetado}(Opnd1) \\
+        \phantom{---} \textbf{etiquetado\_acc\_val}(Opnd1) \\
+        \phantom{---} etq \; += \; 3 \\
+        \phantom{---} \$.sig \; = \; etq \\
+    \\
+    \textbf{etiquetado}(\textbf{exp\_reg}(Opnd, iden)): \\
+        \phantom{---} \$.prim \; = \; etq \\
+        \phantom{---} \textbf{etiquetado}(Opnd) \\
+        \phantom{---} etq \; += \; 2 \\
+        \phantom{---} \$.sig \; = \; etq \\
+    \\
+    \textbf{etiquetado}(\textbf{exp\_indir}(Opnd)): \\
+        \phantom{---} \$.prim \; = \; etq \\
+        \phantom{---} \textbf{etiquetado}(Opnd) \\
+        \phantom{---} etq++ \\
+        \phantom{---} \$.sig \; = \; etq \\
+    \\
+    \textbf{etiquetado}(\textbf{exp\_entero}(litEntero)): \\
+        \phantom{---} \$.prim \; = \; etq \\
+        \phantom{---} etq++ \\
+        \phantom{---} \$.sig \; = \; etq \\
+    \\
+    \textbf{etiquetado}(\textbf{exp\_real}(litReal)): \\
+        \phantom{---} \$.prim \; = \; etq \\
+        \phantom{---} etq++ \\
+        \phantom{---} \$.sig \; = \; etq \\
+    \\
+    \textbf{etiquetado}(\textbf{exp\_true}()): \\
+        \phantom{---} \$.prim \; = \; etq \\
+        \phantom{---} etq++ \\
+        \phantom{---} \$.sig \; = \; etq \\
+    \\
+    \textbf{etiquetado}(\textbf{exp\_false}()): \\
+        \phantom{---} \$.prim \; = \; etq \\
+        \phantom{---} etq++ \\
+        \phantom{---} \$.sig \; = \; etq \\
+    \\
+    \textbf{etiquetado}(\textbf{exp\_cadena}(litCadena)): \\
+        \phantom{---} \$.prim \; = \; etq \\
+        \phantom{---} etq++ \\
+        \phantom{---} \$.sig \; = \; etq \\
+    \\
+    \textbf{etiquetado}(\textbf{exp\_iden}(iden)): \\
+        \phantom{---} \$.prim \; = \; etq \\
+        \phantom{---} \textbf{etiquetado\_acc\_id}(iden.vinculo) \\
+        \phantom{---} \$.sig \; = \; etq \\
+    \\
+    \textbf{etiquetado}(\textbf{exp\_null}()): \\
+        \phantom{---} \$.prim \; = \; etq \\
+        \phantom{---} etq++ \\
+        \phantom{---} \$.sig \; = \; etq
+\end{math}
+
+\section{Funciones auxiliares}
+
+\begin{math}
+    \textbf{etiquetado\_acc\_val}(Exp): \\
+        \phantom{---} if \; \textbf{es\_designador}(Exp) \; then \\
+            \phantom{------} etq++ \\
+        \phantom{---} endif \\
+    \\
+    \textbf{etiquetado\_acc\_id}(dec\_base(TipoNom)): \\
+        \phantom{---} if \; dec\_base.nivel \; == \; 0 \; then \\
+            \phantom{------} etq++ \\
+        \phantom{---} else \\
+            \phantom{------} etq \; += \; 3 \\
+        \phantom{---} endif \\
+    \\
+    \textbf{etiquetado\_acc\_id}(no\_refparam\_f(Tipo, \; iden)): \\
+        \phantom{---} etq \; += \; 3 \\
+    \\
+    \textbf{etiquetado\_acc\_id}(si\_refparam\_f(Tipo, \; iden)): \\
+        \phantom{---} etq \; += \; 4 \\
+    \\
+    \textbf{etiquetado\_opnds}(Opnd0, \; Opnd1): \\
+        \phantom{---} \textbf{etiquetado}(Opnd0) \\
+        \phantom{---} \textbf{etiquetado\_acc\_val}(Opnd0) \\
+        \phantom{---} \textbf{etiquetado}(Opnd1) \\
+        \phantom{---} \textbf{etiquetado\_acc\_val}(Opnd1) \\
+    \\
+    \textbf{etiquetado\_paso\_params}(LParamRs, \; LParamFs): \\
+        \phantom{---} if \; LParamRs \; == \; un\_param\_r(Exp) \; \land \; LParamFs \; == \; un\_param\_f(ParamF) \; then \\
+            \phantom{------} \textbf{param\_r\_f}(Exp, \; ParamF) \\
+        \phantom{---} else \; if \; LParamRs \; == \; muchos\_params\_r(LParamRs_0, \; Exp) \; \land \\
+        \phantom{-----} LParamFs \; == \; muchos\_params\_f(LParamFs_0, \; Tipo) \; then \\
+            \phantom{------} \textbf{param\_r\_f}(Exp, \; ParamF) \\
+            \phantom{------} \textbf{gen\_paso\_params}(LParamRs_0 \; LParamFs_0) \\
+        \phantom{---} endif \\
+    \\
+    \textbf{param\_r\_f}(Exp, \; ParamF): \\
+        \phantom{---} etq \; += \; 3 \\
+        \phantom{---} \textbf{etiquetado}(Exp) \\
+        \phantom{---} etq++ \\
+\end{math}

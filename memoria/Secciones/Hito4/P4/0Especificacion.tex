@@ -41,7 +41,7 @@ var campos
             \phantom{------} \textbf{asig\_tam1}(Tipo) \\
             \phantom{------} \$.dir = dir \\
             \phantom{------} \$.nivel = nivel \\
-            \phantom{------} inc_dir(Tipo.tam) \\
+            \phantom{------} inc\_dir(Tipo.tam) \\
         \phantom{---} end \; let \\
     \\
     \textbf{asig\_espacio2}(\textbf{dec\_base}(TipoNom)): \\
@@ -110,7 +110,7 @@ var campos
         \phantom{---} inc\_dir(1) \\
     \\
     \textbf{asig\_espacio2}(\textbf{si\_refparam\_f}(Tipo, \; iden)): \\
-        \phantom{---} \textbf{asig\_espacio2}(Tipo) \\
+        \phantom{---} \textbf{asig\_tam2}(Tipo) \\
     \\
     \textbf{asig\_espacio1}(\textbf{no\_refparam\_f}(Tipo, \; iden)): \\
         \phantom{---} \textbf{asig\_tam1}(Tipo) \\
@@ -119,7 +119,7 @@ var campos
         \phantom{---} inc\_dir(Tipo.tam) \\
     \\
     \textbf{asig\_espacio2}(\textbf{no\_refparam\_f}(Tipo, \; iden)): \\
-        \phantom{---} \textbf{asig\_espacio2}(Tipo)
+        \phantom{---} \textbf{asig\_tam2}(Tipo)
 \end{math}
 
 \subsection{Tipos}
@@ -246,71 +246,7 @@ var campos
     \textbf{asig\_espacio}(\textbf{ins\_call}(iden, \; ParamRs)): \textbf{noop} \\
     \\
     \textbf{asig\_espacio}(\textbf{ins\_bloque}(Bloq)): \\
-        \phantom{---} \textbf{asig\_espacio}(Bloq) \\
-    \\
-    \textbf{asig\_espacio}(\textbf{si\_params\_r}(LParamRs)): \textbf{noop} \\
-    \\
-    \textbf{asig\_espacio}(\textbf{no\_params\_r()}): \textbf{noop} \\
-    \\
-    \textbf{asig\_espacio}(\textbf{muchos\_params\_r}(LParamRs, \; Exp)): \textbf{noop} \\
-    \\
-    \textbf{asig\_espacio}(\textbf{un\_param\_r}(Exp)): \textbf{noop} \\
-\end{math}
-
-\subsection{Expresiones}
-
-\begin{math}
-    \textbf{asig\_espacio}(\textbf{exp\_asig}(Opnd0, \; Opnd1)): \textbf{noop} \\
-    \\
-    \textbf{asig\_espacio}(\textbf{exp\_menor}(Opnd0, \; Opnd1)): \textbf{noop} \\
-    \\
-    \textbf{asig\_espacio}(\textbf{exp\_menor\_ig}(Opnd0, \; Opnd1)): \textbf{noop} \\
-    \\
-    \textbf{asig\_espacio}(\textbf{exp\_mayor}(Opnd0, \; Opnd1)): \textbf{noop} \\
-    \\
-    \textbf{asig\_espacio}(\textbf{exp\_mayor\_ig}(Opnd0, \; Opnd1)): \textbf{noop} \\
-    \\
-    \textbf{asig\_espacio}(\textbf{exp\_ig}(Opnd0, \; Opnd1)): \textbf{noop} \\
-    \\
-    \textbf{asig\_espacio}(\textbf{exp\_dist}(Opnd0, \; Opnd1)): \textbf{noop} \\
-    \\
-    \textbf{asig\_espacio}(\textbf{exp\_suma}(Opnd0, \; Opnd1)): \textbf{noop} \\
-    \\
-    \textbf{asig\_espacio}(\textbf{exp\_resta}(Opnd0, \; Opnd1)): \textbf{noop} \\
-    \\
-    \textbf{asig\_espacio}(\textbf{exp\_and}(Opnd0, \; Opnd1)): \textbf{noop} \\
-    \\
-    \textbf{asig\_espacio}(\textbf{exp\_or}(Opnd0, \; Opnd1)): \textbf{noop} \\
-    \\
-    \textbf{asig\_espacio}(\textbf{exp\_mul}(Opnd0, \; Opnd1)): \textbf{noop} \\
-    \\
-    \textbf{asig\_espacio}(\textbf{exp\_div}(Opnd0, \; Opnd1)): \textbf{noop} \\
-    \\
-    \textbf{asig\_espacio}(\textbf{exp\_mod}(Opnd0, \; Opnd1)): \textbf{noop} \\
-    \\
-    \textbf{asig\_espacio}(\textbf{exp\_menos}(Opnd)): \textbf{noop} \\
-    \\
-    \textbf{asig\_espacio}(\textbf{exp\_not}(Opnd)): \textbf{noop} \\
-    \\
-    \textbf{asig\_espacio}(\textbf{exp\_index}(Opnd0, \; Opnd1)): \textbf{noop} \\
-    \\
-    \textbf{asig\_espacio}(\textbf{exp\_reg}(Opnd, iden)): \textbf{noop} \\
-    \\
-    \textbf{asig\_espacio}(\textbf{exp\_indir}(Opnd)): \textbf{noop} \\
-    \\
-    \textbf{asig\_espacio}(\textbf{exp\_entero}(litEntero)): \textbf{noop} \\
-    \\
-    \textbf{asig\_espacio}(\textbf{exp\_real}(litReal)): \textbf{noop} \\
-    \\
-    \textbf{asig\_espacio}(\textbf{exp\_true}()): \textbf{noop} \\
-    \\
-    \textbf{asig\_espacio}(\textbf{exp\_false}()): \textbf{noop} \\
-    \\
-    \textbf{asig\_espacio}(\textbf{exp\_cadena}(litCadena)): \textbf{noop} \\
-    \\
-    \textbf{asig\_espacio}(\textbf{exp\_iden}(iden)): \textbf{noop} \\
-    \\
-    \textbf{asig\_espacio}(\textbf{exp\_null}()): \textbf{noop}
+        \phantom{---} \textbf{asig\_espacio}(Bloq)
 \end{math}
 
 \section{Funciones auxiliares}

@@ -1,0 +1,54 @@
+Se asume que el elemento en la cima de la pila es el elem1, y aquel que está debajo el elem2, por tanto, en el fondo de la pila se encuentra el elemN, siendo N el número de elementos en la pila
+
+\section{Operaciones}
+
+\begin{itemize}
+    \item \texttt{suma}: Desapila los dos valores en la cima de la pila, y apila elem2 + elem1
+    \item \texttt{resta}: Desapila los dos valores en la cima de la pila, y apila elem2 - elem1
+    \item \texttt{mul}: Desapila los dos valores en la cima de la pila, y apila elem2 * elem1
+    \item \texttt{div}: Desapila los dos valores en la cima de la pila, y apila elem2 / elem1
+    \item \texttt{and}: Desapila los dos valores en la cima de la pila, y apila elem2 \&\& elem1
+    \item \texttt{or}: Desapila los dos valores en la cima de la pila, y apila elem2 || elem1
+    \item \texttt{menos}: Desapila la cima de la pila, y apila -(elem1)
+    \item \texttt{not}: Desapila la cima de la pila, y apila !(elem1)
+    \item \texttt{menor}: Desapila los dos valores en la cima de la pila, y apila elem2 < \; elem1
+    \item \texttt{menor\_ig}: Desapila los dos valores en la cima de la pila, y apila elem2 <= elem1
+    \item \texttt{mayor}: Desapila los dos valores en la cima de la pila, y apila elem2 > \; elem1
+    \item \texttt{mayor\_ig}: Desapila los dos valores en la cima de la pila, y apila elem2 >= elem1
+    \item \texttt{ig}: Desapila los dos valores en la cima de la pila, y apila elem2 == elem1
+    \item \texttt{dist}: Desapila los dos valores en la cima de la pila, y apila elem2 != elem1
+\end{itemize}
+
+\section{Tipos básicos}
+
+\begin{itemize}
+    \item \texttt{apila\_int}(n): Apila el valor del entero n
+    \item \texttt{apila\_real}(r): Apila el valor de real r
+    \item \texttt{apila\_bool}(b): Apila el valor del booleano b
+    \item \texttt{apila\_string}(s): Apila el valor del string s
+    \item \texttt{apila\_null}: Apila null
+\end{itemize}
+
+\section{Direccionamiento}
+
+\begin{itemize}
+    \item \texttt{apila\_ind}(): Desapila la cima de la pila, y apila el contenido de la memoria en la celda elem1
+    \item \texttt{desapila\_ind}(): Desapila los dos valores en la cima de la pila, y almacena el valor elem1 en la memoria, en la celda elem2
+    \item \texttt{copia}(N): Desapila los dos valores en la cima de la pila (siendo elem1 la celda donde se encuentra el primer elemento origen, y elem2 la celda donde se encuentra el primer elemento destino), y almacena sendos elementos del origen en el destino hasta llegar al elementoN
+\end{itemize}
+
+\section{Saltos}
+
+\begin{itemize}
+    \item \texttt{ir\_a}(dir): Cambia el valor del PC a dir
+    \item \texttt{ir\_f}(dir): Desapila la cima de la pila, y si el valor elem0 es falso cambia el valor del PC a dir
+    \item \texttt{ir\_ind}(): Desapila la cima de la pila, y cambia el valor del PC a elem1
+\end{itemize}
+
+\section{I/O}
+
+\begin{itemize}
+    \item \texttt{entrada\_std}(exp): Apila el respectivo valor recibido en la pila
+    \item \texttt{salida\_std}(): Desapila la cima de la pila, y vuelca en la consola el valor de elem1
+    \item \texttt{nl}(): Vuelca un salto de línea sobre la consola
+\end{itemize}

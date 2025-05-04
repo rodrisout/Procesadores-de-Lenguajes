@@ -72,15 +72,58 @@ public class SintaxisAbstractaTiny {
 	   public Tipo getTipo() {
 		   return this.tipo;
 	   }
+	   
+	   //ESPACIO
+	   private int dir;
+	   private int nivel;
+	   private int tam;
+	   public int getDir() {
+		   return dir;
+	   }
+	   public void setDir(int dir) {
+		   this.dir = dir;
+	   }
+	   public int getNivel() {
+		   return nivel;
+	   }
+	   public void setNivel(int nivel) {
+		   this.nivel = nivel;
+	   }
+	   public int getTam() {
+		   return tam;
+	   }
+	   public void setTam(int tam) {
+		   this.tam = tam;
+	   }
+	   
+	   //ETIQUETADO
+	   private int prim;
+	   private int sig;
+	   
+	   public int getPrim() {
+		   return prim;
+	   }
+	   public void setPrim(int prim) {
+		   this.prim = prim;
+	   }
+	   public int getSig() {
+		   return sig;
+	   }
+	   public void setSig(int sig) {
+		   this.sig = sig;
+	   }
+	   
     }
     
     public static class Bloq extends Nodo {
     	private SecDecs decs;
     	private SecIs ins;
+    	private boolean programa;
         public Bloq(SecDecs decs, SecIs ins) {
  		   super();
  		   this.decs = decs;
  		   this.ins = ins;
+ 		   this.programa = false;
         }   
         public String toString() {
             return "bloq("+decs+","+ins+")";
@@ -95,6 +138,12 @@ public class SintaxisAbstractaTiny {
 		}
         public void procesa(Procesamiento p) {
         	p.procesa(this);
+        }
+        public void setPrograma(boolean programa) {
+        	this.programa = programa;
+        }
+        public boolean esPrograma() {
+        	return this.programa;
         }
     }
     
@@ -1741,7 +1790,7 @@ public class SintaxisAbstractaTiny {
         return new Exp_null();
     }
     
-    // Clases específicas para la implementación
+    // Clases espec�ficas para la implementaci�n
     
     public static class Tipo_ok extends Tipo {
         public Tipo_ok() {

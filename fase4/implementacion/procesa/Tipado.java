@@ -100,11 +100,15 @@ public class Tipado extends ProcesamientoDef {
 	        this.T1 = T1;
 	    }
 	    
-	    public boolean equals(Object o) {
-	        if (this == o) return true;
-	        if (!(o instanceof Pair)) return false;
-	        Pair pair = (Pair) o;
-	        return Objects.equals(T0, pair.T0) && Objects.equals(T1, pair.T1);
+	    public boolean equals(Pair p) {
+	    	return ((claseDe(p.T0, Tipo_type.class) && claseDe(T0, Tipo_type.class) && p.T0.ID().equals(T0.ID()))
+	    			||
+	    			(p.T0.getClass() == T0.getClass()))
+	    		   &&
+	    		   ((claseDe(p.T0, Tipo_type.class) && claseDe(T0, Tipo_type.class) && p.T0.ID().equals(T0.ID()))
+	   	    			||
+		    		(p.T0.getClass() == T0.getClass()));
+	        
 	    }
 
 	    public int hashCode() {
@@ -594,10 +598,7 @@ public class Tipado extends ProcesamientoDef {
 	private boolean unificables(Tipo T0, Tipo T1) {
 		Tipo T0p = ref(T0);
 		Tipo T1p = ref(T1);
-		if(T0p.getClass() == T1p.getClass() || (claseDe(T0p, Tipo_real.class) && claseDe(T1p, Tipo_int.class))) {
-			return true;
-		}
-		else if(claseDe(T0p, Tipo_array.class) && claseDe(T1p, Tipo_array.class)) {
+		if(claseDe(T0p, Tipo_array.class) && claseDe(T1p, Tipo_array.class)) {
 			return son_unificables(T0p.tipo(), T1p.tipo());
 		}
 		else if(claseDe(T0p, Tipo_struct.class) && claseDe(T1p, Tipo_struct.class)) {
@@ -608,6 +609,9 @@ public class Tipado extends ProcesamientoDef {
 		}
 		else if(claseDe(T0p, Tipo_indir.class) && claseDe(T1p, Tipo_indir.class)) {
 			return son_unificables(T0p.tipo(), T1p.tipo());
+		}
+		else if(T0p.getClass() == T1p.getClass() || (claseDe(T0p, Tipo_real.class) && claseDe(T1p, Tipo_int.class))) {
+			return true;
 		}
 		else {
 			return false;

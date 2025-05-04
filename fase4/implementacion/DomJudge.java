@@ -7,6 +7,10 @@ import errors.ErroresDJ;
 import errors.GestionErroresTiny.ErrorLexico;
 import errors.GestionErroresTiny.ErrorSintactico;
 import main.BISReader;
+import maquinap.MaquinaP;
+import procesa.AsignadorEspacio;
+import procesa.Etiquetado;
+import procesa.GeneracionCodigo;
 import procesa.ImpresionErrores;
 import procesa.Pretipado;
 import procesa.Tipado;
@@ -19,6 +23,7 @@ public class DomJudge {
 		char constructor = (char)System.in.read();
 		Reader r = new BISReader(System.in);
 		Bloq prog = construye_ast(r,constructor);
+		prog.setPrograma(true);
 		if(prog != null) {
 			procesa(prog, r);
 		} 
@@ -68,11 +73,11 @@ public class DomJudge {
 			if(!errores.hayError()) {
 				p.procesa(new Tipado(errores));
 				if(!errores.hayError()) {
-//					p.procesa(new AsignacionEspacio());
-//					new Etiquetado().procesa(p);
-//					MaquinaP m = new MaquinaP(datos,500,5000,5000,10);
-//					new GeneracionCodigo(m).procesa(p);
-//					m.ejecuta();
+					new AsignadorEspacio().asig_espacio(p);
+					new Etiquetado().procesa(p);
+					MaquinaP m = new MaquinaP(datos,500,5000,5000,10);
+					new GeneracionCodigo(m).procesa(p);
+					m.ejecuta();
 				}
 				else {
 					new ImpresionErrores("Errores_tipado").procesa(p);
