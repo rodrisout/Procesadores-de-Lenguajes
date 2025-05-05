@@ -82,6 +82,9 @@ var etq = 0
     \textbf{etiquetado}(\textbf{ins\_eval}(Exp)): \\
         \phantom{---} \$.prim \; = \; etq \\
         \phantom{---} \textbf{etiquetado}(Exp) \\
+        \phantom{---} if \; Exp \; != \; exp\_asig(Exp_0, \; Exp_1) \\
+            \phantom{------} etq++ \\
+        \phantom{---} endif \\
         \phantom{---} \$.sig \; = \; etq \\
     \\
     \textbf{etiquetado}(\textbf{ins\_if}(Exp, \; Bloq)): \\
@@ -162,7 +165,6 @@ var etq = 0
         \phantom{---} \$.prim \; = \; etq \\
         \phantom{---} \textbf{etiquetado}(Opnd0) \\
         \phantom{---} \textbf{etiquetado}(Opnd1) \\
-        \phantom{---} \textbf{etiquetado\_acc\_val}(Opnd1) \\
         \phantom{---} etq++ \\
         \phantom{---} \$.sig \; = \; etq \\
     \\

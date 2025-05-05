@@ -16,7 +16,7 @@ var sub\_pendientes = \textbf{nuevaPila()}
     \textbf{gen\_cod}(\textbf{bloque}(SecDecs, \; SecIs)): \\
         \phantom{---} \textbf{recolecta\_subs}(SecDecs) \\
         \phantom{---} \textbf{gen\_cod}(SecIs) \\
-        \phantom{---} \textbf{emit} \; stop \\
+        \phantom{---} \textbf{emit} \; stop() \\
         \phantom{---} if \; bloque.programa \; then \\
             \phantom{------} while \; !\textbf{pilaVacia}(sub\_pendientes) \\
                 \phantom{---------} sub \; = \; \textbf{cima}(sub\_pendientes) \\
@@ -71,6 +71,9 @@ var sub\_pendientes = \textbf{nuevaPila()}
     \\
     \textbf{gen\_cod}(\textbf{ins\_eval}(Exp)): \\
         \phantom{---} \textbf{gen\_cod}(Exp) \\
+        \phantom{---} if \; Exp \; != \; exp\_asig(Exp_0, \; Exp_1) \\
+            \phantom{------} \textbf{emit} \; desapila() \\
+        \phantom{---} endif \\
     \\
     \textbf{gen\_cod}(\textbf{ins\_if}(Exp, \; Bloq)): \\
         \phantom{---} \textbf{gen\_cod}(Exp) \\
@@ -138,99 +141,76 @@ var sub\_pendientes = \textbf{nuevaPila()}
 \subsection{Expresiones}
 
 \begin{math}
-    \textbf{etiquetado}(\textbf{exp\_asig}(Opnd0, \; Opnd1)): \\
-        \phantom{---} \$.prim \; = \; etq \\
-        \phantom{---} \textbf{etiquetado\_opnds}(Opnd0, \; Opnd1) \\
-        \phantom{---} etq++ \\
-        \phantom{---} \$.sig \; = \; etq \\
+    \textbf{gen\_cod}(\textbf{exp\_asig}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \textbf{gen\_cod}(Opnd0) \\
+        \phantom{---} \textbf{gen\_cod}(Opnd1) \\
+        \phantom{---} if \; \textbf{es\_designador}(Opn1) \; then \\
+            \phantom{------} \textbf{emit} \; copia(Opnd1.tipo.tam) \\
+        \phantom{---} else \\
+            \phantom{------} \textbf{emit} \; desapila\_ind() \\
+        \phantom{---} endif \\
     \\
-    \textbf{etiquetado}(\textbf{exp\_menor}(Opnd0, \; Opnd1)): \\
-        \phantom{---} \$.prim \; = \; etq \\
-        \phantom{---} \textbf{etiquetado\_opnds}(Opnd0, \; Opnd1) \\
-        \phantom{---} etq++ \\
-        \phantom{---} \$.sig \; = \; etq \\
+    \textbf{gen\_cod}(\textbf{exp\_menor}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \textbf{gen\_cod\_opnds}(Opnd0, \; Opnd1) \\
+        \phantom{---} \textbf{emit} \; menor()\\
     \\
-    \textbf{etiquetado}(\textbf{exp\_menor\_ig}(Opnd0, \; Opnd1)): \\
-        \phantom{---} \$.prim \; = \; etq \\
-        \phantom{---} \textbf{etiquetado\_opnds}(Opnd0, \; Opnd1) \\
-        \phantom{---} etq++ \\
-        \phantom{---} \$.sig \; = \; etq \\
+    \textbf{gen\_cod}(\textbf{exp\_menor\_ig}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \textbf{gen\_cod\_opnds}(Opnd0, \; Opnd1) \\
+        \phantom{---} \textbf{emit} \; menor\_ig()\\
     \\
-    \textbf{etiquetado}(\textbf{exp\_mayor}(Opnd0, \; Opnd1)): \\
-        \phantom{---} \$.prim \; = \; etq \\
-        \phantom{---} \textbf{etiquetado\_opnds}(Opnd0, \; Opnd1) \\
-        \phantom{---} etq++ \\
-        \phantom{---} \$.sig \; = \; etq \\
+    \textbf{gen\_cod}(\textbf{exp\_mayor}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \textbf{gen\_cod\_opnds}(Opnd0, \; Opnd1) \\
+        \phantom{---} \textbf{emit} \; mayor()\\
     \\
-    \textbf{etiquetado}(\textbf{exp\_mayor\_ig}(Opnd0, \; Opnd1)): \\
-        \phantom{---} \$.prim \; = \; etq \\
-        \phantom{---} \textbf{etiquetado\_opnds}(Opnd0, \; Opnd1) \\
-        \phantom{---} etq++ \\
-        \phantom{---} \$.sig \; = \; etq \\
+    \textbf{gen\_cod}(\textbf{exp\_mayor\_ig}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \textbf{gen\_cod\_opnds}(Opnd0, \; Opnd1) \\
+        \phantom{---} \textbf{emit} \; mayor\_ig()\\
     \\
-    \textbf{etiquetado}(\textbf{exp\_ig}(Opnd0, \; Opnd1)): \\
-        \phantom{---} \$.prim \; = \; etq \\
-        \phantom{---} \textbf{etiquetado\_opnds}(Opnd0, \; Opnd1) \\
-        \phantom{---} etq++ \\
-        \phantom{---} \$.sig \; = \; etq \\
+    \textbf{gen\_cod}(\textbf{exp\_ig}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \textbf{gen\_cod\_opnds}(Opnd0, \; Opnd1) \\
+        \phantom{---} \textbf{emit} \; ig()\\
     \\
-    \textbf{etiquetado}(\textbf{exp\_dist}(Opnd0, \; Opnd1)): \\
-        \phantom{---} \$.prim \; = \; etq \\
-        \phantom{---} \textbf{etiquetado\_opnds}(Opnd0, \; Opnd1) \\
-        \phantom{---} etq++ \\
-        \phantom{---} \$.sig \; = \; etq \\
+    \textbf{gen\_cod}(\textbf{exp\_dist}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \textbf{gen\_cod\_opnds}(Opnd0, \; Opnd1) \\
+        \phantom{---} \textbf{emit} \; dist()\\
     \\
-    \textbf{etiquetado}(\textbf{exp\_suma}(Opnd0, \; Opnd1)): \\
-        \phantom{---} \$.prim \; = \; etq \\
-        \phantom{---} \textbf{etiquetado\_opnds}(Opnd0, \; Opnd1) \\
-        \phantom{---} etq++ \\
-        \phantom{---} \$.sig \; = \; etq \\
+    \textbf{gen\_cod}(\textbf{exp\_suma}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \textbf{gen\_cod\_opnds}(Opnd0, \; Opnd1) \\
+        \phantom{---} \textbf{emit} \; suma()\\
     \\
-    \textbf{etiquetado}(\textbf{exp\_resta}(Opnd0, \; Opnd1)): \\
-        \phantom{---} \$.prim \; = \; etq \\
-        \phantom{---} \textbf{etiquetado\_opnds}(Opnd0, \; Opnd1) \\
-        \phantom{---} etq++ \\
-        \phantom{---} \$.sig \; = \; etq \\
+    \textbf{gen\_cod}(\textbf{exp\_resta}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \textbf{gen\_cod\_opnds}(Opnd0, \; Opnd1) \\
+        \phantom{---} \textbf{emit} \; resta()\\
     \\
-    \textbf{etiquetado}(\textbf{exp\_and}(Opnd0, \; Opnd1)): \\
-        \phantom{---} \$.prim \; = \; etq \\
-        \phantom{---} \textbf{etiquetado\_opnds}(Opnd0, \; Opnd1) \\
-        \phantom{---} etq++ \\
-        \phantom{---} \$.sig \; = \; etq \\
+    \textbf{gen\_cod}(\textbf{exp\_and}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \textbf{gen\_cod\_opnds}(Opnd0, \; Opnd1) \\
+        \phantom{---} \textbf{emit} \; and()\\
     \\
-    \textbf{etiquetado}(\textbf{exp\_or}(Opnd0, \; Opnd1)): \\
-        \phantom{---} \$.prim \; = \; etq \\
-        \phantom{---} \textbf{etiquetado\_opnds}(Opnd0, \; Opnd1) \\
-        \phantom{---} etq++ \\
-        \phantom{---} \$.sig \; = \; etq \\
+    \textbf{gen\_cod}(\textbf{exp\_or}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \textbf{gen\_cod\_opnds}(Opnd0, \; Opnd1) \\
+        \phantom{---} \textbf{emit} \; or()\\
     \\
-    \textbf{etiquetado}(\textbf{exp\_mul}(Opnd0, \; Opnd1)): \\
-        \phantom{---} \$.prim \; = \; etq \\
-        \phantom{---} \textbf{etiquetado\_opnds}(Opnd0, \; Opnd1) \\
-        \phantom{---} etq++ \\
-        \phantom{---} \$.sig \; = \; etq \\
+    \textbf{gen\_cod}(\textbf{exp\_mul}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \textbf{gen\_cod\_opnds}(Opnd0, \; Opnd1) \\
+        \phantom{---} \textbf{emit} \; mul()\\
     \\
-    \textbf{etiquetado}(\textbf{exp\_div}(Opnd0, \; Opnd1)): \\
-        \phantom{---} \$.prim \; = \; etq \\
-        \phantom{---} \textbf{etiquetado\_opnds}(Opnd0, \; Opnd1) \\
-        \phantom{---} etq++ \\ 
-        \phantom{---} \$.sig \; = \; etq \\
+    \textbf{gen\_cod}(\textbf{exp\_div}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \textbf{gen\_cod\_opnds}(Opnd0, \; Opnd1) \\
+        \phantom{---} \textbf{emit} \; div()\\
     \\
-    \textbf{etiquetado}(\textbf{exp\_mod}(Opnd0, \; Opnd1)): \\
-        \phantom{---} \$.prim \; = \; etq \\
-        \phantom{---} \textbf{etiquetado\_opnds}(Opnd0, \; Opnd1) \\
-        \phantom{---} etq++ \\
-        \phantom{---} \$.sig \; = \; etq \\
+    \textbf{gen\_cod}(\textbf{exp\_mod}(Opnd0, \; Opnd1)): \\
+        \phantom{---} \textbf{gen\_cod\_opnds}(Opnd0, \; Opnd1) \\
+        \phantom{---} \textbf{emit} \; mod()\\
     \\
     \textbf{gen\_cod}(\textbf{exp\_menos}(Opnd)): \\
         \phantom{---} \textbf{gen\_cod}(Opnd) \\
-        \phantom{---} \textbf{gen\_acc\_val}(Opnd) \\
-        \phantom{---} \textbf{emit} \; menos \\
+        \phantom{---} \textbf{gen\_cod\_acc\_val}(Opnd) \\
+        \phantom{---} \textbf{emit} \; menos()\\
     \\
     \textbf{gen\_cod}(\textbf{exp\_not}(Opnd)): \\
         \phantom{---} \textbf{gen\_cod}(Opnd) \\
-        \phantom{---} \textbf{gen\_acc\_val}(Opnd) \\
-        \phantom{---} \textbf{emit} \; not \\
+        \phantom{---} \textbf{gen\_cod\_acc\_val}(Opnd) \\
+        \phantom{---} \textbf{emit} \; not()\\
     \\
     \textbf{gen\_cod}(\textbf{exp\_index}(Opnd0, \; Opnd1)): \\
         \phantom{---} \textbf{gen\_cod}(Opnd0) \\
@@ -239,51 +219,40 @@ var sub\_pendientes = \textbf{nuevaPila()}
         \phantom{---} let \; \textbf{ref!}(Opnd0) \; = \; array(Tipo, \; iden) \; in \\
             \phantom{------} \textbf{emit} \; apila\_int(Tipo.tam) \\
         \phantom{---} end \; let \\
-        \phantom{---} \textbf{emit} \; mul \\
-        \phantom{---} \textbf{emit} \; suma \\
+        \phantom{---} \textbf{emit} \; mul() \\
+        \phantom{---} \textbf{emit} \; suma() \\
     \\
     \textbf{gen\_cod}(\textbf{exp\_reg}(Opnd, iden)): \\
         \phantom{---} \textbf{gen\_cod}(Opnd) \\
         \phantom{---} let \; \textbf{ref!}(Opnd) \; = \; tipo\_struct(LCampos) \; in \\
             \phantom{------} \textbf{emit} \; apila\_int(\textbf{desplaza\_campo}(LCampos, \; iden)) \\
         \phantom{---} end \; let \\
-        \phantom{---} \textbf{emit} \; suma \\
+        \phantom{---} \textbf{emit} \; suma() \\
     \\
     \textbf{gen\_cod}(\textbf{exp\_indir}(Opnd)): \\
         \phantom{---} \textbf{gen\_cod}(Opnd) \\
         \phantom{---} \textbf{apila\_ind}() \\
     \\
-    \textbf{tipado}(\textbf{exp\_entero}(litEntero)): \\
-        \phantom{---} \$.prim \; = \; etq \\
-        \phantom{---} etq++ \\
-        \phantom{---} \$.sig \; = \; etq \\
+    \textbf{gen\_cod}(\textbf{exp\_entero}(litEntero)): \\
+        \phantom{---} \textbf{emit} \; apila\_int(litEntero) \\
     \\
-    \textbf{tipado}(\textbf{exp\_real}(litReal)): \\
-        \phantom{---} \$.prim \; = \; etq \\
-        \phantom{---} etq++ \\
-        \phantom{---} \$.sig \; = \; etq \\
+    \textbf{gen\_cod}(\textbf{exp\_real}(litReal)): \\
+        \phantom{---} \textbf{emit} \; apila\_real(litReal) \\
     \\
-    \textbf{tipado}(\textbf{exp\_true}()): \\
-        \phantom{---} \$.prim \; = \; etq \\
-        \phantom{---} etq++ \\
-        \phantom{---} \$.sig \; = \; etq \\
+    \textbf{gen\_cod}(\textbf{exp\_true}()): \\
+        \phantom{---} \textbf{emit} \; apila\_bool(true) \\
     \\
-    \textbf{tipado}(\textbf{exp\_false}()): \\
-        \phantom{---} \$.prim \; = \; etq \\
-        \phantom{---} etq++ \\
-        \phantom{---} \$.sig \; = \; etq \\
+    \textbf{gen\_cod}(\textbf{exp\_false}()): \\
+        \phantom{---} \textbf{emit} \; apila\_bool(false) \\
     \\
-    \textbf{tipado}(\textbf{exp\_cadena}(litCadena)): \\
-        \phantom{---} \$.prim \; = \; etq \\
-        \phantom{---} etq++ \\
-        \phantom{---} \$.sig \; = \; etq \\
+    \textbf{gen\_cod}(\textbf{exp\_cadena}(litCadena)): \\
+        \phantom{---} \textbf{emit} \; apila\_string(litCadena) \\
     \\
-    \textbf{tipado}(\textbf{exp\_iden}(iden)): \\
+    \textbf{gen\_cod}(\textbf{exp\_iden}(iden)): \\
+        \phantom{---} \textbf{gen\_cod\_acc\_id}(iden.vinculo) \\
     \\
-    \textbf{tipado}(\textbf{exp\_null}()): \\
-        \phantom{---} \$.prim \; = \; etq \\
-        \phantom{---} etq++ \\
-        \phantom{---} \$.sig \; = \; etq 
+    \textbf{gen\_cod}(\textbf{exp\_null}()): \\
+        \phantom{---} \textbf{emit} \; apila\_null()
 \end{math}
 
 \section{Funciones auxiliares}
@@ -309,8 +278,8 @@ var sub\_pendientes = \textbf{nuevaPila()}
         \phantom{---} \textbf{emit} \; apila\_ind() \\
     \\
     \textbf{gen\_acc\_var}(V): \\
-        \phantom{---} \textbf{emit} \; apilad(V.nivel)) \\
-        \phantom{---} \textbf{emit} \; apila\_int(v.dir))) \\
+        \phantom{---} \textbf{emit} \; apilad(V.nivel) \\
+        \phantom{---} \textbf{emit} \; apila\_int(v.dir) \\
         \phantom{---} \textbf{emit} \; suma() \\
     \\
     \textbf{gen\_opnds}(Opnd0, \; Opnd1): \\
@@ -329,9 +298,9 @@ var sub\_pendientes = \textbf{nuevaPila()}
         \phantom{---} endif \\
     \\
     \textbf{param\_r\_f}(Exp, \; ParamF): \\
-        \phantom{---} \textbf{emit} \; dup \\
+        \phantom{---} \textbf{emit} \; dup() \\
         \phantom{---} \textbf{emit} \; apila\_int(ParamF.dir) \\
-        \phantom{---} \textbf{emit} \; suma \\
+        \phantom{---} \textbf{emit} \; suma() \\
         \phantom{---} \textbf{gen\_cod}(Exp) \\
         \phantom{---} if \; ParamF \; == \; si\_refparam\_f(\_, \_) \; \lor \; !\textbf{es\_designador}(Exp)\; then \\
             \phantom{------} \textbf{emit} \; desapila\_ind() \\
