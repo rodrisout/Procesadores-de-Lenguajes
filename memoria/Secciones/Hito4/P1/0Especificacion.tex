@@ -76,13 +76,13 @@ var ts = \textbf{crearTS}()
         \phantom{---} else \\
             \phantom{------} \textbf{inserta}(ts, \; iden, \; \$) \\
         \phantom{---} endif \\
-    \\
-    \textbf{vincula2}(\textbf{dec\_proc}(iden, \; ParamFs, \; Bloq)): \\
         \phantom{---} \textbf{abreAmbito}(ts) \\
         \phantom{---} \textbf{vincula1}(ParamFs) \\
         \phantom{---} \textbf{vincula2}(ParamFs) \\
         \phantom{---} \textbf{vincula}(Bloq) \\
         \phantom{---} \textbf{cierraAmbito}(ts) \\
+    \\
+    \textbf{vincula2}(\textbf{dec\_proc}(iden, \; ParamFs, \; Bloq)): \textbf{noop} \\
     \\
     \textbf{vincula1}(\textbf{si\_params\_f}(LParamFs)): \\
         \phantom{---} \textbf{vincula1}(LParamFs) \\
@@ -141,19 +141,10 @@ var ts = \textbf{crearTS}()
         \phantom{---} \textbf{vincula2}(Tipo) \\
     \\
     \textbf{vincula1}(\textbf{tipo\_array}(Tipo, \; litEntero)): \\
-        \phantom{---} if \; Tipo \; != \; tipo\_type(\_) \; then \\
-            \phantom{------} \textbf{vincula1}(Tipo) \\
-        \phantom{---} endif \\
+        \phantom{---} \textbf{vincula1}(Tipo) \\
     \\
     \textbf{vincula2}(\textbf{tipo\_array}(Tipo, \; litEntero)): \\
-        \phantom{---} if \; Tipo \; == \; tipo\_type(iden) \; then \\
-            \phantom{------} Tipo.vinculo = \textbf{vinculoDe}(ts, \; iden) \\
-            \phantom{------} if \; Tipo.vinculo \; != \; dec\_type(\_) \; then \\
-                \phantom{---------} \textbf{error} \\ 
-            \phantom{------} endif \\
-        \phantom{---} else \\
-            \phantom{------} \textbf{vincula2}(Tipo) \\
-        \phantom{---} endif \\
+        \phantom{---} \textbf{vincula2}(Tipo) \\
     \\
     \textbf{vincula1}(\textbf{tipo\_indir}(Tipo)): \\
         \phantom{---} if \; Tipo \; != \; tipo\_type(\_) \; then \\
@@ -192,10 +183,10 @@ var ts = \textbf{crearTS}()
     \\
     \textbf{vincula2}(\textbf{tipo\_string}()): \textbf{noop} \\
     \\
-    \textbf{vincula1}(\textbf{tipo\_type}(iden)): \textbf{noop} \\
+    \textbf{vincula1}(\textbf{tipo\_type}(iden)): \\
+        \phantom{---} \$.vinculo = vinculoDe(ts, iden) \\
     \\
-    \textbf{vincula2}(\textbf{tipo\_type}(iden)): \\
-         \phantom{---} \$.vinculo = vinculoDe(ts, iden) \\
+    \textbf{vincula2}(\textbf{tipo\_type}(iden)): \textbf{noop} \\
     \\
     \textbf{vincula1}(\textbf{muchos\_campos}(LCampos, \; TipoNom)): \\
         \phantom{---} \textbf{vincula1}(LCampos) \\

@@ -99,19 +99,32 @@ public class Tipado extends ProcesamientoDef {
 	        this.T0 = T0;
 	        this.T1 = T1;
 	    }
-	    
-	    public boolean equals(Pair p) {
-	    	return ((claseDe(p.T0, Tipo_type.class) && claseDe(T0, Tipo_type.class) && p.T0.ID().equals(T0.ID()))
+
+	    public boolean equals(Object obj) {
+	        if (this == obj) return true;
+	        if (obj == null || getClass() != obj.getClass()) return false;
+
+	        Pair other = (Pair) obj;
+
+	        return ((claseDe(other.T0, Tipo_type.class) && claseDe(T0, Tipo_type.class) && other.T0.ID().equals(T0.ID()))
 	    			||
-	    			(p.T0.getClass() == T0.getClass()))
+	    			(other.T0.getClass() == T0.getClass()))
 	    		   &&
-	    		   ((claseDe(p.T0, Tipo_type.class) && claseDe(T0, Tipo_type.class) && p.T0.ID().equals(T0.ID()))
+	    		   ((claseDe(other.T1, Tipo_type.class) && claseDe(T1, Tipo_type.class) && other.T1.ID().equals(T1.ID()))
 	   	    			||
-		    		(p.T0.getClass() == T0.getClass()));
-	        
+		    		(other.T1.getClass() == T1.getClass()));
 	    }
 
 	    public int hashCode() {
+	    	if(claseDe(T0, Tipo_type.class) && claseDe(T1, Tipo_type.class)) {
+	    		return Objects.hash(T0.ID(), T1.ID());
+	    	}
+	    	else if(claseDe(T0, Tipo_type.class)) {
+	    		return Objects.hash(T0.ID(), T1);
+	    	}
+	    	else if(claseDe(T1, Tipo_type.class)) {
+	    		return Objects.hash(T0, T1.ID());
+	    	}
 	        return Objects.hash(T0, T1);
 	    }
 	}
@@ -321,7 +334,7 @@ public class Tipado extends ProcesamientoDef {
 		exp.Opnd1().procesa(this);
 		if(es_designador(exp.Opnd0())) {
 			if(compatibles(exp.Opnd0().getTipo(), exp.Opnd1().getTipo())) {
-				exp.setTipo(new Tipo_ok());
+				exp.setTipo(exp.Opnd0().getTipo());
 			}
 			else {
 				exp.setTipo(new Tipo_error());

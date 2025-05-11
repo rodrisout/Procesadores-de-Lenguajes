@@ -138,6 +138,11 @@ public class Vinculador extends SintaxisAbstractaTiny {
     		else {
     			inserta(ts, dec.ID(), dec);
     		}
+    		abreAmbito(ts);
+    		vincula1(dec.paramFs());
+    		vincula2(dec.paramFs());
+    		vincula(dec.bloq());
+    		cierraAmbito(ts);
     	}
     }
     private void vincula2(Dec dec) {
@@ -146,13 +151,6 @@ public class Vinculador extends SintaxisAbstractaTiny {
     	}
     	else if(claseDe(dec,Dec_type.class)) {
     		vincula2(dec.tipoNom());
-    	}
-    	else if(claseDe(dec,Dec_proc.class)) {
-    		abreAmbito(ts);
-    		vincula1(dec.paramFs());
-    		vincula2(dec.paramFs());
-    		vincula(dec.bloq());
-    		cierraAmbito(ts);
     	}
     }
     private void vincula1(ParamFs paramfs) {
@@ -198,9 +196,7 @@ public class Vinculador extends SintaxisAbstractaTiny {
     }
     private void vincula1(Tipo tipo) {
     	if(claseDe(tipo,Tipo_array.class)) {
-    		if(!claseDe(tipo.tipo(), Tipo_type.class)){
-    			vincula1(tipo.tipo());
-    		}
+    		vincula1(tipo.tipo());
     	}
     	else if(claseDe(tipo,Tipo_indir.class)) {
     		if(!claseDe(tipo.tipo(), Tipo_type.class)){
@@ -210,18 +206,13 @@ public class Vinculador extends SintaxisAbstractaTiny {
     	else if(claseDe(tipo,Tipo_struct.class)) {
     		vincula1(tipo.lCampos());
     	}
+    	else if(claseDe(tipo,Tipo_type.class)) {
+    		tipo.setVinculo(vinculoDe(ts, tipo.ID()));
+    	}
     }
     private void vincula2(Tipo tipo) {
     	if(claseDe(tipo,Tipo_array.class)) {
-    		if(claseDe(tipo.tipo(), Tipo_type.class)){
-    			tipo.tipo().setVinculo(vinculoDe(ts, tipo.tipo().ID()));
-    			if(!claseDe(tipo.tipo().getVinculo(), Dec_type.class)){
-    				errores.error(tipo.tipo(), "identificador no declarado:"+tipo.tipo().ID());
-        		}
-    		}
-    		else {
-    			vincula2(tipo.tipo());
-    		}
+    		vincula2(tipo.tipo());
     	}
     	else if(claseDe(tipo,Tipo_indir.class)) {
     		if(claseDe(tipo.tipo(), Tipo_type.class)){
@@ -236,9 +227,6 @@ public class Vinculador extends SintaxisAbstractaTiny {
     	}
     	else if(claseDe(tipo,Tipo_struct.class)) {
     		vincula2(tipo.lCampos());
-    	}
-    	else if(claseDe(tipo,Tipo_type.class)) {
-    		tipo.setVinculo(vinculoDe(ts, tipo.ID()));
     	}
     }
     private void vincula1(LCampos campos) {

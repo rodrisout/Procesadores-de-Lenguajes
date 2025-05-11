@@ -3,20 +3,46 @@ Se asume que el elemento en la cima de la pila es el elem1, y aquel que está de
 \section{Operaciones}
 
 \begin{itemize}
-    \item \texttt{suma}(): Desapila los dos valores en la cima de la pila, y apila elem2 + elem1
-    \item \texttt{resta}(): Desapila los dos valores en la cima de la pila, y apila elem2 - elem1
-    \item \texttt{mul}(): Desapila los dos valores en la cima de la pila, y apila elem2 * elem1
-    \item \texttt{div}(): Desapila los dos valores en la cima de la pila, y apila elem2 / elem1
+    \item \texttt{suma\_int}(): Desapila los dos valores en la cima de la pila, y apila elem2 + elem1
+    \item \texttt{suma\_real}(): Desapila los dos valores en la cima de la pila, y apila elem2 + elem1
+    \item \texttt{resta\_int}(): Desapila los dos valores en la cima de la pila, y apila elem2 - elem1
+    \item \texttt{resta\_real}(): Desapila los dos valores en la cima de la pila, y apila elem2 - elem1
+    \item \texttt{mul\_int}(): Desapila los dos valores en la cima de la pila, y apila elem2 * elem1
+    \item \texttt{mul\_real}(): Desapila los dos valores en la cima de la pila, y apila elem2 * elem1
+    \item \texttt{div\_int}(): Desapila los dos valores en la cima de la pila, y apila elem2 / elem1
+    \item \texttt{div\_real}(): Desapila los dos valores en la cima de la pila, y apila elem2 / elem1
+    \item \texttt{mod}(): Desapila los dos valores en la cima de la pila, y apila elem2 \% elem1
     \item \texttt{and}(): Desapila los dos valores en la cima de la pila, y apila elem2 \&\& elem1
     \item \texttt{or}(): Desapila los dos valores en la cima de la pila, y apila elem2 || elem1
-    \item \texttt{menos}(): Desapila la cima de la pila, y apila -(elem1)
+    \item \texttt{menos\_int}(): Desapila la cima de la pila, y apila -(elem1)
+    \item \texttt{menos\_real}(): Desapila la cima de la pila, y apila -(elem1)
     \item \texttt{not}(): Desapila la cima de la pila, y apila !(elem1)
-    \item \texttt{menor}(): Desapila los dos valores en la cima de la pila, y apila elem2 < \; elem1
-    \item \texttt{menor\_ig}(): Desapila los dos valores en la cima de la pila, y apila elem2 <= elem1
-    \item \texttt{mayor}(): Desapila los dos valores en la cima de la pila, y apila elem2 > \; elem1
-    \item \texttt{mayor\_ig}(): Desapila los dos valores en la cima de la pila, y apila elem2 >= elem1
-    \item \texttt{ig}(): Desapila los dos valores en la cima de la pila, y apila elem2 == elem1
-    \item \texttt{dist}(): Desapila los dos valores en la cima de la pila, y apila elem2 != elem1
+    \item \texttt{menor\_int}(): Desapila los dos valores en la cima de la pila, y apila elem2 < \; elem1
+    \item \texttt{menor\_real}(): Desapila los dos valores en la cima de la pila, y apila elem2 < \; elem1
+    \item \texttt{menor\_bool}(): Desapila los dos valores en la cima de la pila, y apila elem2 < \; elem1
+    \item \texttt{menor\_string}(): Desapila los dos valores en la cima de la pila, y apila elem2 < \; elem1
+    \item \texttt{menor\_ig\_int}(): Desapila los dos valores en la cima de la pila, y apila elem2 <= \; elem1
+    \item \texttt{menor\_ig\_real}(): Desapila los dos valores en la cima de la pila, y apila elem2 <= \; elem1
+    \item \texttt{menor\_ig\_bool}(): Desapila los dos valores en la cima de la pila, y apila elem2 <= \; elem1
+    \item \texttt{menor\_ig\_string}(): Desapila los dos valores en la cima de la pila, y apila elem2 <= \; elem1
+    \item \texttt{mayor\_int}(): Desapila los dos valores en la cima de la pila, y apila elem2 > \; elem1
+    \item \texttt{mayor\_real}(): Desapila los dos valores en la cima de la pila, y apila elem2 > \; elem1
+    \item \texttt{mayor\_bool}(): Desapila los dos valores en la cima de la pila, y apila elem2 > \; elem1
+    \item \texttt{mayor\_string}(): Desapila los dos valores en la cima de la pila, y apila elem2 > \; elem1
+    \item \texttt{mayor\_ig\_int}(): Desapila los dos valores en la cima de la pila, y apila elem2 >= \; elem1
+    \item \texttt{mayor\_ig\_real}(): Desapila los dos valores en la cima de la pila, y apila elem2 >= \; elem1
+    \item \texttt{mayor\_ig\_bool}(): Desapila los dos valores en la cima de la pila, y apila elem2 >= \; elem1
+    \item \texttt{mayor\_ig\_string}(): Desapila los dos valores en la cima de la pila, y apila elem2 >= \; elem1
+    \item \texttt{ig\_int}(): Desapila los dos valores en la cima de la pila, y apila elem2 == elem1
+    \item \texttt{ig\_real}(): Desapila los dos valores en la cima de la pila, y apila elem2 == elem1
+    \item \texttt{ig\_bool}(): Desapila los dos valores en la cima de la pila, y apila elem2 == elem1
+    \item \texttt{ig\_string}(): Desapila los dos valores en la cima de la pila, y apila elem2 == elem1
+    \item \texttt{ig\_indir}(): Desapila los dos valores en la cima de la pila, y apila elem2 == elem1
+    \item \texttt{dist\_int}(): Desapila los dos valores en la cima de la pila, y apila elem2 != elem1
+    \item \texttt{dist\_real}(): Desapila los dos valores en la cima de la pila, y apila elem2 != elem1
+    \item \texttt{dist\_bool}(): Desapila los dos valores en la cima de la pila, y apila elem2 != elem1
+    \item \texttt{dist\_string}(): Desapila los dos valores en la cima de la pila, y apila elem2 != elem1
+    \item \texttt{dist\_indir}(): Desapila los dos valores en la cima de la pila, y apila elem2 != elem1
 \end{itemize}
 
 \section{Tipos básicos}
@@ -27,6 +53,7 @@ Se asume que el elemento en la cima de la pila es el elem1, y aquel que está de
     \item \texttt{apila\_bool}(b): Apila el valor del booleano b
     \item \texttt{apila\_string}(s): Apila el valor del string s
     \item \texttt{apila\_null}(): Apila el valor null
+    \item \texttt{int2real}(): Desapila la cima de la pila, y apila elem1 transformado en real
 \end{itemize}
 
 \section{Direccionamiento}
@@ -35,6 +62,7 @@ Se asume que el elemento en la cima de la pila es el elem1, y aquel que está de
     \item \texttt{apila\_ind}(): Desapila la cima de la pila, y apila el contenido de la memoria en la celda elem1
     \item \texttt{desapila\_ind}(): Desapila los dos valores en la cima de la pila, y almacena el valor elem1 en la memoria, en la celda elem2
     \item \texttt{copia}(N): Desapila los dos valores en la cima de la pila (siendo elem1 la celda donde se encuentra el primer elemento origen, y elem2 la celda donde se encuentra el primer elemento destino), y almacena sendos elementos del origen en el destino hasta haber copiado N elementos
+    \item \texttt{copia\_int2real}(N): Realiza lo mismo que copia, mas convirtiendo cada elemento origen en real
     \item \texttt{alloc}(tam): Reserva un espacio en la memoria dinámica de tamaño tam, y apila la dirección de inicio del espacio reservado
     \item \texttt{dealloc}(tam): Desapila la cima de la pila, y libera el espacio en la memoria dinámica de tamaño tam, que tiene como dirección de inicio elem1
 \end{itemize}
@@ -42,8 +70,8 @@ Se asume que el elemento en la cima de la pila es el elem1, y aquel que está de
 \section{Procedimientos}
 
 \begin{itemize}
-    \item \texttt{activa}(n, t, d): 
-    \item \texttt{desactiva}(n, t):
+    \item \texttt{activa}(n, t, d): Reserva espacio en el segmento de pila de registros de activación para ejecutar un procedimiento que tiene nivel de anidamiento n y tamaño de datos locales t. Así mismo, almacena en la zona de control de dicho registro d como dirección de retorno. También almacena en dicha zona de control el valor del display de nivel n. Por último, apila en la pila de evaluación la dirección de comienzo de los datos en el registro creado. 
+    \item \texttt{desactiva}(n, t): Libera el espacio ocupado por el registro de activación actual, restaurando adecuadamente el estado de la máquina. n indica el nivel de anidamiento del procedimiento asociado; t el tamaño de los datos locales. De esta forma, la instrucción: (i) apila en la pila de evaluación la dirección de retorno; (ii) restaura el valor del display de nivel n al antiguo valor guardado en el registro; (iii) decrementa el puntero de pila de registros de activación en el tamaño ocupado por el registro.
     \item \texttt{dup}(): Desapila la cima de la pila, y apila dos veces elem1
 \end{itemize}
 

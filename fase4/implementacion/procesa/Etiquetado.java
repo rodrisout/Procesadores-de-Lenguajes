@@ -139,10 +139,6 @@ public class Etiquetado extends ProcesamientoDef {
 		dec.dec().procesa(this);
 	}
 	
-	public void procesa(Dec_base dec){}
-	
-	public void procesa(Dec_type dec){}
-	
 	public void procesa(Dec_proc dec){
 		sub_pendientes.push(dec);
 	}
@@ -152,9 +148,7 @@ public class Etiquetado extends ProcesamientoDef {
 		ins.lIs().procesa(this);
 		ins.setSig(etq);
 	}
-	
-	public void procesa(No_ins ins){}
-	
+		
 	public void procesa(Muchas_ins ins){
 		ins.setPrim(etq);
 		ins.lIs().procesa(this);
@@ -172,7 +166,7 @@ public class Etiquetado extends ProcesamientoDef {
 		in.setPrim(etq);
 		in.exp().procesa(this);
 		//etiquetado_acc_val(in.exp());
-		//etq++;
+		etq++;
 		in.setSig(etq);
 	}
 	
@@ -258,13 +252,16 @@ public class Etiquetado extends ProcesamientoDef {
 		in.setSig(etq);
 	}
 	
-	// FALTA IMPLEMENTAR
 	public void procesa(Exp_asig exp){
 		exp.setPrim(etq);
 		exp.Opnd0().procesa(this);
+		etq++;
     	exp.Opnd1().procesa(this);
-    	etiquetado_acc_val(exp.Opnd1());
+    	//etiquetado_acc_val(exp.Opnd1());
 		etq++; // copia o desapila_ind
+		if(!es_designador(exp.Opnd1()) && claseDe(exp.Opnd0(), Tipo_real.class) && claseDe(exp.Opnd1(), Tipo_int.class)) {
+			etq++;
+		}
 		exp.setSig(etq);
 	}
 
@@ -458,8 +455,14 @@ public class Etiquetado extends ProcesamientoDef {
     private void etiquetado_opnds(Exp e1, Exp e2) {
         e1.procesa(this);
         etiquetado_acc_val(e1);
+        if(claseDe(e1, Tipo_int.class) && claseDe(e2, Tipo_real.class)) {
+        	etq++;
+        }
         e2.procesa(this);
         etiquetado_acc_val(e2);
+        if(claseDe(e1, Tipo_real.class) && claseDe(e2, Tipo_int.class)) {
+        	etq++;
+        }
     }
     
     private void etiquetado_acc_id(Dec_base dec) { 
@@ -509,6 +512,9 @@ public class Etiquetado extends ProcesamientoDef {
         etq += 3; // dup + apila_int + suma
         exp.procesa(this);
         etq++; // desapila_ind  copia
+        if(!es_designador(exp) && claseDe(paramF, Tipo_real.class) && claseDe(exp, Tipo_int.class)) {
+			etq++;
+		}
 	}
 	
 }

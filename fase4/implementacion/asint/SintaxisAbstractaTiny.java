@@ -77,6 +77,7 @@ public class SintaxisAbstractaTiny {
 	   private int dir;
 	   private int nivel;
 	   private int tam;
+	   private int desp;
 	   public int getDir() {
 		   return dir;
 	   }
@@ -94,6 +95,12 @@ public class SintaxisAbstractaTiny {
 	   }
 	   public void setTam(int tam) {
 		   this.tam = tam;
+	   }
+	   public int getDesp() {
+		   return desp;
+	   }
+	   public void setDesp(int desp) {
+		   this.desp = desp;
 	   }
 	   
 	   //ETIQUETADO

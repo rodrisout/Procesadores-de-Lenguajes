@@ -52,9 +52,6 @@ var campos
     \textbf{asig\_espacio1}(\textbf{dec\_type}(TipoNom)): \\
         \phantom{---} let \; TipoNom \; = \; TipoNom(Tipo, \; iden) \; in \\
             \phantom{------} \textbf{asig\_tam1}(Tipo) \\
-            \phantom{------} \$.dir = dir \\
-            \phantom{------} \$.nivel = nivel \\
-            \phantom{------} inc\_dir(Tipo.tam) \\
         \phantom{---} end \; let \\
     \\
     \textbf{asig\_espacio2}(\textbf{dec\_type}(TipoNom)): \\
@@ -147,9 +144,11 @@ var campos
         \phantom{---} endif \\
     \\
     \textbf{asig\_tam1}(\textbf{tipo\_struct}(LCampos)): \\
+        \phantom{---} var \; tmp \; = \; campos \\
         \phantom{---} campos \; = \; 0 \\
         \phantom{---} \textbf{asig\_tam1}(LCampos) \\
         \phantom{---} \$.tam = campos \\
+        \phantom{---} campos \; = \; tmp \\
     \\
     \textbf{asig\_tam2}(\textbf{tipo\_struct}(LCampos)): \\
         \phantom{---} \textbf{asig\_tam2}(LCampos) \\
@@ -184,6 +183,7 @@ var campos
     \textbf{asig\_tam1}(\textbf{muchos\_campos}(LCampos, \; TipoNom)): \\
         \phantom{---} \textbf{asig\_tam1}(LCampos) \\
         \phantom{---} let \; TipoNom \; = \; TipoNom(T, \; iden) \; in \\
+            \phantom{------} T.desp \; = \; campos \\
             \phantom{------} \textbf{asig\_tam1}(T) \\
             \phantom{------} campos \; += \; T.tam \\
         \phantom{---} end \; let \\
@@ -191,6 +191,7 @@ var campos
     \textbf{asig\_tam2}(\textbf{muchos\_campos}(LCampos, \; TipoNom)): \\
         \phantom{---} \textbf{asig\_tam2}(LCampos) \\
         \phantom{---} let \; TipoNom \; = \; TipoNom(T, \; iden) \; in \\
+            \phantom{------} T.desp \; = \; campos \\
             \phantom{------} \textbf{asig\_tam2}(T) \\
         \phantom{---} end \; let \\
     \\

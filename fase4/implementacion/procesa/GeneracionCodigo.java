@@ -153,7 +153,7 @@ public class GeneracionCodigo extends ProcesamientoDef {
 	public void procesa(Ins_eval in){
 		in.exp().procesa(this);
 		//gen_acc_val(in.exp());
-		//m.emit(m.desapila());
+		m.emit(m.desapila());
 	}
 	
 	public void procesa(Ins_if in){
@@ -201,7 +201,8 @@ public class GeneracionCodigo extends ProcesamientoDef {
 	public void procesa(Ins_new in){
 		in.exp().procesa(this);
 		//gen_acc_val(in.exp());
-        m.emit(m.alloc(in.exp().getTipo().tipo().getTam()));
+		Tipo T = ref(in.exp().getTipo());
+        m.emit(m.alloc(T.tipo().getTam()));
         m.emit(m.desapila_ind());
 	}
 	
@@ -209,7 +210,8 @@ public class GeneracionCodigo extends ProcesamientoDef {
 		in.exp().procesa(this);
 		//gen_acc_val(in.exp());
 		m.emit(m.apila_ind());
-		m.emit(m.dealloc(in.exp().getTipo().tipo().getTam()));
+		Tipo T = ref(in.exp().getTipo());
+		m.emit(m.dealloc(T.tipo().getTam()));
 	}
 	
 	public void procesa(Ins_call in){
@@ -227,54 +229,151 @@ public class GeneracionCodigo extends ProcesamientoDef {
 	
 	public void procesa(Exp_asig e) {
 		e.Opnd0().procesa(this);
+		m.emit(m.dup());
     	e.Opnd1().procesa(this);
-    	gen_acc_val(e.Opnd1());
-        if (es_designador(e.Opnd1())) {
-            m.emit(m.copia(e.Opnd1().getTipo().getTam()));
+    	//gen_acc_val(e.Opnd1());
+        if (es_designador(e.Opnd1()) || claseDe(e.Opnd1(), Exp_asig.class)) {
+        	if(claseDe(e.Opnd0(), Tipo_real.class) && claseDe(e.Opnd1(), Tipo_int.class)){
+        		m.emit(m.copia_int2real(e.Opnd1().getTipo().getTam()));
+        	}
+        	else {
+        		m.emit(m.copia(e.Opnd1().getTipo().getTam()));
+        	}
         } 
         else {
+        	if(claseDe(e.Opnd0(), Tipo_real.class) && claseDe(e.Opnd1(), Tipo_int.class)){
+        		m.emit(m.int2real());
+        	}
             m.emit(m.desapila_ind());
         }
     }
 
     public void procesa(Exp_menor e) {
         gen_cod_opnds(e.Opnd0(), e.Opnd1());
-        m.emit(m.menor());
+        if(claseDe(e.Opnd0().getTipo(), Tipo_int.class) && claseDe(e.Opnd1().getTipo(), Tipo_int.class)) {
+        	m.emit(m.menor_int());
+        }
+        else if(claseDe(e.Opnd0().getTipo(), Tipo_real.class) || claseDe(e.Opnd1().getTipo(), Tipo_real.class)) {
+        	m.emit(m.menor_real());
+		}
+        else if(claseDe(e.Opnd0().getTipo(), Tipo_bool.class) && claseDe(e.Opnd1().getTipo(), Tipo_bool.class)) {
+			m.emit(m.menor_bool());
+		}
+        else if(claseDe(e.Opnd0().getTipo(), Tipo_string.class) && claseDe(e.Opnd1().getTipo(), Tipo_string.class)) {
+			m.emit(m.menor_string());
+		}
+        //m.emit(m.menor());
     }
 
     public void procesa(Exp_menor_ig e) {
         gen_cod_opnds(e.Opnd0(), e.Opnd1());
-        m.emit(m.menor_ig());
+        if(claseDe(e.Opnd0().getTipo(), Tipo_int.class) && claseDe(e.Opnd1().getTipo(), Tipo_int.class)) {
+        	m.emit(m.menor_ig_int());
+        }
+        else if(claseDe(e.Opnd0().getTipo(), Tipo_real.class) || claseDe(e.Opnd1().getTipo(), Tipo_real.class)) {
+        	m.emit(m.menor_ig_real());
+		}
+        else if(claseDe(e.Opnd0().getTipo(), Tipo_bool.class) && claseDe(e.Opnd1().getTipo(), Tipo_bool.class)) {
+			m.emit(m.menor_ig_bool());
+		}
+        else if(claseDe(e.Opnd0().getTipo(), Tipo_string.class) && claseDe(e.Opnd1().getTipo(), Tipo_string.class)) {
+			m.emit(m.menor_ig_string());
+		}
+        //m.emit(m.menor_ig());
     }
 
     public void procesa(Exp_mayor e) {
         gen_cod_opnds(e.Opnd0(), e.Opnd1());
-        m.emit(m.mayor());
+        if(claseDe(e.Opnd0().getTipo(), Tipo_int.class) && claseDe(e.Opnd1().getTipo(), Tipo_int.class)) {
+        	m.emit(m.mayor_int());
+        }
+        else if(claseDe(e.Opnd0().getTipo(), Tipo_real.class) || claseDe(e.Opnd1().getTipo(), Tipo_real.class)) {
+        	m.emit(m.mayor_real());
+		}
+        else if(claseDe(e.Opnd0().getTipo(), Tipo_bool.class) && claseDe(e.Opnd1().getTipo(), Tipo_bool.class)) {
+			m.emit(m.mayor_bool());
+		}
+        else if(claseDe(e.Opnd0().getTipo(), Tipo_string.class) && claseDe(e.Opnd1().getTipo(), Tipo_string.class)) {
+			m.emit(m.mayor_string());
+		}
+        //m.emit(m.mayor());
     }
 
     public void procesa(Exp_mayor_ig e) {
         gen_cod_opnds(e.Opnd0(), e.Opnd1());
-        m.emit(m.mayor_ig());
+        if(claseDe(e.Opnd0().getTipo(), Tipo_int.class) && claseDe(e.Opnd1().getTipo(), Tipo_int.class)) {
+        	m.emit(m.mayor_ig_int());
+        }
+        else if(claseDe(e.Opnd0().getTipo(), Tipo_real.class) || claseDe(e.Opnd1().getTipo(), Tipo_real.class)) {
+        	m.emit(m.mayor_ig_real());
+		}
+        else if(claseDe(e.Opnd0().getTipo(), Tipo_bool.class) && claseDe(e.Opnd1().getTipo(), Tipo_bool.class)) {
+			m.emit(m.mayor_ig_bool());
+		}
+        else if(claseDe(e.Opnd0().getTipo(), Tipo_string.class) && claseDe(e.Opnd1().getTipo(), Tipo_string.class)) {
+			m.emit(m.mayor_ig_string());
+		}
+        //m.emit(m.mayor_ig());
     }
 
     public void procesa(Exp_ig e) {
         gen_cod_opnds(e.Opnd0(), e.Opnd1());
-        m.emit(m.ig());
+        if(claseDe(e.Opnd0().getTipo(), Tipo_int.class) && claseDe(e.Opnd1().getTipo(), Tipo_int.class)) {
+        	m.emit(m.ig_int());
+        }
+        else if(claseDe(e.Opnd0().getTipo(), Tipo_real.class) || claseDe(e.Opnd1().getTipo(), Tipo_real.class)) {
+        	m.emit(m.ig_real());
+		}
+        else if(claseDe(e.Opnd0().getTipo(), Tipo_bool.class) && claseDe(e.Opnd1().getTipo(), Tipo_bool.class)) {
+			m.emit(m.ig_bool());
+		}
+        else if(claseDe(e.Opnd0().getTipo(), Tipo_string.class) && claseDe(e.Opnd1().getTipo(), Tipo_string.class)) {
+			m.emit(m.ig_string());
+		}
+		else {
+			m.emit(m.ig_indir());
+		}
+        //m.emit(m.ig());
     }
 
     public void procesa(Exp_dist e) {
         gen_cod_opnds(e.Opnd0(), e.Opnd1());
-        m.emit(m.dist());
+        if(claseDe(e.Opnd0().getTipo(), Tipo_int.class) && claseDe(e.Opnd1().getTipo(), Tipo_int.class)) {
+        	m.emit(m.dist_int());
+        }
+        else if(claseDe(e.Opnd0().getTipo(), Tipo_real.class) || claseDe(e.Opnd1().getTipo(), Tipo_real.class)) {
+        	m.emit(m.dist_real());
+		}
+        else if(claseDe(e.Opnd0().getTipo(), Tipo_bool.class) && claseDe(e.Opnd1().getTipo(), Tipo_bool.class)) {
+			m.emit(m.dist_bool());
+		}
+        else if(claseDe(e.Opnd0().getTipo(), Tipo_string.class) && claseDe(e.Opnd1().getTipo(), Tipo_string.class)) {
+			m.emit(m.dist_string());
+		}
+		else {
+			m.emit(m.dist_indir());
+		}
+        //m.emit(m.dist());
     }
 
     public void procesa(Exp_suma e) {
         gen_cod_opnds(e.Opnd0(), e.Opnd1());
-        m.emit(m.suma());
+        if(claseDe(e.Opnd0().getTipo(), Tipo_int.class) && claseDe(e.Opnd1().getTipo(), Tipo_int.class)) {
+        	m.emit(m.suma_int());
+        }
+        else if(claseDe(e.Opnd0().getTipo(), Tipo_real.class) || claseDe(e.Opnd1().getTipo(), Tipo_real.class)) {
+        	m.emit(m.suma_real());
+		}
     }
 
     public void procesa(Exp_resta e) {
         gen_cod_opnds(e.Opnd0(), e.Opnd1());
-        m.emit(m.resta());
+        if(claseDe(e.Opnd0().getTipo(), Tipo_int.class) && claseDe(e.Opnd1().getTipo(), Tipo_int.class)) {
+        	m.emit(m.resta_int());
+        }
+        else if(claseDe(e.Opnd0().getTipo(), Tipo_real.class) || claseDe(e.Opnd1().getTipo(), Tipo_real.class)) {
+        	m.emit(m.resta_real());
+		}
     }
 
     public void procesa(Exp_and e) {
@@ -289,12 +388,22 @@ public class GeneracionCodigo extends ProcesamientoDef {
 
     public void procesa(Exp_mul e) {
         gen_cod_opnds(e.Opnd0(), e.Opnd1());
-        m.emit(m.mul());
+        if(claseDe(e.Opnd0().getTipo(), Tipo_int.class) && claseDe(e.Opnd1().getTipo(), Tipo_int.class)) {
+        	m.emit(m.mul_int());
+        }
+        else if(claseDe(e.Opnd0().getTipo(), Tipo_real.class) || claseDe(e.Opnd1().getTipo(), Tipo_real.class)) {
+        	m.emit(m.mul_real());
+		}
     }
 
     public void procesa(Exp_div e) {
         gen_cod_opnds(e.Opnd0(), e.Opnd1());
-        m.emit(m.div());
+        if(claseDe(e.Opnd0().getTipo(), Tipo_int.class) && claseDe(e.Opnd1().getTipo(), Tipo_int.class)) {
+        	m.emit(m.div_int());
+        }
+        else if(claseDe(e.Opnd0().getTipo(), Tipo_real.class) || claseDe(e.Opnd1().getTipo(), Tipo_real.class)) {
+        	m.emit(m.div_real());
+		}
     }
 
     public void procesa(Exp_mod e) {
@@ -304,12 +413,18 @@ public class GeneracionCodigo extends ProcesamientoDef {
 
     public void procesa(Exp_menos e) {
         e.Opnd().procesa(this);
-		gen_acc_val(e);
-        m.emit(m.menos());
+		gen_acc_val(e.Opnd());
+		if(claseDe(e.Opnd().getTipo(), Tipo_int.class)) {
+        	m.emit(m.menos_int());
+        }
+        else if(claseDe(e.Opnd().getTipo(), Tipo_real.class)) {
+        	m.emit(m.menos_real());
+		}
     }
 
     public void procesa(Exp_not e) {
         e.Opnd().procesa(this);
+        gen_acc_val(e.Opnd());
         m.emit(m.not());
     }
 
@@ -317,9 +432,10 @@ public class GeneracionCodigo extends ProcesamientoDef {
     	e.Opnd0().procesa(this);
     	e.Opnd1().procesa(this);
     	gen_acc_val(e.Opnd1());
-        m.emit(m.apila_int(e.Opnd0().getTipo().getTam()));
-        m.emit(m.mul());
-        m.emit(m.suma());
+    	Tipo T = ref(e.Opnd0().getTipo());
+        m.emit(m.apila_int(T.tipo().getTam()));
+        m.emit(m.mul_int());
+        m.emit(m.suma_int());
     }
 
     public void procesa(Exp_indir e) {
@@ -331,7 +447,7 @@ public class GeneracionCodigo extends ProcesamientoDef {
         e.Opnd().procesa(this);
         Tipo T = ref(e.Opnd().getTipo());
         m.emit(m.apila_int(desplaza_campo(T.lCampos(), e.ID())));
-        m.emit(m.suma());
+        m.emit(m.suma_int());
     }
 
     public void procesa(Exp_entero e) {
@@ -379,8 +495,14 @@ public class GeneracionCodigo extends ProcesamientoDef {
     private void gen_cod_opnds(Exp e1, Exp e2) {
         e1.procesa(this);
         gen_acc_val(e1);
+        if(claseDe(e1, Tipo_int.class) && claseDe(e2, Tipo_real.class)) {
+        	m.emit(m.int2real());
+        }
         e2.procesa(this);
         gen_acc_val(e2);
+        if(claseDe(e1, Tipo_real.class) && claseDe(e2, Tipo_int.class)) {
+        	m.emit(m.int2real());
+        }
     }
 
     private void gen_acc_id(Dec_base dec) { 
@@ -404,7 +526,7 @@ public class GeneracionCodigo extends ProcesamientoDef {
     private void gen_acc_var(Nodo v) {
         m.emit(m.apilad(v.getNivel()));
         m.emit(m.apila_int(v.getDir()));
-        m.emit(m.suma());
+        m.emit(m.suma_int());
     }
 	
 	private Tipo ref(Tipo T) {
@@ -436,26 +558,35 @@ public class GeneracionCodigo extends ProcesamientoDef {
 	private void param_r_f(Exp exp, ParamF paramF) {
         m.emit(m.dup());
         m.emit(m.apila_int(paramF.getDir()));
-        m.emit(m.suma());
+        m.emit(m.suma_int());
         exp.procesa(this);
         if(claseDe(paramF, Si_refparam_f.class) || !es_designador(exp)) {
+        	if(!es_designador(exp) && claseDe(paramF, Tipo_real.class) && claseDe(exp, Tipo_int.class)) {
+        		m.emit(m.int2real());
+        	}
         	m.emit(m.desapila_ind());
         }
         else {
-        	m.emit(m.copia(paramF.tipo().getTam()));
+        	Tipo T = ref(paramF.tipo());
+        	if(claseDe(paramF, Tipo_real.class) && claseDe(exp, Tipo_int.class)) {
+        		m.emit(m.copia_int2real(T.getTam()));
+        	}
+        	else {
+            	m.emit(m.copia(T.getTam()));
+        	}
         }
 	}
     
     private int desplaza_campo(LCampos LCampos, String iden){
     	if(claseDe(LCampos, Un_campo.class)) {
-			return 1;
+			return LCampos.tipoNom().getDesp();
 		}
 		else{
 			if(iden.equals(LCampos.tipoNom().ID())) {
-				return 1;
+				return LCampos.tipoNom().getDesp();
 			}
 			else {
-				return desplaza_campo(LCampos.lCampos(), iden) + LCampos.tipoNom().tipo().getTam();
+				return desplaza_campo(LCampos.lCampos(), iden);
 			}
 		}
     }

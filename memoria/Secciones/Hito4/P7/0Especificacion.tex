@@ -71,9 +71,7 @@ var sub\_pendientes = \textbf{nuevaPila()}
     \\
     \textbf{gen\_cod}(\textbf{ins\_eval}(Exp)): \\
         \phantom{---} \textbf{gen\_cod}(Exp) \\
-        \phantom{---} if \; Exp \; != \; exp\_asig(Exp_0, \; Exp_1) \\
-            \phantom{------} \textbf{emit} \; desapila() \\
-        \phantom{---} endif \\
+        \phantom{---} \textbf{emit} \; desapila() \\
     \\
     \textbf{gen\_cod}(\textbf{ins\_if}(Exp, \; Bloq)): \\
         \phantom{---} \textbf{gen\_cod}(Exp) \\
@@ -143,44 +141,112 @@ var sub\_pendientes = \textbf{nuevaPila()}
 \begin{math}
     \textbf{gen\_cod}(\textbf{exp\_asig}(Opnd0, \; Opnd1)): \\
         \phantom{---} \textbf{gen\_cod}(Opnd0) \\
+        \phantom{---} \textbf{emit} \; dup() \\
         \phantom{---} \textbf{gen\_cod}(Opnd1) \\
-        \phantom{---} if \; \textbf{es\_designador}(Opn1) \; then \\
-            \phantom{------} \textbf{emit} \; copia(Opnd1.tipo.tam) \\
+        \phantom{---} if \; \textbf{es\_designador}(Opnd1) \; \lor \; Opnd1 \; == \; exp\_asig(\_, \; \_) \; then \\
+            \phantom{------} if \; Opnd0.tipo \; == \; tipo\_real() \; \land \; Opnd1.tipo \; == \; tipo\_int() \; then \\
+                \phantom{---------} \textbf{emit} \; copia\_int2real(Opnd1.tipo.tam) \\
+            \phantom{------} else \\
+                \phantom{---------} \textbf{emit} \; copia(Opnd1.tipo.tam) \\
+            \phantom{------} endif \\
         \phantom{---} else \\
+            \phantom{------} if \; Opnd0.tipo \; == \; tipo\_real() \; \land \; Opnd1.tipo \; == \; tipo\_int() \; then \\
+                \phantom{---------} \textbf{emit} \; int2real() \\
+            \phantom{------} endif \\
             \phantom{------} \textbf{emit} \; desapila\_ind() \\
         \phantom{---} endif \\
     \\
     \textbf{gen\_cod}(\textbf{exp\_menor}(Opnd0, \; Opnd1)): \\
         \phantom{---} \textbf{gen\_cod\_opnds}(Opnd0, \; Opnd1) \\
-        \phantom{---} \textbf{emit} \; menor()\\
+        \phantom{---} if \; Opnd0.tipo \; == \; tipo\_int() \; \land \; Opnd1.tipo \; == \; tipo\_int() \; then \\
+            \phantom{------} \textbf{emit} \; menor\_int()\\
+        \phantom{---} else \; if \;  Opnd0.tipo \; == \; tipo\_real() \; \lor \; Opnd1.tipo \; == \; tipo\_real() \; then \\
+            \phantom{------} \textbf{emit} \; menor\_real()\\
+        \phantom{---} else \; if \; Opnd0.tipo \; == \; tipo\_bool() \; \land \; Opnd1.tipo \; == \; tipo\_bool() \; then \\
+            \phantom{------} \textbf{emit} \; menor\_bool()\\
+        \phantom{---} else \; if \; Opnd0.tipo \; == \; tipo\_string() \; \land \; Opnd1.tipo \; == \; tipo\_string() \; then \\
+            \phantom{------} \textbf{emit} \; menor\_string()\\
+        \phantom{---} endif \\
     \\
     \textbf{gen\_cod}(\textbf{exp\_menor\_ig}(Opnd0, \; Opnd1)): \\
         \phantom{---} \textbf{gen\_cod\_opnds}(Opnd0, \; Opnd1) \\
-        \phantom{---} \textbf{emit} \; menor\_ig()\\
+        \phantom{---} if \; Opnd0.tipo \; == \; tipo\_int() \; \land \; Opnd1.tipo \; == \; tipo\_int() \; then \\
+            \phantom{------} \textbf{emit} \; menor\_ig\_int()\\
+        \phantom{---} else \; if \;  Opnd0.tipo \; == \; tipo\_real() \; \lor \; Opnd1.tipo \; == \; tipo\_real() \; then \\
+            \phantom{------} \textbf{emit} \; menor\_ig\_real()\\
+        \phantom{---} else \; if \; Opnd0.tipo \; == \; tipo\_bool() \; \land \; Opnd1.tipo \; == \; tipo\_bool() \; then \\
+            \phantom{------} \textbf{emit} \; menor\_ig\_bool()\\
+        \phantom{---} else \; if \; Opnd0.tipo \; == \; tipo\_string() \; \land \; Opnd1.tipo \; == \; tipo\_string() \; then \\
+            \phantom{------} \textbf{emit} \; menor\_ig\_string()\\
+        \phantom{---} endif \\
     \\
     \textbf{gen\_cod}(\textbf{exp\_mayor}(Opnd0, \; Opnd1)): \\
         \phantom{---} \textbf{gen\_cod\_opnds}(Opnd0, \; Opnd1) \\
-        \phantom{---} \textbf{emit} \; mayor()\\
+        \phantom{---} if \; Opnd0.tipo \; == \; tipo\_int() \; \land \; Opnd1.tipo \; == \; tipo\_int() \; then \\
+            \phantom{------} \textbf{emit} \; mayor\_int()\\
+        \phantom{---} else \; if \;  Opnd0.tipo \; == \; tipo\_real() \; \lor \; Opnd1.tipo \; == \; tipo\_real() \; then \\
+            \phantom{------} \textbf{emit} \; mayor\_real()\\
+        \phantom{---} else \; if \; Opnd0.tipo \; == \; tipo\_bool() \; \land \; Opnd1.tipo \; == \; tipo\_bool() \; then \\
+            \phantom{------} \textbf{emit} \; mayor\_bool()\\
+        \phantom{---} else \; if \; Opnd0.tipo \; == \; tipo\_string() \; \land \; Opnd1.tipo \; == \; tipo\_string() \; then \\
+            \phantom{------} \textbf{emit} \; mayor\_string()\\
+        \phantom{---} endif \\
     \\
     \textbf{gen\_cod}(\textbf{exp\_mayor\_ig}(Opnd0, \; Opnd1)): \\
         \phantom{---} \textbf{gen\_cod\_opnds}(Opnd0, \; Opnd1) \\
-        \phantom{---} \textbf{emit} \; mayor\_ig()\\
+        \phantom{---} if \; Opnd0.tipo \; == \; tipo\_int() \; \land \; Opnd1.tipo \; == \; tipo\_int() \; then \\
+            \phantom{------} \textbf{emit} \; mayor\_ig\_int()\\
+        \phantom{---} else \; if \;  Opnd0.tipo \; == \; tipo\_real() \; \lor \; Opnd1.tipo \; == \; tipo\_real() \; then \\
+            \phantom{------} \textbf{emit} \; mayor\_ig\_real()\\
+        \phantom{---} else \; if \; Opnd0.tipo \; == \; tipo\_bool() \; \land \; Opnd1.tipo \; == \; tipo\_bool() \; then \\
+            \phantom{------} \textbf{emit} \; mayor\_ig\_bool()\\
+        \phantom{---} else \; if \; Opnd0.tipo \; == \; tipo\_string() \; \land \; Opnd1.tipo \; == \; tipo\_string() \; then \\
+            \phantom{------} \textbf{emit} \; mayor\_ig\_string()\\
+        \phantom{---} endif \\
     \\
     \textbf{gen\_cod}(\textbf{exp\_ig}(Opnd0, \; Opnd1)): \\
         \phantom{---} \textbf{gen\_cod\_opnds}(Opnd0, \; Opnd1) \\
-        \phantom{---} \textbf{emit} \; ig()\\
+        \phantom{---} if \; Opnd0.tipo \; == \; tipo\_int() \; \land \; Opnd1.tipo \; == \; tipo\_int() \; then \\
+            \phantom{------} \textbf{emit} \; ig\_int()\\
+        \phantom{---} else \; if \;  Opnd0.tipo \; == \; tipo\_real() \; \lor \; Opnd1.tipo \; == \; tipo\_real() \; then \\
+            \phantom{------} \textbf{emit} \; ig\_real()\\
+        \phantom{---} else \; if \; Opnd0.tipo \; == \; tipo\_bool() \; \land \; Opnd1.tipo \; == \; tipo\_bool() \; then \\
+            \phantom{------} \textbf{emit} \; ig\_bool()\\
+        \phantom{---} else \; if \; Opnd0.tipo \; == \; tipo\_string() \; \land \; Opnd1.tipo \; == \; tipo\_string() \; then \\
+            \phantom{------} \textbf{emit} \; ig\_string()\\
+        \phantom{---} else \\
+            \phantom{------} \textbf{emit} \; ig\_indir()\\
+        \phantom{---} endif \\
     \\
     \textbf{gen\_cod}(\textbf{exp\_dist}(Opnd0, \; Opnd1)): \\
         \phantom{---} \textbf{gen\_cod\_opnds}(Opnd0, \; Opnd1) \\
-        \phantom{---} \textbf{emit} \; dist()\\
+        \phantom{---} if \; Opnd0.tipo \; == \; tipo\_int() \; \land \; Opnd1.tipo \; == \; tipo\_int() \; then \\
+            \phantom{------} \textbf{emit} \; dist\_int()\\
+        \phantom{---} else \; if \;  Opnd0.tipo \; == \; tipo\_real() \; \lor \; Opnd1.tipo \; == \; tipo\_real() \; then \\
+            \phantom{------} \textbf{emit} \; dist\_real()\\
+        \phantom{---} else \; if \; Opnd0.tipo \; == \; tipo\_bool() \; \land \; Opnd1.tipo \; == \; tipo\_bool() \; then \\
+            \phantom{------} \textbf{emit} \; dist\_bool()\\
+        \phantom{---} else \; if \; Opnd0.tipo \; == \; tipo\_string() \; \land \; Opnd1.tipo \; == \; tipo\_string() \; then \\
+            \phantom{------} \textbf{emit} \; dist\_string()\\
+        \phantom{---} else \\
+            \phantom{------} \textbf{emit} \; dist\_indir()\\
+        \phantom{---} endif \\
     \\
     \textbf{gen\_cod}(\textbf{exp\_suma}(Opnd0, \; Opnd1)): \\
         \phantom{---} \textbf{gen\_cod\_opnds}(Opnd0, \; Opnd1) \\
-        \phantom{---} \textbf{emit} \; suma()\\
+        \phantom{---} if \; Opnd0.tipo \; == \; tipo\_int() \; \land \; Opnd1.tipo \; == \; tipo\_int() \; then \\
+            \phantom{------} \textbf{emit} \; suma\_int()\\
+        \phantom{---} else \; if \;  Opnd0.tipo \; == \; tipo\_real() \; \lor \; Opnd1.tipo \; == \; tipo\_real() \; then \\
+            \phantom{------} \textbf{emit} \; suma\_real()\\
+        \phantom{---} endif \\
     \\
     \textbf{gen\_cod}(\textbf{exp\_resta}(Opnd0, \; Opnd1)): \\
         \phantom{---} \textbf{gen\_cod\_opnds}(Opnd0, \; Opnd1) \\
-        \phantom{---} \textbf{emit} \; resta()\\
+        \phantom{---} if \; Opnd0.tipo \; == \; tipo\_int() \; \land \; Opnd1.tipo \; == \; tipo\_int() \; then \\
+            \phantom{------} \textbf{emit} \; resta\_int()\\
+        \phantom{---} else \; if \;  Opnd0.tipo \; == \; tipo\_real() \; \lor \; Opnd1.tipo \; == \; tipo\_real() \; then \\
+            \phantom{------} \textbf{emit} \; resta\_real()\\
+        \phantom{---} endif \\
     \\
     \textbf{gen\_cod}(\textbf{exp\_and}(Opnd0, \; Opnd1)): \\
         \phantom{---} \textbf{gen\_cod\_opnds}(Opnd0, \; Opnd1) \\
@@ -192,11 +258,19 @@ var sub\_pendientes = \textbf{nuevaPila()}
     \\
     \textbf{gen\_cod}(\textbf{exp\_mul}(Opnd0, \; Opnd1)): \\
         \phantom{---} \textbf{gen\_cod\_opnds}(Opnd0, \; Opnd1) \\
-        \phantom{---} \textbf{emit} \; mul()\\
+        \phantom{---} if \; Opnd0.tipo \; == \; tipo\_int() \; \land \; Opnd1.tipo \; == \; tipo\_int() \; then \\
+            \phantom{------} \textbf{emit} \; mul\_int()\\
+        \phantom{---} else \; if \;  Opnd0.tipo \; == \; tipo\_real() \; \lor \; Opnd1.tipo \; == \; tipo\_real() \; then \\
+            \phantom{------} \textbf{emit} \; mul\_real()\\
+        \phantom{---} endif \\
     \\
     \textbf{gen\_cod}(\textbf{exp\_div}(Opnd0, \; Opnd1)): \\
         \phantom{---} \textbf{gen\_cod\_opnds}(Opnd0, \; Opnd1) \\
-        \phantom{---} \textbf{emit} \; div()\\
+        \phantom{---} if \; Opnd0.tipo \; == \; tipo\_int() \; \land \; Opnd1.tipo \; == \; tipo\_int() \; then \\
+            \phantom{------} \textbf{emit} \; div\_int()\\
+        \phantom{---} else \; if \;  Opnd0.tipo \; == \; tipo\_real() \; \lor \; Opnd1.tipo \; == \; tipo\_real() \; then \\
+            \phantom{------} \textbf{emit} \; div\_real()\\
+        \phantom{---} endif \\
     \\
     \textbf{gen\_cod}(\textbf{exp\_mod}(Opnd0, \; Opnd1)): \\
         \phantom{---} \textbf{gen\_cod\_opnds}(Opnd0, \; Opnd1) \\
@@ -205,7 +279,11 @@ var sub\_pendientes = \textbf{nuevaPila()}
     \textbf{gen\_cod}(\textbf{exp\_menos}(Opnd)): \\
         \phantom{---} \textbf{gen\_cod}(Opnd) \\
         \phantom{---} \textbf{gen\_cod\_acc\_val}(Opnd) \\
-        \phantom{---} \textbf{emit} \; menos()\\
+        \phantom{---} if \; Opnd.tipo \; == \; tipo\_int() \; then \\
+            \phantom{------} \textbf{emit} \; menos\_int()\\
+        \phantom{---} else \; if \;  Opnd.tipo \; == \; tipo\_real() \; then \\
+            \phantom{------} \textbf{emit} \; menos\_real()\\
+        \phantom{---} endif \\
     \\
     \textbf{gen\_cod}(\textbf{exp\_not}(Opnd)): \\
         \phantom{---} \textbf{gen\_cod}(Opnd) \\
@@ -220,14 +298,14 @@ var sub\_pendientes = \textbf{nuevaPila()}
             \phantom{------} \textbf{emit} \; apila\_int(Tipo.tam) \\
         \phantom{---} end \; let \\
         \phantom{---} \textbf{emit} \; mul() \\
-        \phantom{---} \textbf{emit} \; suma() \\
+        \phantom{---} \textbf{emit} \; suma\_int() \\
     \\
     \textbf{gen\_cod}(\textbf{exp\_reg}(Opnd, iden)): \\
         \phantom{---} \textbf{gen\_cod}(Opnd) \\
         \phantom{---} let \; \textbf{ref!}(Opnd) \; = \; tipo\_struct(LCampos) \; in \\
             \phantom{------} \textbf{emit} \; apila\_int(\textbf{desplaza\_campo}(LCampos, \; iden)) \\
         \phantom{---} end \; let \\
-        \phantom{---} \textbf{emit} \; suma() \\
+        \phantom{---} \textbf{emit} \; suma\_int() \\
     \\
     \textbf{gen\_cod}(\textbf{exp\_indir}(Opnd)): \\
         \phantom{---} \textbf{gen\_cod}(Opnd) \\
@@ -280,13 +358,19 @@ var sub\_pendientes = \textbf{nuevaPila()}
     \textbf{gen\_acc\_var}(V): \\
         \phantom{---} \textbf{emit} \; apilad(V.nivel) \\
         \phantom{---} \textbf{emit} \; apila\_int(v.dir) \\
-        \phantom{---} \textbf{emit} \; suma() \\
+        \phantom{---} \textbf{emit} \; suma\_int() \\
     \\
     \textbf{gen\_opnds}(Opnd0, \; Opnd1): \\
         \phantom{---} \textbf{gen\_cod}(Opnd0) \\
         \phantom{---} \textbf{gen\_acc\_val}(Opnd0) \\
+        \phantom{---} if \; Opnd0.tipo \; == \; tipo\_int() \; \land \; Opnd1.tipo \; == \; tipo\_real() \\
+            \phantom{------} \textbf{emit} \; int2real \\
+        \phantom{---} else \\
         \phantom{---} \textbf{gen\_cod}(Opnd1) \\
         \phantom{---} \textbf{gen\_acc\_val}(Opnd1) \\
+        \phantom{---} if \; Opnd0.tipo \; == \; tipo\_real() \; \land \; Opnd1.tipo \; == \; tipo\_int() \\
+            \phantom{------} \textbf{emit} \; int2real \\
+        \phantom{---} else \\
     \\
     \textbf{gen\_paso\_params}(LParamRs, \; LParamFs): \\
         \phantom{---} if \; LParamRs \; == \; un\_param\_r(Exp) \; \land \; LParamFs \; == \; un\_param\_f(ParamF) \; then \\
@@ -300,25 +384,32 @@ var sub\_pendientes = \textbf{nuevaPila()}
     \textbf{param\_r\_f}(Exp, \; ParamF): \\
         \phantom{---} \textbf{emit} \; dup() \\
         \phantom{---} \textbf{emit} \; apila\_int(ParamF.dir) \\
-        \phantom{---} \textbf{emit} \; suma() \\
+        \phantom{---} \textbf{emit} \; suma\_int() \\
         \phantom{---} \textbf{gen\_cod}(Exp) \\
         \phantom{---} if \; ParamF \; == \; si\_refparam\_f(\_, \_) \; \lor \; !\textbf{es\_designador}(Exp)\; then \\
+            \phantom{------} if \; !\textbf{es\_designador}(Exp) \; \land \; ParamF.tipo \; == \; tipo\_real() \; \land \; Exp.tipo \; == \; tipo\_int() \; then \\
+                \phantom{---------} \textbf{emit} \; int2real() \\
+            \phantom{------} endif \\
             \phantom{------} \textbf{emit} \; desapila\_ind() \\
         \phantom{---} else \; if \; ParamF \; == \; no\_refparam\_f(Tipo, \_)\\
-            \phantom{------} \textbf{emit} \; copia(Tipo.tam) \\
+            \phantom{------} if \;ParamF.tipo \; == \; tipo\_real() \; \land \; Exp.tipo \; == \; tipo\_int() \; then \\
+                \phantom{---------} \textbf{emit} \; copia\_int2real(Tipo.tam) \\
+            \phantom{------} else \\
+                \phantom{---------} \textbf{emit} \; copia(Tipo.tam) \\
+            \phantom{------} endif \\
         \phantom{---} endif \\
     \\
     \textbf{desplaza\_campo}(LCampos, \; iden): \\
         \phantom{---} if \; LCampos \; == \; un\_campo(TipoNom_0) \; then \\
             \phantom{------} let \; TipoNom_0 \; = \; TipoNom(Tipo_0, \; iden_0) \\
-                \phantom{---------} \textbf{return} \; 1 \\
+                \phantom{---------} \textbf{return} \; TipoNom_0.desp \\
             \phantom{------} end \; let \\
         \phantom{---} else \; if \; LCampos \; == \; muchos\_campos(LCampos_0, \; TipoNom_0) \; then \\
             \phantom{------} let \; TipoNom_0 \; = \; TipoNom(Tipo_0, \; iden_0) \\
                 \phantom{--------} if \; iden \; == \; iden_0 \; then \\
-                    \phantom{-----------} \textbf{return} \; 1 \\
+                    \phantom{-----------} \textbf{return} \; TipoNom_0.desp \\
                 \phantom{--------} else \\
-                    \phantom{-----------} \textbf{return desplaza\_campo}(LCampos_0, iden) + Tipo_0.tam \\
+                    \phantom{-----------} \textbf{return desplaza\_campo}(LCampos_0, iden) \\
                 \phantom{--------} endif \\
             \phantom{------} end \; let \\
         \phantom{---} endif 

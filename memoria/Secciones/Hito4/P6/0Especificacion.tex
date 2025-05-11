@@ -82,9 +82,7 @@ var etq = 0
     \textbf{etiquetado}(\textbf{ins\_eval}(Exp)): \\
         \phantom{---} \$.prim \; = \; etq \\
         \phantom{---} \textbf{etiquetado}(Exp) \\
-        \phantom{---} if \; Exp \; != \; exp\_asig(Exp_0, \; Exp_1) \\
-            \phantom{------} etq++ \\
-        \phantom{---} endif \\
+        \phantom{---} etq++ \\
         \phantom{---} \$.sig \; = \; etq \\
     \\
     \textbf{etiquetado}(\textbf{ins\_if}(Exp, \; Bloq)): \\
@@ -164,8 +162,12 @@ var etq = 0
     \textbf{etiquetado}(\textbf{exp\_asig}(Opnd0, \; Opnd1)): \\
         \phantom{---} \$.prim \; = \; etq \\
         \phantom{---} \textbf{etiquetado}(Opnd0) \\
+        \phantom{---} etq++ \\
         \phantom{---} \textbf{etiquetado}(Opnd1) \\
         \phantom{---} etq++ \\
+        \phantom{---} if \; !\textbf{es\_designador}(Opnd1) \; \land \;  Opnd0.tipo \; == \; tipo\_real() \; \land \; Opnd1.tipo \; == \; tipo\_int() \; then \\
+            \phantom{------} etq++ \\
+        \phantom{---} endif \\
         \phantom{---} \$.sig \; = \; etq \\
     \\
     \textbf{etiquetado}(\textbf{exp\_menor}(Opnd0, \; Opnd1)): \\
@@ -340,8 +342,14 @@ var etq = 0
     \textbf{etiquetado\_opnds}(Opnd0, \; Opnd1): \\
         \phantom{---} \textbf{etiquetado}(Opnd0) \\
         \phantom{---} \textbf{etiquetado\_acc\_val}(Opnd0) \\
+        \phantom{---} if \; Opnd0.tipo \; == \; tipo\_int() \; \land \; Opnd1.tipo \; == \; tipo\_real() \\
+            \phantom{------} etq++ \\
+        \phantom{---} else \\
         \phantom{---} \textbf{etiquetado}(Opnd1) \\
         \phantom{---} \textbf{etiquetado\_acc\_val}(Opnd1) \\
+        \phantom{---} if \; Opnd0.tipo \; == \; tipo\_real() \; \land \; Opnd1.tipo \; == \; tipo\_int() \\
+            \phantom{------} etq++ \\
+        \phantom{---} else \\
     \\
     \textbf{etiquetado\_paso\_params}(LParamRs, \; LParamFs): \\
         \phantom{---} if \; LParamRs \; == \; un\_param\_r(Exp) \; \land \; LParamFs \; == \; un\_param\_f(ParamF) \; then \\
@@ -356,4 +364,7 @@ var etq = 0
         \phantom{---} etq \; += \; 3 \\
         \phantom{---} \textbf{etiquetado}(Exp) \\
         \phantom{---} etq++ \\
+        \phantom{---} if \; !\textbf{es\_designador}(Exp) \; \land \; ParamF.tipo \; == \; tipo\_real() \; \land \; Exp.tipo \; == \; tipo\_int() \; then \\
+            \phantom{------} etq++ \\
+        \phantom{---} endif
 \end{math}

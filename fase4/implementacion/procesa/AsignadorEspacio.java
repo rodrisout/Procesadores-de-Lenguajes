@@ -53,9 +53,9 @@ public class AsignadorEspacio extends SintaxisAbstractaTiny {
     	}
     	else if(claseDe(dec,Dec_type.class)) {
     		asig_tam1(dec.tipoNom().tipo());
-    		dec.setDir(dir);
-    		dec.setNivel(nivel);
-    		inc_dir(dec.tipoNom().tipo().getTam());
+//    		dec.setDir(dir);
+//    		dec.setNivel(nivel);
+//    		inc_dir(dec.tipoNom().tipo().getTam());
     	}
     	else if(claseDe(dec,Dec_proc.class)) {
     		int dir_ant = dir;
@@ -131,9 +131,11 @@ public class AsignadorEspacio extends SintaxisAbstractaTiny {
     		tipo.setTam(1);
     	}
     	else if(claseDe(tipo,Tipo_struct.class)) {
+    		int tmp = campos;
     		campos = 0;
     		asig_tam1(tipo.lCampos());
     		tipo.setTam(campos);
+    		campos = tmp;
     	}
     	else if(claseDe(tipo,Tipo_int.class)) {
     		tipo.setTam(1);
@@ -154,7 +156,7 @@ public class AsignadorEspacio extends SintaxisAbstractaTiny {
     private void asig_tam2(Tipo tipo) {
     	if(claseDe(tipo,Tipo_indir.class)) {
     		if(claseDe(tipo.tipo(), Tipo_type.class)){
-    			tipo.tipo().setTam(((Dec_type) tipo.getVinculo()).tipoNom().tipo().getTam());
+    			tipo.tipo().setTam(((Dec_type) tipo.tipo().getVinculo()).tipoNom().tipo().getTam());
     		}
     		else {
     			asig_tam2(tipo.tipo());
@@ -168,6 +170,7 @@ public class AsignadorEspacio extends SintaxisAbstractaTiny {
     	if(claseDe(campos,Muchos_campos.class)) {
     		asig_tam1(campos.lCampos());
     	}
+    	campos.tipoNom().setDesp(this.campos);
     	asig_tam1(campos.tipoNom().tipo());
     	this.campos += campos.tipoNom().tipo().getTam();
     }
